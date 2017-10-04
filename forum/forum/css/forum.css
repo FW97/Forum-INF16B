@@ -1,5 +1,8 @@
 @import 'header.css';
 @import 'footer.css';
+
+@import 'components.css';
+
 @import 'contact.css'; /* TODO: jsp missing */
 @import 'privacy.css'; /* TODO: jsp missing */
 @import 'imprint.css'; /* TODO: jsp missing */
@@ -216,17 +219,7 @@ body {
 
 /* profil */
 
-.profil a.button {
-    margin-top: 1rem;
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 1rem 2rem;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1rem;
-}
+
 
 .profil {
     padding: 3rem;
@@ -248,7 +241,7 @@ body {
     width: 20rem;
 }
 
-.settingContent input {
+.settingContent input[type=text] {
     width: 16rem;
 }
 
