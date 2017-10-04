@@ -1,93 +1,96 @@
 /* Author: Carsten Hagemann */
-
 .header {
     width: 80%;
     margin: 0 auto;
     padding: 0;
     display: flex;
-    /* border: red 1px solid; */
-  }
-  
-  .right {
+}
+
+.right {
     display: flex;
     justify-content: flex-end;
     flex-grow: 1;
-  }
-  
-  .list {
+}
+
+.list {
     list-style: none;
     margin: 0;
     padding: 0;
-  }
-  
-  .list li {
+}
+
+.list li {
     display: inline-block;
     padding: 6px 10px;
-  }
-  .list li:first-child {
+}
+
+.list li:first-child {
     padding-left: 0;
-  }
-  .list li a {
+}
+
+.list li a {
     text-decoration: none;
     color: #526ef5;
-  }
-  .list li a:hover {
+}
+
+.list li a:hover {
     color: #8296f8;
-  }
-  
-  .header .list li {
+}
+
+.header .list li {
     padding: 4px 4px;
-  }
-  
-  .header .list li a {
+}
+
+.header .list li a {
     background-color: #4965e2;
     color: #fff;
     padding: 6px 10px;
     border-radius: 2px;
-  }
-  
-  .header .list li a:hover {
+}
+
+.header .list li a:hover {
     background-color: #5f78e6;
     color: #fff;
-  }
-  
-  .breadcrums .list li {
+}
+
+.breadcrumbs .list li {
     padding: 0;
-  }
-  .breadcrums .list li:not(:last-child):after {
+}
+
+.breadcrumbs .list li:not(:last-child):after {
     color: #b2bffb;
     content: " >";
-  }
-  
-  .navbar {
-      border: #c2cffb solid 1px;
-      padding: 2px;
-      border-radius: 3px;
-  }
-  
-  .navbar .list li {
+}
+
+.navbar {
+    border: #c2cffb solid 1px;
+    padding: 2px;
+    border-radius: 3px;
+}
+
+.navbar .list li {
     padding: 0;
-  }
-  .navbar .list li:not(:last-child):after {
+}
+
+.navbar .list li:not(:last-child):after {
     color: #b2bffb;
     content: " >";
-  }
-  
-  input[type=search] {
+}
+
+input[type=search] {
     font-size: 1rem;
     padding: 8px;
-  }
-  
-  input[type=button] {
+}
+
+input[type=button] {
     background-color: #526ef5;
     color: #fff;
     font-size: 0.9rem;
     border-radius: 2px;
     padding: 4px 12px;
     border: none;
-  }
-  
-  input[type=button]:hover {
+}
+
+input[type=button]:hover {
     background-color: #6a82f6;
-  }
-  
+}
+

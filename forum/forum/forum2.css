@@ -1,63 +1,54 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-
-* {
-	margin: 0px;
-	padding: 0px;
+.container {
+    margin: 25px;
+    height: auto;
+    padding-bottom: 15px;
+    width: 800px;
+    color: #B6BABB;
+    font-weight: bold;
+    font-size: 15px;
+    background-color: #121A1C;
+    border-style: solid;
+    border-width: 2px 2px 2px 2px;
+    border-color: #999999;
+    font-family: 'Roboto', sans-serif;
 }
 
-.container
-{
-	margin: 25px;
-	height: auto;
-	padding-bottom: 15px;
-	width: 800px;
-	color: #B6BABB;
-	font-weight: bold;
-	font-size: 15px;
-	background-color: #121A1C;
-	border-style: solid;
-	border-width: 2px 2px 2px 2px;
-	border-color: #999999;
-	font-family: 'Roboto', sans-serif;
-}
-
-.theme
-{
-	height: auto;
-	padding-bottom: 15px;
-	color: #B6BABB;
-	font-weight: bold;
-	font-size: 15px;
-	background-color: #121A1C;
-	padding-top: 5px;
-	font-family: 'Roboto', sans-serif;
+.theme {
+    height: auto;
+    padding-bottom: 15px;
+    color: #B6BABB;
+    font-weight: bold;
+    font-size: 15px;
+    background-color: #121A1C;
+    padding-top: 5px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .content {
-	padding-top: 7px;
-	padding-left: 20px;
-	padding-right: 20px;
+    padding-top: 7px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .topthemes {
-	color: #e6e6e6;
+    color: #e6e6e6;
 }
 
 .container h1 {
-	font-size: 25px;
+    font-size: 25px;
 }
 
 .container hr {
-	margin-top: 5px;
-	margin-bottom: 10px;
-	border-style: solid;
-	border-width: 1px 1px 1px 1px;
-	border-color: #717171;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    border-color: #717171;
 }
 
 .time {
-	color: #e6e6e6;
-	padding-top: 17px;
-	font-size: 15px;
-	float: right;
+    color: #e6e6e6;
+    padding-top: 17px;
+    font-size: 15px;
+    float: right;
 }

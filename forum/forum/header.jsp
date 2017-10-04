@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
-<HEAD>
+<head>
    <meta charset="UTF-8">
-   <link rel="canonical" href="https://codepen.io/Moter8/pen/jGqeYJ" />
    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
    <link rel="stylesheet" type="text/css" href="css/forum.css">
-</HEAD>
+</head>
 
-<BODY>
+<body>
   <div class="header">
     <div class="left">
       <input type="search" placeholder="Forum durchsuchen"/>
@@ -30,7 +29,7 @@
       </ul>
     </div>
   </div><br/>
-  <div class="breadcrums">
+  <div class="breadcrumbs">
     <div class="left">
       <ul class="list">
         <li><a href="#">Pr&uuml;fungen</a></li>

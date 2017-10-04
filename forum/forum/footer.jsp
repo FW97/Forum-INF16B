@@ -3,4 +3,6 @@
    | <a href=‘impressum.jsp’>Impressum</a> 
    | <a href=‘datenschutz.jsp’>Datenschutz</A>
 </div>
-</body></html>
+
+</body>
+</html>
