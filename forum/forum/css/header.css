@@ -89,6 +89,7 @@ nav input[type=button] {
     border-radius: 2px;
     padding: 8px 12px;
     border: none;
+    -webkit-appearance: none;
 }
 
 nav input[type=button]:hover {
