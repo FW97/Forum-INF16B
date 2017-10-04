@@ -1,3 +1,11 @@
+
+@import 'header.css';
+@import 'footer.css';
+
+@import 'contact.css'; /* TODO: jsp missing */
+@import 'privacy.css'; /* TODO: jsp missing */
+@import 'imprint.css'; /* TODO: jsp missing */
+
 *{font-family: sans-serif;}
 #top-themen{
 	width: 500px;
@@ -68,99 +76,6 @@
 html {
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
-}
-
-/* header */
-
-.header {
-  width: 80%;
-  margin: 0 auto;
-  padding: 0;
-  display: flex;
-  /* border: red 1px solid; */
-}
-
-.right {
-  display: flex;
-  justify-content: flex-end;
-  flex-grow: 1;
-}
-
-.list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.list li {
-  display: inline-block;
-  padding: 6px 10px;
-}
-.list li:first-child {
-  padding-left: 0;
-}
-.list li a {
-  text-decoration: none;
-  color: #526ef5;
-}
-.list li a:hover {
-  color: #8296f8;
-}
-
-.header .list li {
-  padding: 4px 4px;
-}
-
-.header .list li a {
-  background-color: #4965e2;
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 2px;
-}
-
-.header .list li a:hover {
-  background-color: #5f78e6;
-  color: #fff;
-}
-
-.breadcrums .list li {
-  padding: 0;
-}
-.breadcrums .list li:not(:last-child):after {
-  color: #b2bffb;
-  content: " >";
-}
-
-.navbar {
-	border: #c2cffb solid 1px;
-	padding: 2px;
-	border-radius: 3px;
-}
-
-.navbar .list li {
-  padding: 0;
-}
-.navbar .list li:not(:last-child):after {
-  color: #b2bffb;
-  content: " >";
-}
-
-input[type=search] {
-  font-size: 1rem;
-  padding: 8px;
-}
-
-input[type=button] {
-  background-color: #526ef5;
-  color: #fff;
-  font-size: 0.9rem;
-  border-radius: 2px;
-  padding: 4px 12px;
-  border: none;
-}
-
-input[type=button]:hover {
-  background-color: #6a82f6;
 }
 
 
@@ -339,46 +254,6 @@ input[type=button]:hover {
 
 
 /* footer @author Florian Schenk*/
-.footer {
-	position: fixed;
-	bottom: 0px;
-	padding-top: 10px;
-	margin: 0px;
-	left: 0px;
-	right: 0px;
-	width: 100%;
-	height: 20px;
-	font-family: Arial;
-	text-shadow: 1px 1px 1px black;
-	border-top: 1px solid rgba(0,0,0,0.5);
-	background: rgba(0,0,0,0.25);
-	box-shadow: inset 0 1px rgba(255,255,255,0.4), inset 0 10px rgba(255,255,255,0.3),
-	inset 0 10px 20px rgba(255,255,255,0.6), inset 0 -15px 30px rgba(0,0,0,0.5);
-	color: #ffffff;
-	font-weight:normal;
-	font-size:14px;
-}
-
-.footer a:link {
-	font-weight:normal;
-	color: #ffffff;
-	font-weight:normal;
-	font-size:14px;
-}
-
-.footer a:visited{
-	font-weight:normal;
-	color: #336170;
-	font-weight:normal;
-	font-size:14px;
-}
-
-.footer a:hover{
-	font-weight:normal;
-	color: #ff0c0c;
-	font-weight:normal;
-	font-size:14px;
-}
 /* Kontakt @author Florian Schenk*/
 /* TODO noch keine JSP Datei */
 /* Impressumg @author Florian Schenk*/
