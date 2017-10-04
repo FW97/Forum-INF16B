@@ -2,7 +2,7 @@
 
 ## ER-Schema
 
-Das Schema kann hier eingesehen werden: https://i.imgur.com/NUKsjzb.png
+![ER-Schema](https://i.imgur.com/NUKsjzb.png) 
 
 ## MySQL Dump
 
