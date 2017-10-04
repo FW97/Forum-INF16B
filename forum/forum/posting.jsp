@@ -1,7 +1,6 @@
 <!--
   Assignment: 	Studentenforum
   Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll 
-
 -->
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
@@ -11,12 +10,12 @@
 <jsp:include page="header.jsp"/>
 
 <div class="subject">
-  <span class=forumcategory>${subject.forumcategory}</span>
+  <span class="forumCategory">${subject.forumCategory}</span>
   <h1>${subject.name}</h1>
-  <span class=author>${subject.firstposting.author}</span> &bull;
-  <span class=date>${subject.firstposting.whenposted}</span>
+  <span class="author">${subject.firstPosting.author}</span> &bull;
+  <span class="date">${subject.firstPosting.whenPosted}</span>
   <p>
-    <c:forEach var="tags" items="${subject.tags}"><span class=tag>#${tags.name}</span></c:forEach>
+    <c:forEach var="tags" items="${subject.tags}"><span class="tag">#${tags.name}</span></c:forEach>
   </p>
 
 
@@ -26,7 +25,7 @@
     </p>
     <div class="attachment">
       <c:forEach var="attachment" items="${posting.attachments}">
-        <span>${attachment.attachmentfilename}</span>
+        <span>${attachment.attachmentFilename}</span>
       </c:forEach>
     </div>
   </c:forEach>
