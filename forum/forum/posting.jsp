@@ -1,6 +1,6 @@
 <!--
-  	Assignment: 	Studentenforum
-   Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll 
+  Assignment: 	Studentenforum
+  Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll 
 
 -->
 
