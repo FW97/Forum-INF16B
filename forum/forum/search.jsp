@@ -1,3 +1,8 @@
+<!--
+  Assignment: 	Studentenforum
+  Name: Felix Bertsch, Lukas Beck, Manuel Libal 
+-->
+
 <jsp:include page="header.jsp" />
 <div class=search>
     <h1>Erweiterte Suche</h1>
