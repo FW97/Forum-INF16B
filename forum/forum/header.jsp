@@ -1,3 +1,8 @@
+ <!--
+   Assignment: 	Studentenforum
+   Name: Eric Dussel, Hans Fuchs
+ -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,14 +41,21 @@
         </ul>
       </div>
     </div><br/>
+     
     <div class="breadcrumbs">
       <div class="left">
         <ul class="list">
-          <li><a href="#">Pr&uuml;fungen</a></li>
-          <li><a href="#">INF16B</a></li>
-          <li><a href="#">Digitaltechnik</a></li>
+        <%String[] a=request.getRequestURI().split("/");%>
+          <li><a href="<%out.println(a[1]);%>">
+                <%String[] b=a[1].split("\\.");
+                  out.println(b[0]);
+                %></a></li>                 
+          <li><a href="<%out.println(a[1]);%>/<%out.println(a[2]);%>">
+                <%String[] c=a[2].split("\\.");
+                  out.println(c[0]);
+                %></a></li>
         </ul>
       </div>
-    </div>
+    </div> 
   </nav>
 
