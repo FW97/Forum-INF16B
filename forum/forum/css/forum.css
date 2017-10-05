@@ -1,6 +1,8 @@
 @import 'header.css';
 @import 'footer.css';
 
+@import 'top8.css';
+@import 'forumlist.css';
 @import 'components.css';
 
 @import 'contact.css'; /* TODO: jsp missing */
