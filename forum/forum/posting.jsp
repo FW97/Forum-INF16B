@@ -12,19 +12,18 @@
 <div class="subject">
   <span class="forumCategory">${subject.forumCategory}</span>
   <h1>${subject.name}</h1>
-  <span class="author">${subject.firstPosting.author}</span> &bull;
-  <span class="date">${subject.firstPosting.whenPosted}</span>
   <p>
-    <c:forEach var="tags" items="${subject.tags}"><span class="tag">#${tags.name}</span></c:forEach>
+    <c:forEach var="tag" items="${subject.tags}"><span class="tag">#${tag.name}</span></c:forEach>
   </p>
 
-
   <c:forEach var="posting" items="${subject.postings}">
+	<span class="author">${posting.author}</span> &bull;
+	<span class="date">${posting.whenPosted}</span>
     <p class="posting">
       ${posting.text}
     </p>
     <div class="attachment">
-      <c:forEach var="attachment" items="${posting.attachments}">
+      <c:forEach var="attachment" items="${posting.attachments	}">
         <span>${attachment.attachmentFilename}</span>
       </c:forEach>
     </div>
