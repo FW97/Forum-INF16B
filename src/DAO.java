@@ -1,4 +1,3 @@
-package helperClasses;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,6 +5,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
+
+/*
+ * by 	Fabian Schulz,
+ * 		Daniel Bilmann,
+ * 		Jannik Zeyer,
+ * 		Andreas Memmel
+ */
 
 public class DAO {
 	
@@ -261,6 +268,45 @@ public class DAO {
 	        newUser.setRole(rs.getInt("role"));
 	        newUser.setPwSalt(rs.getString("passwordSalt"));
 	        newUser.setPwHash(rs.getString("passwordHash"));
+	        
+	        con.close();
+	    }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        }
+        return newUser;
+	}
+	
+	public User gePostingById(int id) 
+	{
+		Connection con = null;
+        ResultSet rs; 
+        User newUser = null;
+        
+        try
+        {
+            con = MySQLDatabase.getInstance().getConnection();
+        
+	        String sqlString = "SELECT * FROM POSTING WHERE id=?;";
+	        
+	        PreparedStatement ps = con.prepareStatement(sqlString);
+	        ps.setString(1, id);
+	        
+	        rs = ps.executeQuery();
+	        
+	        if(!rs.next())
+	        {
+	            return null;
+	        }
+	        
+	        newPosting = new Posting();
+	        newPosting.setID(rs.getInt("ID"));
+	        newPosting.setText(rs.getString("text"));
+	        newPosting.setAuthorid(rs.getInt("authorid"));
+	        newPosting.setSubjectid(rs.getInt("subjectid"));
+	        newPosting.setWhendeleted(rs.getDate("whendeleted"));
+	        newPosting.setWhenposted(rs.getDate("whenposted"));
 	        
 	        con.close();
 	    }
