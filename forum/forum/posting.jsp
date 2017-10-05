@@ -23,7 +23,7 @@
       ${posting.text}
     </p>
     <div class="attachment">
-      <c:forEach var="attachment" items="${posting.attachments	}">
+      <c:forEach var="attachment" items="${posting.attachments}">
         <span>${attachment.attachmentFilename}</span>
       </c:forEach>
     </div>
