@@ -1,4 +1,5 @@
 <!-- INF16B Maximilian Gerlach -->
+<jsp:include page="header.jsp" />
 <div class=contact>
             <form>
                 <h2>Kontakt aufnehmen</h2>
@@ -23,3 +24,4 @@
                 </p>
             </form>
 </div>
+<jsp:include page="footer.jsp" />

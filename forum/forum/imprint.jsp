@@ -1,5 +1,6 @@
 <!--  INF16B Maximilian Gerlach -->
-<div class="imprint">
+<jsp:include page="header.jsp" />
+<div class=imprint>
     
     <h2>Impressum</h2>
     <div class="team">
@@ -25,3 +26,4 @@
     </div>
 
 </div>
+<jsp:include page="footer.jsp" />
