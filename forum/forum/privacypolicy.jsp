@@ -1,4 +1,4 @@
-<!-- INF16B Maximilian Gerlach -->
+﻿<!-- INF16B Maximilian Gerlach -->
 <jsp:include page="header.jsp" />
 <div class=privacy>
         <h2>Datenschutzerklärung</h2>
