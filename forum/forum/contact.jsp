@@ -1,8 +1,8 @@
-<!-- INF16B Maximilian Gerlach -->
+<!--  INF16B Maximilian Gerlach, Florian Schenk:added Header,Footer and Tags for CSS Styling-->
 <jsp:include page="header.jsp" />
 <div class=contact>
             <form>
-                <h2>Kontakt aufnehmen</h2>
+                <h1>Kontakt aufnehmen</h1>
                 <p>
                     <label for="email">Email</label>
                     <input type="text" id="email" placeholder="Email"/>

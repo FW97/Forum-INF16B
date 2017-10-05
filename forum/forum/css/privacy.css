@@ -1,4 +1,18 @@
-/* Author: Florian Schenk */
+/* Author: INF16B Florian Schenk */
 .privacy {
-		color: green;
+    background-color: white;
+    padding: 10px 20px 10px 20px;
+    border-radius: 8px;
+	border-style: solid; 
+	border-color: #4CAF50;
+	border-width: 2px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+    max-width: 100%;
+	text-align: justify;
+}
+
+.privacy h4{
+	padding: 0px;
+	margin: 0px;
 }
