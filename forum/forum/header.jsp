@@ -50,11 +50,9 @@
                 <%String[] b=a[1].split("\\.");
                   out.println(b[0]);
                 %></a></li>                 
-          <li><a href="<%out.println(a[1]);%>/<%out.println(a[a.length-1]);%>">
+          <li><a href="<%out.println(a[a.length-1]);%>">
                 <%String[] c=a[a.length-1].split("\\.");
                   out.println(c[0]);
-                  out.println(a.length-1);
-                  out.println(a[a.length-1]);
                 %></a></li>
         </ul>
       </div>
