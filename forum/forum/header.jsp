@@ -40,22 +40,24 @@
           <li><a href="index.jsp">Neuste Beitr&auml;ge</a></li>
         </ul>
       </div>
-    </div><br/>
-     
+    </div><br/> 
+   
     <div class="breadcrumbs">
       <div class="left">
         <ul class="list">
         <%String[] a=request.getRequestURI().split("/");%>
-          <li><a href="<%out.println(a[1]);%>">
+          <li><a href="index.jsp">
                 <%String[] b=a[1].split("\\.");
                   out.println(b[0]);
                 %></a></li>                 
-          <li><a href="<%out.println(a[1]);%>/<%out.println(a[2]);%>">
-                <%String[] c=a[2].split("\\.");
+          <li><a href="<%out.println(a[1]);%>/<%out.println(a[a.length-1]);%>">
+                <%String[] c=a[a.length-1].split("\\.");
                   out.println(c[0]);
+                  out.println(a.length-1);
+                  out.println(a[a.length-1]);
                 %></a></li>
         </ul>
       </div>
-    </div> 
+    </div>
   </nav>
-
+</body>
