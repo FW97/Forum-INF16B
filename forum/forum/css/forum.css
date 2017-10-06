@@ -1,6 +1,8 @@
 @import 'header.css';
 @import 'footer.css';
 
+@import 'top8.css';
+@import 'forumlist.css';
 @import 'components.css';
 
 @import 'contact.css';
@@ -96,20 +98,6 @@ body {
 
 /* end block 1 */
 
-/* tags */
-
-.tag {
-    border-radius: 5px;
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-}
-
 /* posting */
 .posting {
     padding: 5px 20px 20px 20px;
@@ -172,45 +160,6 @@ body {
     margin: 5px;
     border-radius: 8px;
     font-size: 14pt;
-}
-
-.post .category {
-    font-size: 11pt;
-    color: #666666;
-}
-
-.post .author {
-    font-size: 12pt;
-    color: #444444;
-}
-
-.post H1 {
-    font-size: 16pt;
-    font-weight: bold;
-    color: black;
-}
-
-.post {
-    background-color: #e8e8e8;
-    padding: 10px 20px 10px 20px;
-    border-radius: 12px;
-    margin: 6px;
-    width: 90%;
-}
-
-.tagbox {
-    float: right;
-    text-align: top;
-}
-
-.forumlist A.forum {
-    background-color: #e8e8e8;
-    border-radius: 5px;
-    border: 1px solid #dddddd;
-    color: #444444;
-    padding: 4px;
-    margin: 3px;
-    line-height: 34px;
 }
 
 .formlist H1 {
