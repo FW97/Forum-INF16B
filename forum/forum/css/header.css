@@ -69,12 +69,7 @@ nav .navbar {
 }
 
 nav .navbar .list li {
-    padding: 0;
-}
-
-nav .navbar .list li:not(:last-child):after {
-    color: #b2bffb;
-    content: " >";
+    padding: 0 12px 0 0;
 }
 
 nav input[type=search] {
