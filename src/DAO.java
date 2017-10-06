@@ -278,7 +278,7 @@ public class DAO {
         return newUser;
 	}
 	
-	public User gePostingById(int id) 
+	public Posting gePostingById(int id) 
 	{
 		Connection con = null;
         ResultSet rs; 
@@ -352,6 +352,35 @@ public class DAO {
         	e.printStackTrace();
         }
         return postings;
+	} 
+	
+	public static ArrayList<Integer> getSubjectIDsByForum(int forumId) {
+		Connection con = null;
+        ResultSet rs; 
+        ArrayList<Integer> subjects = new ArrayList<Integer>();
+        
+        try
+        {
+            con = MySQLDatabase.getInstance().getConnection();
+
+	        String sqlString = "SELECT * FROM SUBJECT WHERE forumid=?;";
+	        
+	        PreparedStatement ps = con.prepareStatement(sqlString);
+	        ps.setInt(1, forumId);
+	        rs = ps.executeQuery();
+
+	        while(rs.next())
+	        {
+	        	subjects.add(rs.getInt("id")));
+	        }
+	        
+	        con.close();
+	    }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        }
+        return subjects;
 	}
 	
 	public static boolean isEmailTaken(String email)
