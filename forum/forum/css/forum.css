@@ -5,9 +5,9 @@
 @import 'forumlist.css';
 @import 'components.css';
 
-@import 'contact.css'; /* TODO: jsp missing */
-@import 'privacy.css'; /* TODO: jsp missing */
-@import 'imprint.css'; /* TODO: jsp missing */
+@import 'contact.css';
+@import 'privacy.css';
+@import 'imprint.css';
 
 /* general */
 
