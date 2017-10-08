@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- * Test Class for Hashing.java to make sure that there are no          
+ * Test Class for Hashing.java to make sure that there are no collisions        
  * @author Micha Spahr
  *
  */
