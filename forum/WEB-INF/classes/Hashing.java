@@ -52,7 +52,7 @@ public abstract class Hashing {
 			System.err.println("KeySpec is not valid");
 			ex.printStackTrace();
 		}catch (UnsupportedEncodingException ey){
-			System.out.println("Encoding from getBytes is not supported");
+			System.err.println("Encoding from getBytes is not supported");
 			ey.printStackTrace();
 		}
 
