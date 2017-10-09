@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<!-- @author Marco Dauber, Philipp Seitz, Morten Terhart --> 
+<!-- @author Marco Dauber, Philipp Seitz, Morten Terhart
+  -- * Displays a list of posts supplying certain filter criteria
+  -- * received through a GET request from the URL
+--> 
 
 <%@ page import = "java.io.*,java.util.*, javax.servlet.*" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
@@ -11,9 +14,9 @@
 	int tagID;
 	int userID;
 	boolean latest;
-	String searchterm;
+	String searchTerm;
 	Date minDate, maxDate;
-	int maxpostings;
+	int maxPostings;
 	String name = "Max Mustermann";
 	Date date = GregorianCalendar.getInstance().getTime();
 	String category = "Campus";
