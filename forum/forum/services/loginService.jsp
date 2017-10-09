@@ -4,8 +4,9 @@
   -- * Login Service to validate username and password and storing
   -- * the session into the database
   -->
+  <%@ page import = "StudentForum.DAO, StudentForum.User" %>
 <%
-	resonse.setContentType("application/json");
+	response.setContentType("application/json");
 	String username = request.getParameter("username");
 	String password = request.getParameter("password");
 
