@@ -408,4 +408,80 @@ public class DAO {
         }
         return true;
 	}
+
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+	public static void updateProfilSettings(User user) {
+        try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "UPDATE USER "
+	        		+ "SET firstname = ?, lastname = ?, email = ? "
+	        		+ "WHERE ID = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setString(1, user.getFirstname());
+			ps.setString(2, user.getLastname());
+			ps.setString(3, user.getEmail());
+			ps.setInt(4, user.getId());
+			ps.executeUpdate();
+			
+			ps.close();
+	        con.close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }  
+	}
+	
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+	public static void updatePassword(User user) {
+        try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "UPDATE USER "
+	        		+ "SET pwhash = ? "
+	        		+ "WHERE ID = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setString(1, user.getPwHash());
+			ps.executeUpdate();
+			
+			ps.close();
+			con.close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+	}
+	
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+	public static boolean isEmailTaken(String email) {
+		try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "SELECT ID FROM user "
+	        		+ "WHERE email = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) return true;
+			
+			rs.close();
+			ps.close();
+			con.close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+        
+		return false;
+	}
 }
