@@ -4,7 +4,7 @@
  -->
 <jsp:include page="header.jsp" />
 
-<table>
+<table id="np_table">
 
   <tr>
     <th class="np_desc">Titel</th>
