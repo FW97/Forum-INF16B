@@ -19,9 +19,11 @@ USE `forum`;
 -- Exportiere Struktur von Tabelle forum.attachment
 DROP TABLE IF EXISTS `attachment`;
 CREATE TABLE IF NOT EXISTS `attachment` (
-  `ID` int(11) DEFAULT NULL,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `attachmentfilename` varchar(50) DEFAULT NULL,
-  `postingid` int(11) DEFAULT NULL
+  `postingid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `postingid` (`postingid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Exportiere Daten aus Tabelle forum.attachment: ~0 rows (ungefähr)
@@ -33,10 +35,12 @@ DELETE FROM `attachment`;
 -- Exportiere Struktur von Tabelle forum.forum
 DROP TABLE IF EXISTS `forum`;
 CREATE TABLE IF NOT EXISTS `forum` (
-  `id` int(11) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `moderatorid` int(11) DEFAULT NULL,
   `name` text,
-  `category` text
+  `category` text,
+  PRIMARY KEY (`id`),
+  KEY `moderatorid` (`moderatorid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Exportiere Daten aus Tabelle forum.forum: ~0 rows (ungefähr)
@@ -48,12 +52,15 @@ DELETE FROM `forum`;
 -- Exportiere Struktur von Tabelle forum.posting
 DROP TABLE IF EXISTS `posting`;
 CREATE TABLE IF NOT EXISTS `posting` (
-  `ID` int(11) DEFAULT NULL,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Text` text,
   `subjectid` int(11) DEFAULT NULL,
   `authorid` int(11) DEFAULT NULL,
   `whendeleted` date DEFAULT NULL,
-  `whenposted` date DEFAULT NULL
+  `whenposted` date DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `subjectid` (`subjectid`),
+  KEY `authorid` (`authorid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Exportiere Daten aus Tabelle forum.posting: ~0 rows (ungefähr)
@@ -65,9 +72,11 @@ DELETE FROM `posting`;
 -- Exportiere Struktur von Tabelle forum.subject
 DROP TABLE IF EXISTS `subject`;
 CREATE TABLE IF NOT EXISTS `subject` (
-  `id` int(11) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
-  `forumid` int(11) DEFAULT NULL
+  `forumid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `forumid` (`forumid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Exportiere Daten aus Tabelle forum.subject: ~0 rows (ungefähr)
@@ -79,14 +88,15 @@ DELETE FROM `subject`;
 -- Exportiere Struktur von Tabelle forum.user
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
-  `ID` int(11) NOT NULL,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `firstname` text,
   `lastname` text,
   `email` text,
   `pwsalt` text,
   `pwhash` text,
   `role` int(11) DEFAULT NULL,
-  `imgurl` text
+  `imgurl` text,
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Exportiere Daten aus Tabelle forum.user: ~0 rows (ungefähr)

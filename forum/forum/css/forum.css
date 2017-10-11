@@ -1,387 +1,209 @@
-*{font-family: sans-serif;}
-#top-themen{
-	width: 500px;
-	background: rgba(28, 43, 58, 1);
-	border: 1px solid #333;
-	margin: 50px auto;
+@import 'header.css';
+@import 'footer.css';
+@import 'errors.css';
+@import 'top8.css';
+@import 'forumlist.css';
+@import 'components.css';
+@import 'contact.css';
+@import 'privacy.css';
+@import 'imprint.css';
+@import 'createForum.css';
+
+/* general */
+
+* {
+    font-family: sans-serif;
 }
+
+html {
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+	max-width: 1280px;
+	margin: 0 auto;
+	margin-top: 8px;
+}
+/* top 8 posts */
+
+#top-themen {
+    width: 500px;
+    background: rgba(28, 43, 58, 1);
+    border: 1px solid #333;
+    margin: 50px auto;
+}
+
 #title {
-	font-size: 1.3em;
-	font-family: sans-serif;
-	color: #cde9fd;
-	padding: 8px;
-	text-align: center;
+    font-size: 1.3em;
+    font-family: sans-serif;
+    color: #cde9fd;
+    padding: 8px;
+    text-align: center;
 }
-#topics{
-	background: #cde9fd;
-	padding: 20px;
-	
-	font-size: 1.2em;
+
+#topics {
+    background: #cde9fd;
+    padding: 20px;
+    font-size: 1.2em;
 }
-.number{
-	display:inline-block;
-	width:40px;
-	height:40px;
-	line-height: 40px;
-	background: #272c35;
-	color: #fefefe;
-	border: 1px solid #222;
-	text-align: center;
-	margin-right: 20px;
+
+.number {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: #272c35;
+    color: #fefefe;
+    border: 1px solid #222;
+    text-align: center;
+    margin-right: 20px;
 }
-.topic{
-	border: 1px solid #444;
-	margin: 10px 0px;
+
+.topic {
+    border: 1px solid #444;
+    margin: 10px 0px;
 }
-.title{
-	background: rgba(28, 43, 58, 0.85);
-	font-size: 1.2em;
-	font-family: sans-serif;
-	color: #cde9fd;
-	padding: 8px;
+
+.title {
+    background: rgba(28, 43, 58, 0.85);
+    font-size: 1.2em;
+    font-family: sans-serif;
+    color: #cde9fd;
+    padding: 8px;
 }
-.right{
-	display: inline-block;
-	height: 45px;
-	width: 160px;
-	vertical-align: top;
-	margin-left: 60px;
-	padding-left: -20px;
+
+.right {
+    display: inline-block;
+    height: 45px;
+    width: 160px;
+    vertical-align: top;
+    margin-left: 60px;
+    padding-left: -20px;
 }
-.autor,.created{
-	margin-top: 5px;
-	opacity: 0.4;
-	padding-left: 15px;
-	font-size: 0.6em;
-	display: block;
-	text-align:right;
+
+.autor, .created {
+    margin-top: 5px;
+    opacity: 0.4;
+    padding-left: 15px;
+    font-size: 0.6em;
+    display: block;
+    text-align: right;
 }
-.subject{
-	width:140px;
-	display: inline-block;
+
+.subject {
+    width: 140px;
+    display: inline-block;
 }
 
 /* end block 1 */
 
-
-/* general */
-html {
-  font-size: 16px;
-  font-family: 'Roboto', sans-serif;
-}
-
-/* header */
-
-.header {
-  width: 80%;
-  margin: 0 auto;
-  padding: 0;
-  display: flex;
-  /* border: red 1px solid; */
-}
-
-.right {
-  display: flex;
-  justify-content: flex-end;
-  flex-grow: 1;
-}
-
-.list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.list li {
-  display: inline-block;
-  padding: 6px 10px;
-}
-.list li:first-child {
-  padding-left: 0;
-}
-.list li a {
-  text-decoration: none;
-  color: #526ef5;
-}
-.list li a:hover {
-  color: #8296f8;
-}
-
-.header .list li {
-  padding: 4px 4px;
-}
-
-.header .list li a {
-  background-color: #4965e2;
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 2px;
-}
-
-.header .list li a:hover {
-  background-color: #5f78e6;
-  color: #fff;
-}
-
-.breadcrums .list li {
-  padding: 0;
-}
-.breadcrums .list li:not(:last-child):after {
-  color: #b2bffb;
-  content: " >";
-}
-
-.navbar {
-	border: #c2cffb solid 1px;
-	padding: 2px;
-	border-radius: 3px;
-}
-
-.navbar .list li {
-  padding: 0;
-}
-.navbar .list li:not(:last-child):after {
-  color: #b2bffb;
-  content: " >";
-}
-
-input[type=search] {
-  font-size: 1rem;
-  padding: 8px;
-}
-
-input[type=button] {
-  background-color: #526ef5;
-  color: #fff;
-  font-size: 0.9rem;
-  border-radius: 2px;
-  padding: 4px 12px;
-  border: none;
-}
-
-input[type=button]:hover {
-  background-color: #6a82f6;
-}
-
-
-/* tags */
-
-.tag {
-            border-radius: 5px;
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 5px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-}
-
-
 /* posting */
 .posting {
-	 padding: 5px 20px 20px 20px;
-	 background-color: #f8f8f8;
-	 border-radius: 15px;
+    padding: 5px 20px 20px 20px;
+    background-color: #f8f8f8;
+    border-radius: 15px;
 }
 
 .posting .forumcategory {
-	 font-size: 10pt;
-	 color: #888888;
-	 display: block;
+    font-size: 10pt;
+    color: #888888;
+    display: block;
 }
 
-.posting H1 {
-	 margin: 0;
+.posting h1 {
+    margin: 0;
 }
 
 .posting .author {
-	 font-size: 12pt;
-	 color: #444444;
+    font-size: 12pt;
+    color: #444444;
 }
-	 
-.posting .date {
-	 font-size: 12pt;
-	 color: #444444;
+
+ .posting .date {
+    font-size: 12pt;
+    color: #444444;
 }
-	 
 
+ .posting table {
+    width: 100%;
+    empty-cells: show;
+}
 
-.posting table {
-        width: 100%;
-        empty-cells: show;
-    }
+.posting tr td:nth-child(even) {
+    background-color: #ccccce;
+}
 
-.posting    tr td:nth-child(even){
-        background-color: #ccccce;
-    }
+.posting tr td:nth-child(odd) {
+    background-color: #c3c3c9;
+}
 
-.posting    tr td:nth-child(odd){
-        background-color: #c3c3c9;
-    }
-.posting    a {
-        text-decoration: none;
-    }
-.posting    a:link {
-        color: #0000cc;
-    }
-.posting    a:hover {
-        color: #00ff33;
-    }
-.posting    a:active {
-        color: #ffffff;
-    }
+.posting a {
+    text-decoration: none;
+}
+
+.posting a:link {
+    color: #0000cc;
+}
+
+.posting a:hover {
+    color: #00ff33;
+}
+
+.posting a:active {
+    color: #ffffff;
+}
 
 .posting .comment {
-      padding: 15px;
-      border: 1px solid #dddddd;
-      margin: 5px;
-      border-radius: 8px;
-      font-size: 14pt;
-}
-
-.post .category {
-	 font-size: 11pt;
-	 color: #666666;
-}
-.post .author {
-	 font-size: 12pt;
-	 color: #444444;
-}
-.post H1 {
-	 font-size: 16pt;
-	 font-weight: bold;
-	 color: black;
-}
-
-.post {
-      background-color: #e8e8e8;
-      padding: 10px 20px 10px 20px;
-      border-radius: 12px;
-      margin: 6px;
-      width: 90%;
-}
-
-.tagbox { float: right; text-align: top;}
-
-
-.forumlist A.forum {
-	   background-color: #e8e8e8;
-	   border-radius: 5px;
-	   border: 1px solid #dddddd;
-	   color: #444444;
-	   padding: 4px;
-	   margin: 3px;
-	   line-height: 34px;
+    padding: 15px;
+    border: 1px solid #dddddd;
+    margin: 5px;
+    border-radius: 8px;
+    font-size: 14pt;
 }
 
 .formlist H1 {
-	  /* bisschen kleiner */
+    /* bisschen kleiner */
 }
-
-
 
 /* profil */
 
 
-.profil a.button {
-	  margin-top: 1rem;
-	  background-color: #4CAF50;
-	  border: none;
-	  color: white;
-	  padding: 1rem 2rem;
-	  text-align: center;
-	  text-decoration: none;
-	  display: inline-block;
-	  font-size: 1rem;
-	}
-
 
 .profil {
-	  padding: 3rem;
+    padding: 3rem;
 }
 
-	#uploadImage {
-	  float: right;
-	  margin: 0;
-	  padding: 0.5rem 1rem;
-	}
-
-	.settingLabel {
-	  width: 14rem;
-	  float: left;
-	}
-
-	.settingContent {
-	  float: left;
-	  width: 20rem;
-	}
-
-	.settingContent input {
-	  width: 16rem;
-	}
-
-	.setting {
-	  display: block;
-	}
-
-	.settingSpacing {
-	  padding-bottom: 0.5rem;
-	}
-
-	.settingBox {
-	  display: table;
-	  border-bottom: 1px solid #dad8de;
-	  padding: 2rem 0;
-	}
-
-
-
-/* footer @author Florian Schenk*/
-.footer {
-	position: fixed;
-	bottom: 0px;
-	padding-top: 10px;
-	margin: 0px;
-	left: 0px;
-	right: 0px;
-	width: 100%;
-	height: 20px;
-	font-family: Arial;
-	text-shadow: 1px 1px 1px black;
-	border-top: 1px solid rgba(0,0,0,0.5);
-	background: rgba(0,0,0,0.25);
-	box-shadow: inset 0 1px rgba(255,255,255,0.4), inset 0 10px rgba(255,255,255,0.3),
-	inset 0 10px 20px rgba(255,255,255,0.6), inset 0 -15px 30px rgba(0,0,0,0.5);
-	color: #ffffff;
-	font-weight:normal;
-	font-size:14px;
+#uploadImage {
+    float: right;
+    margin: 0;
+    padding: 0.5rem 1rem;
 }
 
-.footer a:link {
-	font-weight:normal;
-	color: #ffffff;
-	font-weight:normal;
-	font-size:14px;
+.settingLabel {
+    width: 14rem;
+    float: left;
 }
 
-.footer a:visited{
-	font-weight:normal;
-	color: #336170;
-	font-weight:normal;
-	font-size:14px;
+.settingContent {
+    float: left;
+    width: 20rem;
 }
 
-.footer a:hover{
-	font-weight:normal;
-	color: #ff0c0c;
-	font-weight:normal;
-	font-size:14px;
+.settingContent input[type=text] {
+    width: 16rem;
 }
-/* Kontakt @author Florian Schenk*/
-/* TODO noch keine JSP Datei */
-/* Impressumg @author Florian Schenk*/
-/* TODO noch keine JSP Datei */
-/* Datenschutz @author Florian Schenk*/
-/* TODO noch keine JSP Datei */
+
+.setting {
+    display: block;
+}
+
+.settingSpacing {
+    padding-bottom: 0.5rem;
+}
+
+.settingBox {
+    display: table;
+    border-bottom: 1px solid #dad8de;
+    padding: 2rem 0;
+}

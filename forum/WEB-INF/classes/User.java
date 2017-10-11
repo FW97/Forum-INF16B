@@ -15,15 +15,8 @@ public class User {
 	private int role;
 	private String imgUrl;
 		
-	public User(int id, String firstname, String lastname, String email, String pwHash, String pwSalt, int role, String imgUrl){
+	public User(int id){
 		this.id = id;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.email = email;
-		this.pwHash = pwHash;
-		this.pwSalt = pwSalt;
-		this.role = role;
-		this.imgUrl = imgUrl;
 	}
 
 	public int getId() {
