@@ -25,6 +25,20 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
     int i = 0;
 %>
 
+<script>
+function sendReply() { // per AJAX oder über Form?
+  var replyText = document.forms.namedItem("reply-form")["replybox"].value;
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+     document.getElementById("reply-form").insertAdjacentHTML("beforebegin", this.responseText);
+    }
+  };
+  xhr.open("POST", "posting-reply.jsp", true);
+  xhr.send(replyText);
+}
+</script>
+
 <jsp:include page="header.jsp"/>
 
 <div class="subject">
@@ -36,6 +50,7 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
     </p>
 
     <c:forEach items="<%=postings%>" var="posting" varStatus="loop">
+
         <%-- <span class="author">${author[loop.index]}</span> &bull;--%>
         <span class="author"><%=author[i]%><% i++;%></span> &bull;
         <span class="date"><%=date%></span>
@@ -53,10 +68,10 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
     </c:forEach>
 
 
-    <form action="reply" method="post">
+    <form action="reply" method="post" id="reply-form">
         <textarea class="replybox" name="replybox" placeholder="Write your reply here"></textarea>
         <input type="hidden" value="${subject.id}" name="subject_id">
-        <input type="submit" class="button" value="Reply">
+        <input onclick="sendReply()" class="button" value="Reply">
     </form>
 
 
