@@ -40,7 +40,7 @@ public class DAO {
         ps.setInt(4, user.getRole());
         ps.setString(5, user.getPwSalt());
         ps.setString(6, user.getPwHash());
-        ps.setString(7, user.getImageUrl());
+        ps.setString(7, user.getImgUrl());
         ps.executeUpdate();
         
         
@@ -61,17 +61,17 @@ public class DAO {
 	        }
 	        catch(Exception e) {e.printStackTrace();}
 	        
-	        String sqlString = "INSERT INTO POSTSING ("
+	        String sqlString = "INSERT INTO POSTING ("
 				        		+ "authorid, subjectid, Text, whenposted, whendeleted) "
 				        		+ "VALUES (?, ?, ?, ?, ?)";
 	        
 	        
 			ps = con.prepareStatement(sqlString);
-	        ps.setInt(1, post.getAuthorId());
-	        ps.setInt(2, post.getSubjectId());
-	        ps.setString(3, post.getText());
-	        ps.setDate(4, post.getWhenposted());
-	        ps.setDate(5, post.getWhendeleted());
+	        ps.setInt(1, posting.getAuthorId());
+	        ps.setInt(2, posting.getSubjectId());
+	        ps.setString(3, posting.getText());
+	        ps.setDate(4, posting.getWhenposted());
+	        ps.setDate(5, posting.getWhendeleted());
 //	        ps.setString(4, new java.sql.Timestamp(System.currentTimeMillis()));	nur falls wir kein Objekt bekommen sollten
 //	        ps.setString(5, null);
 	        ps.executeUpdate();
@@ -81,7 +81,7 @@ public class DAO {
 		}
 		
 		//Add attachement to DB. 
-		public void addAttachement(char[50] filename, int postingId) throws Exception
+		public void addAttachement(String filename, int postingId) throws Exception
 		{
 			Connection con = null;
 	        PreparedStatement ps = null;
@@ -107,7 +107,7 @@ public class DAO {
 		}
 		
 		//Add subject to DB. 
-				public void addSubject(char[50] name, int forumId) throws Exception
+				public void addSubject(String name, int forumId) throws Exception
 				{
 					Connection con = null;
 			        PreparedStatement ps = null;
@@ -170,7 +170,7 @@ public class DAO {
         {
             con = MySQLDatabase.getInstance().getConnection();
         
-	        String sqlString = "SELECT * FROM USERS WHERE firstname=? AND lastname=?;";
+	        String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash FROM USERS WHERE firstname=? AND lastname=?;";
 	        
 	        PreparedStatement ps = con.prepareStatement(sqlString);
 	        ps.setString(1, fName);
@@ -183,13 +183,13 @@ public class DAO {
 	            return null;
 	        }
 	        
-	        newUser = new User();
+	        newUser = new User(rs.getInt("ID"));
 	        newUser.setFirstname(rs.getString("firstname"));
 	        newUser.setLastname(rs.getString("lastname"));
 	        newUser.setEmail(rs.getString("email"));
 	        newUser.setRole(rs.getInt("role"));
-	        newUser.setPwSalt(rs.getString("passwordSalt"));
-	        newUser.setPwHash(rs.getString("passwordHash"));
+	        newUser.setPwSalt(rs.getString("pwsalt"));
+	        newUser.setPwHash(rs.getString("pwhash"));
 	        
 	        con.close();
 	    }
@@ -210,7 +210,7 @@ public class DAO {
         {
             con = MySQLDatabase.getInstance().getConnection();
         
-	        String sqlString = "SELECT * FROM USERS WHERE email=?;";
+	        String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash FROM USERS WHERE email=?;";
 	        
 	        PreparedStatement ps = con.prepareStatement(sqlString);
 	        ps.setString(1, email);
@@ -222,13 +222,13 @@ public class DAO {
 	            return null;
 	        }
 	        
-	        newUser = new User();
+	        newUser = new User(rs.getInt("ID"));
 	        newUser.setFirstname(rs.getString("firstname"));
 	        newUser.setLastname(rs.getString("lastname"));
 	        newUser.setEmail(rs.getString("email"));
 	        newUser.setRole(rs.getInt("role"));
-	        newUser.setPwSalt(rs.getString("passwordSalt"));
-	        newUser.setPwHash(rs.getString("passwordHash"));
+	        newUser.setPwSalt(rs.getString("pwsalt"));
+	        newUser.setPwHash(rs.getString("pwhash"));
 	        
 	        con.close();
 	    }
@@ -249,10 +249,10 @@ public class DAO {
         {
             con = MySQLDatabase.getInstance().getConnection();
         
-	        String sqlString = "SELECT * FROM USERS WHERE id=?;";
+	        String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash FROM USERS WHERE id=?;";
 	        
 	        PreparedStatement ps = con.prepareStatement(sqlString);
-	        ps.setString(1, id);
+	        ps.setInt(1, id);
 	        
 	        rs = ps.executeQuery();
 	        
@@ -261,13 +261,13 @@ public class DAO {
 	            return null;
 	        }
 	        
-	        newUser = new User();
+	        newUser = new User(rs.getInt("ID"));
 	        newUser.setFirstname(rs.getString("firstname"));
 	        newUser.setLastname(rs.getString("lastname"));
 	        newUser.setEmail(rs.getString("email"));
 	        newUser.setRole(rs.getInt("role"));
-	        newUser.setPwSalt(rs.getString("passwordSalt"));
-	        newUser.setPwHash(rs.getString("passwordHash"));
+	        newUser.setPwSalt(rs.getString("pwsalt"));
+	        newUser.setPwHash(rs.getString("pwhash"));
 	        
 	        con.close();
 	    }
@@ -288,10 +288,10 @@ public class DAO {
         {
             con = MySQLDatabase.getInstance().getConnection();
         
-	        String sqlString = "SELECT * FROM POSTING WHERE id=?;";
+	        String sqlString = "SELECT ID, text, authorid, subjectid, whendeleted, whenposted FROM POSTING WHERE id=?;";
 	        
 	        PreparedStatement ps = con.prepareStatement(sqlString);
-	        ps.setString(1, id);
+	        ps.setInt(1, id);
 	        
 	        rs = ps.executeQuery();
 	        
@@ -300,8 +300,7 @@ public class DAO {
 	            return null;
 	        }
 	        
-	        newPosting = new Posting();
-	        newPosting.setID(rs.getInt("ID"));
+	        newPosting = new Posting(rs.getInt("ID"));
 	        newPosting.setText(rs.getString("text"));
 	        newPosting.setAuthorid(rs.getInt("authorid"));
 	        newPosting.setSubjectid(rs.getInt("subjectid"));
@@ -314,7 +313,7 @@ public class DAO {
         {
         	e.printStackTrace();
         }
-        return newUser;
+        return newPosting;
 	}
 	
 	public static ArrayList<Posting> getPostingsBySubject(int subjectId) 
@@ -327,7 +326,7 @@ public class DAO {
         {
             con = MySQLDatabase.getInstance().getConnection();
 
-	        String sqlString = "SELECT * FROM POSTING WHERE subjectid=?;";
+	        String sqlString = "SELECT ID, authorid, subjectid, text, whenposted, whedeleted FROM POSTING WHERE subjectid=?;";
 	        
 	        PreparedStatement ps = con.prepareStatement(sqlString);
 	        ps.setInt(1, subjectId);
@@ -335,13 +334,12 @@ public class DAO {
 
 	        while(rs.next())
 	        {
-	        	Posting posting = new Posting();
-	        	posting.setId(rs.getInt("ID"));
+	        	Posting posting = new Posting(rs.getInt("ID"));
 	        	posting.setAuthorId(rs.getInt("authorid"));
 	        	posting.setSubjectId(rs.getInt("subjectid"));
 	        	posting.setText(rs.getString("text"));
-	        	posting.setWhenposted(rs.getDate("whenposted"));
-	        	posting.setWhendeleted(rs.getDate("whendeleted"));
+	        	posting.setWhenPosted(rs.getDate("whenposted"));
+	        	posting.setWhenDeleted(rs.getDate("whendeleted"));
 	        	postings.add(posting);
 	        }
 	        
@@ -363,7 +361,7 @@ public class DAO {
         {
             con = MySQLDatabase.getInstance().getConnection();
 
-	        String sqlString = "SELECT * FROM SUBJECT WHERE forumid=?;";
+	        String sqlString = "SELECT id FROM SUBJECT WHERE forumid=?;";
 	        
 	        PreparedStatement ps = con.prepareStatement(sqlString);
 	        ps.setInt(1, forumId);
@@ -371,7 +369,7 @@ public class DAO {
 
 	        while(rs.next())
 	        {
-	        	subjects.add(rs.getInt("id")));
+	        	subjects.add(rs.getInt("id"));
 	        }
 	        
 	        con.close();
@@ -392,7 +390,7 @@ public class DAO {
         {
             con = MySQLDatabase.getInstance().getConnection();
       
-	        String sqlString = "SELECT * FROM USER WHERE email=?;";
+	        String sqlString = "SELECT email FROM USER WHERE email=?;";
 	        
 	        PreparedStatement ps = con.prepareStatement(sqlString);
 	        ps.setString(1, email);
@@ -409,5 +407,81 @@ public class DAO {
         	e.printStackTrace();
         }
         return true;
+	}
+
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+	public static void updateProfilSettings(User user) {
+        try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "UPDATE USER "
+	        		+ "SET firstname = ?, lastname = ?, email = ? "
+	        		+ "WHERE ID = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setString(1, user.getFirstname());
+			ps.setString(2, user.getLastname());
+			ps.setString(3, user.getEmail());
+			ps.setInt(4, user.getId());
+			ps.executeUpdate();
+			
+			ps.close();
+	        con.close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }  
+	}
+	
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+	public static void updatePassword(User user) {
+        try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "UPDATE USER "
+	        		+ "SET pwhash = ? "
+	        		+ "WHERE ID = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setString(1, user.getPwHash());
+			ps.executeUpdate();
+			
+			ps.close();
+			con.close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+	}
+	
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+	public static boolean isEmailTaken(String email) {
+		try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "SELECT ID FROM user "
+	        		+ "WHERE email = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) return true;
+			
+			rs.close();
+			ps.close();
+			con.close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+        
+		return false;
 	}
 }

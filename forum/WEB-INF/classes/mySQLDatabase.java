@@ -1,5 +1,3 @@
-package helperClasses;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,8 +46,7 @@ public class MySQLDatabase
             // Edit Driverinfo
             Class.forName("com.mysql.jdbc.Driver");
             
-            mySQLDatabase = new MySQLDatabase(DatabaseUrl,rootUser,rootPw
-                                              )
+            mySQLDatabase = new MySQLDatabase(DatabaseUrl, rootUser, rootPw);
         } catch (Exception e){
             e.printStackTrace();}
         
