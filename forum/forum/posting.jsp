@@ -28,6 +28,8 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 <script>
 function sendReply() { // per AJAX oder über Form?
   var replyText = document.forms.namedItem("reply-form")["replybox"].value;
+  if(replyText.length == 0) return;
+    
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -68,7 +70,7 @@ function sendReply() { // per AJAX oder über Form?
     </c:forEach>
 
 
-    <form action="reply" method="post" id="reply-form">
+    <form id="reply-form">
         <textarea class="replybox" name="replybox" placeholder="Write your reply here"></textarea>
         <input type="hidden" value="${subject.id}" name="subject_id">
         <input onclick="sendReply()" class="button" value="Reply">
