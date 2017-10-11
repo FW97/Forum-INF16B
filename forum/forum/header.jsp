@@ -19,6 +19,15 @@
         <input type="search" placeholder="Forum durchsuchen"/>
         <input type="button" class="button-search" value="Suchen"/>
       </div>
+	  <div class="newForumButton"> <!-- TODO: hide if not Admin -->
+        <ul class="list">
+          <li>
+            <a href="newForum.jsp">
+              <span>Neues Forum erstellen</span>
+            </a>
+          </li>
+        </ul>
+      </div>
       <div class="right">
         <ul class="list">
           <li>
