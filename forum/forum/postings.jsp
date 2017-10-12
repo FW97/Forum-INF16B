@@ -69,6 +69,12 @@
     }
 %>
 
+<%
+    transmitSearchRequest (request.getParameter(SEARCH_TERM_PARAMETER), request.getParameter(FORUM_ID_PARAMETER),
+            request.getParameter(TAG_ID_PARAMETER), request.getParameter(MIN_DATE_PARAMETER),
+            request.getParameter(MAX_DATE_PARAMETER));
+%>
+
 <c:forEach items="<%= postSelection %>" var="currentPost">
     <a href="/posting.jsp?${currentPost.getId()}">
         <div class="post">

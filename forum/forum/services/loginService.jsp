@@ -4,7 +4,8 @@
   -- * Login Service to validate username and password and storing
   -- * the session into the database
   -->
-  <%@ page import = "StudentForum.DAO, StudentForum.User" %>
+<!--%@ page import = "de.dhbw.StudentExchange.*" %-->
+
 <%
 	response.setContentType("application/json");
 	String username = request.getParameter("username");
@@ -26,13 +27,15 @@
 	}
 
 	String generatedHash = makeHash(loggedUser.salt, password);
-	if (generatedHash.equals(loggedUser.passwordHash) {
+	if (generatedHash.equals(loggedUser.passwordHash)) {
 		session.setAttribute("username", loggedUser);
 		sendResponse("OK", successfulLoginMessage);
 	} else {
 		sendResponse("Error", wrongCredentialsMessage);
 	}
+%>
 
+<%!
 	public static void sendResponse(String status, String message) {
 		System.out.println("{ status: \"" + status + "\", message: \"" + message + "\" }");
 	}
