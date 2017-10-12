@@ -76,7 +76,7 @@
 %>
 
 <c:forEach items="<%= postSelection %>" var="currentPost">
-    <a href="/posting.jsp?${currentPost.getId()}">
+    <a href="posting.jsp?postid=${currentPost.getId()}">
         <div class="post">
             <div class="profilbild">
                 <img src="http://www.iconsdb.com/icons/preview/gray/user-xxl.png" height="60" width="60" >
