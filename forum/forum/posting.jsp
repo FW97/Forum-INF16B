@@ -73,7 +73,7 @@ function sendReply() { // per AJAX oder über Form?
     <form id="reply-form">
         <textarea class="replybox" name="replybox" placeholder="Write your reply here"></textarea>
         <input type="hidden" value="${subject.id}" name="subject_id">
-        <input onclick="sendReply()" class="button" value="Reply">
+        <button onclick="sendReply()" class="button">Reply</button>
     </form>
 
 
