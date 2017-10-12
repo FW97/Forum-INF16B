@@ -1,31 +1,28 @@
 <!--
-	@author Laura Kaipl, Tobias Siebig
+	@author Laura Kaipl
 	Service to register new User to our forum
 -->
 
 <% page import = "StudentForum.DAO, StudentForum.User" %>
 
 <%
-	import java.util.Random;
-
 	String email = request.getParameter("email");
 	String firstname = request.getParameter("firstname");
 	String lastname = request.getParameter("lastname");
 	String password = request.getParameter("password1");
+	String password2 = request.getParameter("password2");
 	int id = 1000;
 	byte[] salt = new byte[16];
 	random.nextBytes(salt);
-	DAO d = new DAO();
-	User u = new User(id++);
 	
-	if(d.getUserByEmail(email) == null)
-	{
-		if (email == null || firstname == null || lastname == null|| password == null)
+		if (email == null || firstname == null || lastname == null|| password == null || password2 == null)
 		{
 			System.out.println("{status:\ERROR\, message:\Please fulfill all of the information.\}");
 		}
 		else 
 		{
+			DAO d = new DAO();
+			User u = new User(id++);
 			u.setEmail(email);
 			u.setFirstname(firstname);
 			u.setLastname(lastname);
@@ -37,10 +34,5 @@
 			
 			System.out.println("{status:\OK\}");
 		}
-	}
-	else
-	{
-		System.out.println("{status:\ERROR\, message:\Emails already registered.\}");
-	}
 
 %>
