@@ -7,6 +7,7 @@
 <% page import = "StudentForum.DAO, StudentForum.User" %>
 
 <%
+	response.setContentType("application/json");
 	final String successfulForumMessage  = "Forum created successful!";
 	final String ErrorForumMessage  = "You have no permission!";
 	final String successfulForumStatus  = "OK";
