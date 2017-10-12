@@ -1,13 +1,14 @@
 @import 'header.css';
 @import 'footer.css';
-
+@import 'errors.css';
 @import 'top8.css';
 @import 'forumlist.css';
 @import 'components.css';
-
 @import 'contact.css';
 @import 'privacy.css';
 @import 'imprint.css';
+@import 'createForum.css';
+@import 'newpost.css';
 
 /* general */
 
