@@ -1,5 +1,7 @@
-/* Top 8*/
-@author Jacob Krauth;
+/*
+	Top 8
+	@author Jacob Krauth;
+*/
 
 /* Liste insgesamt */
 .postings {
@@ -33,7 +35,7 @@
 	 max-width: 80%;
 	 display: block;
 }
-.post H1 {
+.post h1 {
 	 font-size: 16pt;
 	 font-weight: bold;
 	 color: black;
@@ -42,6 +44,11 @@
 	 display: inline-block;
 	 margin-top: 15px;
 	 margin-bottom: 15px;
+}
+
+/* (sort of a hack) Needed until we stop using onclick=window.location to handle links... */
+.post:hover {
+	cursor: pointer;
 }
 
 
