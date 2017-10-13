@@ -1,4 +1,3 @@
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -380,32 +379,80 @@ public class DAO {
         }
         return subjects;
 	}
-	
-	public static boolean isEmailTaken(String email)
-	{
-		Connection con = null;
-        ResultSet rs; 
+		
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+	public static boolean isEmailTaken(String email) {
+		try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "SELECT ID FROM user "
+	        		+ "WHERE email = ?";
 
-        try
-        {
-            con = MySQLDatabase.getInstance().getConnection();
-      
-	        String sqlString = "SELECT email FROM USER WHERE email=?;";
-	        
-	        PreparedStatement ps = con.prepareStatement(sqlString);
-	        ps.setString(1, email);
-	        
-	        rs = ps.executeQuery();
-	        
-	        while(!rs.next())
-	        {
-	        	return false;
-	        }
-	    }
-        catch (Exception e)
-        {
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) return true;
+			
+			rs.close();
+			ps.close();
+			con.close();
+        } catch(Exception e) {
         	e.printStackTrace();
         }
-        return true;
+        
+		return false;
+	}
+
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+	public static void updateProfilSettings(User user) {
+        try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "UPDATE USER "
+	        		+ "SET firstname = ?, lastname = ?, email = ? "
+	        		+ "WHERE ID = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setString(1, user.getFirstname());
+			ps.setString(2, user.getLastname());
+			ps.setString(3, user.getEmail());
+			ps.setInt(4, user.getId());
+			ps.executeUpdate();
+			
+			ps.close();
+	        con.close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }  
+	}
+	
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+	public static void updatePassword(User user) {
+        try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "UPDATE USER "
+	        		+ "SET pwhash = ? "
+	        		+ "WHERE ID = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setString(1, user.getPwHash());
+			ps.executeUpdate();
+			
+			ps.close();
+			con.close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
 	}
 }

@@ -19,14 +19,36 @@
         <input type="search" placeholder="Forum durchsuchen"/>
         <input type="button" class="button-search" value="Suchen"/>
       </div>
-      <div class="right">
+	  <div class="newForumButton"> <!-- TODO: hide if not Admin -->
         <ul class="list">
           <li>
-            <a href="profil.jsp">
-              <span>Martin Schulz</span>
-              <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+            <a href="newForum.jsp">
+              <span>Neues Forum erstellen</span>
             </a>
           </li>
+        </ul>
+      </div>
+      <div class="right">
+        <ul class="list">
+          <% 
+            if(session.getAttribute("username") == null 
+               || session.getAttribute("username") == "") { 
+          %>
+          <li id="loginform">
+            <form action="services/loginService.jsp" method="post" onsubmit="return false;">
+              <input type="text" name="username" id="username" placeholder="Benutzername"/>
+              <input type="password" name="password" id="password" placeholder="Passwort"/>
+              <input type="submit" value=" Login "/>
+            </form>
+            </li>
+          <% } else { %>
+          <li id="loggedin">
+             <a href="profil.jsp">
+               <span><%=session.getAttribute("username") %></span>
+               <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+             </a>
+          </li>
+          <% } %>
         </ul>
       </div>
     </div>
