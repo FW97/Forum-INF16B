@@ -25,26 +25,11 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
     int i = 0;
 %>
 
-<script>
-function sendReply() { // per AJAX oder über Form?
-  var replyText = document.forms.namedItem("reply-form")["replybox"].value;
-  if(replyText.length == 0) return;
-    
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-     document.getElementById("reply-form").insertAdjacentHTML("beforebegin", this.responseText);
-    }
-  };
-  xhr.open("POST", "posting-reply.jsp", true);
-  xhr.send(replyText);
-}
-</script>
+
 
 <jsp:include page="header.jsp"/>
 
-<div class="subject">
-    <span class="forumCategory"><%=forum%></span>
+<div class="subject-wrapper">
     <h1><%=subjectTitle%>
     </h1>
     <p>
@@ -79,3 +64,38 @@ function sendReply() { // per AJAX oder über Form?
 
 </div>
 <jsp:include page="footer.jsp"/>
+
+<script>
+function loadDiv() {
+  // Wie soll das gerade geschriebene Posting nochmal geladen werden?
+  // Server müsste ID von Posting returnen, aber returned nur "Status: OK"
+}
+    
+function sendReply() {
+  var replyText = document.forms.namedItem("reply-form")["replybox"].value;
+  var subjectid = new URL(window.location.href).searchParams.get("id");
+    
+  if(replyText.length == 0) return;
+    
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) { 
+        var html = "";
+        var response = JSON.parse(this.responseText);
+        
+        if( response["status"] == "OK" )
+        {
+            html = loadDiv();
+        } else {
+            html = "<div class='" + ( response["status"] == "Warning" ? "warningbox" : "errorbox" )
+                + "'>" + response["message"] + "</div>";
+        }
+        
+        document.getElementById("reply-form").insertAdjacentHTML("beforebegin",html);                                                             
+    }                                                             
+  };
+  xhr.open("POST", "reply", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.send(JSON.stringify({subjectid:subjectid, replystring:replyText}));
+}
+</script>
