@@ -40,9 +40,7 @@
               <input type="password" name="password" id="password" placeholder="Passwort"/>
               <input type="submit" value=" Login "/>
             </form>
-            <input type="button" onclick="test();"/>
             </li>
-            <% out.println(session.getAttribute("username")); %>
           <% } else { %>
           <li id="loggedin">
              <a href="profil.jsp">
