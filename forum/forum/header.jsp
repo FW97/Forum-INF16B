@@ -35,6 +35,9 @@
                || session.getAttribute("username") == "") { 
           %>
           <li id="loginform">
+            <a href="register.jsp">
+              Noch nicht registriert?
+            </a>
             <form action="services/loginService.jsp" method="post" onsubmit="return false;">
               <input type="text" name="username" id="username" placeholder="Benutzername"/>
               <input type="password" name="password" id="password" placeholder="Passwort"/>
