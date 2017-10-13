@@ -18,6 +18,7 @@ public class RatingServlet extends HttpServlet {
 		
 		String action = request.getParameter("thumbs");
 		HttpSession session = request.getSession();
+		boolean hasUserRated = false;
 		
 		/*
 		* Uncomment when DB and Session management is done
@@ -26,14 +27,23 @@ public class RatingServlet extends HttpServlet {
 		*	
 		* // Example insert
 		* DAO d = new DAO();
-		* if(!d.hasUserRated(userId, postId)
-		* 	d.insertRating(postId, userId, action);
+		* hasUserRated = d.hasUserRated(userId, postId) ? true : false;
+		* 
+		* if(!hasUserRated){
+			d.insertRating(postId, userId, action);
+			out.println("{Status: \"OK\"}");
+		  }
+		* 	
 		*
 		*/
+		String jsonResp = "";
 		
 		if(action.equals("thumbsUp"))
-			System.out.println("Rating up");
+			jsonResp = "{\"Status\": \"OK\"}";
 		else if(action.equals("thumbsDown"))
-			System.out.println("Rating down");
+			jsonResp = "{\"Status\": \"ERROR\"}";
+	
+        response.setContentType("application/json");
+        response.getWriter().write(jsonResp);
 	}
 }
