@@ -28,37 +28,19 @@ session.setAttribute("hasRatedAlready", hasRatedAlready);
 	</c:choose> 
 </div>
 <script language="Javascript">
-function ajaxCall()
-{
-	var activexmodes=["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"];
-
-	if(window.ActiveXObject){
-		for(var i = 0; i < activexmodes.length; i++){
-			try{
-				return new ActiveXObjext(activexmodes[i]);
-			}
-			catch(e){}
-		}
-	}
-	else if(window.XMLHttpRequest){
-		return new XMLHttpRequest();
-	}
-	else{
-		return false;
-	}
-}
-
 function sendRating(elem){
 
 	var id = elem.id;
-	var url = "/RatingServlet/rate?thumbs="+id;
-	req = new ajaxCall();			
+	var url = "/forum/rate?thumbs="+id;
+	req = new XMLHttpRequest();			
 	req.open("GET", url, true);
 	req.onreadystatechange = function(){
 		if(req.readyState == 4 && req.status == 200){
-			document.getElementById(id).style.height = "50px";
-			document.getElementById(id).style.width = "50px";
-			document.getElementById("ratings").style.pointerEvents = "none";
+			if(JSON.parse(req.responseText).Status == "OK"){
+				document.getElementById(id).style.height = "50px";
+				document.getElementById(id).style.width = "50px";
+				document.getElementById("ratings").style.pointerEvents = "none";
+			}
 		}
 	}
 	req.send(null);

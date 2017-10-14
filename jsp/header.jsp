@@ -30,12 +30,28 @@
       </div>
       <div class="right">
         <ul class="list">
-          <li>
-            <a href="profil.jsp">
-              <span>Martin Schulz</span>
-              <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+          <% 
+            if(session.getAttribute("username") == null 
+               || session.getAttribute("username") == "") { 
+          %>
+          <li id="loginform">
+            <a href="register.jsp">
+              Noch nicht registriert?
             </a>
+            <form action="services/loginService.jsp" method="post" onsubmit="return false;">
+              <input type="text" name="username" id="username" placeholder="Benutzername"/>
+              <input type="password" name="password" id="password" placeholder="Passwort"/>
+              <input type="submit" value=" Login "/>
+            </form>
+            </li>
+          <% } else { %>
+          <li id="loggedin">
+             <a href="profil.jsp">
+               <span><%=session.getAttribute("username") %></span>
+               <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+             </a>
           </li>
+          <% } %>
         </ul>
       </div>
     </div>

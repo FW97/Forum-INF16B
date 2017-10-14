@@ -5,7 +5,7 @@
   -- * the session into the database
   -->
 <!--%@ page import = "de.dhbw.StudentExchange.*" %-->
-
+<%@ page import="DAO, User" %>
 <%
 	response.setContentType("application/json");
 	String username = request.getParameter("username");
@@ -16,22 +16,22 @@
 	final String loginErrorMessage       = "Authentication failed!";
 
 	if (username == null || password == null) {
-		sendResponse("Error", wrongCredentialsMessage);
+		out.write(sendResponse("Error", wrongCredentialsMessage));
 		return;
 	}
 
 	DAO databaseObject = new DAO();
 	User loggedUser = databaseObject.getUserByEmail(username);
 	if (loggedUser == null) {
-		sendResponse("Error", wrongCredentialsMessage);
+		out.write(sendResponse("Error", wrongCredentialsMessage));
 	}
 
 	String generatedHash = makeHash(loggedUser.salt, password);
 	if (generatedHash.equals(loggedUser.passwordHash)) {
 		session.setAttribute("username", loggedUser);
-		sendResponse("OK", successfulLoginMessage);
+		out.write(sendResponse("OK", successfulLoginMessage));
 	} else {
-		sendResponse("Error", wrongCredentialsMessage);
+		out.write(sendResponse("Error", wrongCredentialsMessage));
 	}
 %>
 
@@ -42,5 +42,4 @@
 		} else {
 			out.println("{ status: \"" + status + "\" }");
 		}
-	}
 %>
