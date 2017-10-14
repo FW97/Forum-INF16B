@@ -27,7 +27,7 @@ public class RatingServlet extends HttpServlet {
 		*	
 		* // Example insert
 		* DAO d = new DAO();
-		* hasUserRated = d.hasUserRated(userId, postId) ? true : false;
+		* hasUserRated = d.hasUserRated(userId, postId);
 		* 
 		* if(!hasUserRated){
 			d.insertRating(postId, userId, action);
@@ -39,9 +39,9 @@ public class RatingServlet extends HttpServlet {
 		String jsonResp = "";
 		
 		if(action.equals("thumbsUp"))
-			jsonResp = "{\"Status\": \"OK\"}";
+			jsonResp = "{\"status\": \"OK\"}";
 		else if(action.equals("thumbsDown"))
-			jsonResp = "{\"Status\": \"ERROR\"}";
+			jsonResp = "{\"status\": \"ERROR\"}";
 	
         response.setContentType("application/json");
         response.getWriter().write(jsonResp);
