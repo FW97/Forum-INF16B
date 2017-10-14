@@ -36,7 +36,11 @@
 %>
 
 <%!
-	public static String sendResponse(String status, String message) {
-		return "{ status: \"" + status + "\", message: \"" + message + "\" }";
+	public static void sendResponse(String status, String message) {
+		if (message != null) {
+			out.println("{ status: \"" + status + "\", message: \"" + message + "\" }");
+		} else {
+			out.println("{ status: \"" + status + "\" }");
+		}
 	}
 %>
