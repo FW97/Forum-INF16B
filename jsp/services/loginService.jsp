@@ -4,7 +4,6 @@
   -- * Login Service to validate username and password and storing
   -- * the session into the database
   -->
-<!--%@ page import = "de.dhbw.StudentExchange.*" %-->
 <%@ page import="DAO, User" %>
 <%
 	response.setContentType("application/json");
@@ -16,31 +15,31 @@
 	final String loginErrorMessage       = "Authentication failed!";
 
 	if (username == null || password == null) {
-		out.write(sendResponse("Error", wrongCredentialsMessage));
+		out.write(createResponse("Error", wrongCredentialsMessage));
 		return;
 	}
 
 	DAO databaseObject = new DAO();
 	User loggedUser = databaseObject.getUserByEmail(username);
 	if (loggedUser == null) {
-		out.write(sendResponse("Error", wrongCredentialsMessage));
+		out.write(createResponse("Error", wrongCredentialsMessage));
 	}
 
 	String generatedHash = makeHash(loggedUser.salt, password);
 	if (generatedHash.equals(loggedUser.passwordHash)) {
 		session.setAttribute("username", loggedUser);
-		out.write(sendResponse("OK", successfulLoginMessage));
+		out.write(createResponse("OK", null));
 	} else {
-		out.write(sendResponse("Error", wrongCredentialsMessage));
+		out.write(createResponse("Error", wrongCredentialsMessage));
 	}
 %>
 
 <%!
-	public static void sendResponse(String status, String message) {
+	public static String createResponse(String status, String message) {
 		if (message != null) {
-			out.println("{ status: \"" + status + "\", message: \"" + message + "\" }");
+			return "{ status: \"" + status + "\", message: \"" + message + "\" }";
 		} else {
-			out.println("{ status: \"" + status + "\" }");
+			return "{ status: \"" + status + "\" }";
 		}
 	}
 %>
