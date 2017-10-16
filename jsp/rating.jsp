@@ -1,33 +1,31 @@
+<!--  Assigned Team: Alexander Memmel, Micha Spahr  -->
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
-<%
-// Authors: Alexander Memmel, Micha Spahr
-
-// Check if user has already voted
-//String postId = session.getAttribute("postId");
-//String userId = session.getAttribute("userId"); 
-
-//Dao d = new Dao();
-
-//boolean hasRatedAlready = d.hasUserRated(userId, postId) ? true : false;
-
-//Temp until Controller is finished
-boolean hasRatedAlready = false;
-session.setAttribute("hasRatedAlready", hasRatedAlready);
-
-%>
-<div id="ratings">
+<jsp:include page="/rate?thumbs=getThumbs" />
+<div class="ratings" id="ratings">
 	<c:choose>
 		<c:when test = "${hasRatedAlready}">
-			<button name="thumbsUp" id="thumbsUp" disabled>+</button>
-			<button name="thumbsDown" id="thumbsDown" disabled>-</button>
+			<button class="ratingBtn" name="thumbsUp" id="thumbsUp" disabled>
+				<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+				<span class="tUpCount" id="tUpCount"><c:out value = "${tUpCount}"/></span>
+			</button>
+			<button class="ratingBtn" name="thumbsDown" id="thumbsDown" disabled>
+				<i class="fa fa-thumbs-down" aria-hidden="true"></i>
+				<span class="tDownCount" id="tDownCount"><c:out value = "${tDownCount}"/></span>
+			</button>
 		</c:when>
 		<c:otherwise>
-		   <button name="thumbsUp" id="thumbsUp" onclick="sendRating(this)">+</button>
-		   <button name="thumbsDown" id="thumbsDown" onclick="sendRating(this)">-</button>
+			<button class="ratingBtn" name="thumbsUp" id="thumbsUp" onclick="sendRating(this)">
+				<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+				<span class="tUpCount" id="tUpCount"><c:out value = "${tUpCount}"/></span>
+			</button>
+			<button class="ratingBtn" name="thumbsDown" id="thumbsDown" onclick="sendRating(this)">
+				<i class="fa fa-thumbs-down" aria-hidden="true"></i>
+				<span class="tDownCount" id="tDownCount"><c:out value = "${tDownCount}"/></span>
+			</button>
 		</c:otherwise>
 	</c:choose> 
 </div>
-<script language="Javascript">
+<script>
 function sendRating(elem){
 
 	var id = elem.id;
@@ -36,10 +34,17 @@ function sendRating(elem){
 	req.open("GET", url, true);
 	req.onreadystatechange = function(){
 		if(req.readyState == 4 && req.status == 200){
-			if(JSON.parse(req.responseText).Status == "OK"){
-				document.getElementById(id).style.height = "50px";
-				document.getElementById(id).style.width = "50px";
+			if(JSON.parse(req.responseText).status == "OK" && JSON.parse(req.responseText).hasUserRated == "false"){
+				
+				document.getElementById("tUpCount").innerHTML = JSON.parse(req.responseText).tUpCount;
+				document.getElementById("tDownCount").innerHTML = JSON.parse(req.responseText).tDownCount;
 				document.getElementById("ratings").style.pointerEvents = "none";
+				document.getElementById("thumbsDown").disabled = true;
+				document.getElementById("thumbsUp").disabled = true;
+			}
+			else{
+				document.getElementById("ratings").className = "alert alert--error";
+				document.getElementById("ratings").innerHTML = "<p>Error: Adding your vote has failed!</p>";
 			}
 		}
 	}

@@ -1,0 +1,21 @@
+/*Author: Andreas Memmel, Micha Spahr */
+button.ratingBtn{
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+.fa-thumbs-up{
+	color: green;
+}
+.fa-thumbs-down{
+	color: red;
+}
+span.tUpCount{
+	color: green;
+}
+span.tDownCount{
+	color: red;
+}

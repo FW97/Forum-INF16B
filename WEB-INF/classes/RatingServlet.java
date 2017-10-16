@@ -4,12 +4,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-/* Authors
- * Andreas Memmel, Micha Spahr
-*/
-
+/**
+ * Servlet for reading and inserting ratings on postings
+ * @author Andreas Memmel, Micha Spahr
+ *
+ */
 @WebServlet("/rate")
 public class RatingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -17,33 +17,74 @@ public class RatingServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String action = request.getParameter("thumbs");
-		HttpSession session = request.getSession();
+
 		boolean hasUserRated = false;
-		
-		/*
-		* Uncomment when DB and Session management is done
-		* String postId = session.getAttribute("postId");
-		* String userId = session.getAttribute("userId");
-		*	
-		* // Example insert
-		* DAO d = new DAO();
-		* hasUserRated = d.hasUserRated(userId, postId);
-		* 
-		* if(!hasUserRated){
-			d.insertRating(postId, userId, action);
-			out.println("{Status: \"OK\"}");
-		  }
-		* 	
-		*
-		*/
-		String jsonResp = "";
-		
-		if(action.equals("thumbsUp"))
-			jsonResp = "{\"status\": \"OK\"}";
-		else if(action.equals("thumbsDown"))
-			jsonResp = "{\"status\": \"ERROR\"}";
+		int ratings[] = new int[2]; 
+		int tUpCount = 0;
+		int tDownCount = 0;
+		String status = "";
+		String postId = request.getParameter("postId");
+		String userId = request.getParameter("userId");
 	
-        response.setContentType("application/json");
-        response.getWriter().write(jsonResp);
+		//DAO d = new DAO();
+		//hasUserRated = d.hasUserRated(postId, userId);
+		
+		//TODO: delete this lines and uncomment the sections after DAO is finished
+		tUpCount = 42;
+		tDownCount = 12;
+		hasUserRated = false;
+		
+		if((action.equals("thumbsUp") || action.equals("thumbsDown")) && !hasUserRated){
+		
+			//d.insertRating(postId, userId, action);
+			//ratings = d.getRatings(postId);
+			//tUpCount = ratings[0];
+			//tDownCount = ratings[1];
+				
+			if(action.equals("thumbsUp"))
+				tUpCount += 1;
+			else if(action.equals("thumbsDown"))
+				tDownCount += 1;
+				
+			status = "OK";
+			
+	        response.setContentType("application/json");
+	        response.getWriter().write(buildJson(tUpCount, tDownCount, hasUserRated, status));
+		}
+		else if(action.equals("getThumbs")){		
+			request.setAttribute("hasRatedAlready", hasUserRated);
+			request.setAttribute("tUpCount", tUpCount);
+			request.setAttribute("tDownCount", tDownCount);
+		}
+		else
+			response.getWriter().write(buildJson(tUpCount, tDownCount, hasUserRated, "ERROR"));
+	}
+	
+	/**
+	 * Creates JSON-Type String with given params
+	 * @param tUpCount Count of up votes
+	 * @param tDownCount Count of down votes
+	 * @param hasUserRated Has the user rated already
+	 * @param status Status of the operation
+	 * @return JSON-Type String
+	 */
+	private String buildJson(int tUpCount, int tDownCount, boolean hasUserRated, String status){
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("{");
+		
+		if(status.equals("ERROR"))
+			sb.append("\"status\": \"" + status + "\"");
+		else{
+			sb.append("\"status\": \"" + status + "\",");
+			sb.append("\"hasUserRated\": \"" + hasUserRated + "\",");
+			sb.append("\"tUpCount\": \"" + tUpCount + "\",");
+			sb.append("\"tDownCount\": \"" + tDownCount + "\"");
+		}
+		
+		sb.append("}");
+		
+		return sb.toString();
 	}
 }
