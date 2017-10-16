@@ -16,7 +16,7 @@
 # Package Files #
 *.jar
 *.war
-!jstl-1.2.jar
+!/WEB-INF/lib/*.jar
 *.ear
 *.zip
 *.tar.gz
