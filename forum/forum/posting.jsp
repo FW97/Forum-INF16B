@@ -66,9 +66,22 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 <jsp:include page="footer.jsp"/>
 
 <script>
-function loadDiv() {
-  // Wie soll das gerade geschriebene Posting nochmal geladen werden?
-  // Server müsste ID von Posting returnen, aber returned nur "Status: OK"
+function loadDiv(postingid) {
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    var html;
+      
+    if (this.readyState == 4 && this.status == 200) { 
+       html = this.responseText;                                      
+    } else if(this.readyState == 4 && this.status != 200) {
+       html = "<div class='errorbox'>Fehler beim Laden des neues Postings.</div>";
+    }
+     
+    document.getElementById("reply-form").insertAdjacentHTML("beforebegin", html);   
+  };
+  xhr.open("POST", "postingdiv", false);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.send(JSON.stringify({postingid:postingid}));
 }
     
 function sendReply() {
@@ -80,18 +93,21 @@ function sendReply() {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) { 
-        var html = "";
         var response = JSON.parse(this.responseText);
         
         if( response["status"] == "OK" )
         {
-            html = loadDiv();
+            /* Falls die Response nicht die ID des angelegten Posting zurückgeben wird/kann/darf, 
+             * muss das zu ladene Posting auf andere Art ermittelt werden. 
+             * Evtl. serverseitig das neueste Posting ermitteln und hierfür den div zurückliefern.
+             */
+            loadDiv( response["postingid"] ); 
         } else {
-            html = "<div class='" + ( response["status"] == "Warning" ? "warningbox" : "errorbox" )
+            var html = "<div class='" + ( response["status"] == "Warning" ? "warningbox" : "errorbox" )
                 + "'>" + response["message"] + "</div>";
-        }
-        
-        document.getElementById("reply-form").insertAdjacentHTML("beforebegin",html);                                                             
+            
+            document.getElementById("reply-form").insertAdjacentHTML("beforebegin",html); 
+        }                                                              
     }                                                             
   };
   xhr.open("POST", "reply", true);
