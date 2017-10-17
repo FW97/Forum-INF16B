@@ -25,22 +25,6 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
     int i = 0;
 %>
 
-<script>
-function sendReply() { // per AJAX oder über Form?
-  var replyText = document.forms.namedItem("reply-form")["replybox"].value;
-  if(replyText.length == 0) return;
-    
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-     document.getElementById("reply-form").insertAdjacentHTML("beforebegin", this.responseText);
-    }
-  };
-  xhr.open("POST", "posting-reply.jsp", true);
-  xhr.send(replyText);
-}
-</script>
-
 <jsp:include page="header.jsp"/>
 
 <div class="subject">
@@ -79,3 +63,54 @@ function sendReply() { // per AJAX oder über Form?
 
 </div>
 <jsp:include page="footer.jsp"/>
+
+<script>
+function loadDiv(postingid) {
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    var html;
+      
+    if (this.readyState == 4 && this.status == 200) { 
+       html = this.responseText;                                      
+    } else if(this.readyState == 4 && this.status != 200) {
+       html = "<div class='errorbox'>Fehler beim Laden des neues Postings.</div>";
+    }
+     
+    document.getElementById("reply-form").insertAdjacentHTML("beforebegin", html);   
+  };
+  xhr.open("POST", "postingdiv", false);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.send(JSON.stringify({postingid:postingid}));
+}
+    
+function sendReply() {
+  var replyText = document.forms.namedItem("reply-form")["replybox"].value;
+  var subjectid = new URL(window.location.href).searchParams.get("id");
+    
+  if(replyText.length == 0) return;
+    
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) { 
+        var response = JSON.parse(this.responseText);
+        
+        if( response["status"] == "OK" )
+        {
+            /* Falls die Response nicht die ID des angelegten Posting zurückgeben wird/kann/darf, 
+             * muss das zu ladene Posting auf andere Art ermittelt werden. 
+             * Evtl. serverseitig das neueste Posting ermitteln und hierfür den div zurückliefern.
+             */
+            loadDiv( response["postingid"] ); 
+        } else {
+            var html = "<div class='" + ( response["status"] == "Warning" ? "warningbox" : "errorbox" )
+                + "'>" + response["message"] + "</div>";
+            
+            document.getElementById("reply-form").insertAdjacentHTML("beforebegin",html); 
+        }                                                              
+    }                                                             
+  };
+  xhr.open("POST", "reply", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.send(JSON.stringify({subjectid:subjectid, replystring:replyText}));
+}
+</script>
