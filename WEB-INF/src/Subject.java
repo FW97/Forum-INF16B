@@ -1,3 +1,5 @@
+package de.dhbw.Forum;
+
 //author Andreas Memmel
 public class Subject {
 	private final int id;

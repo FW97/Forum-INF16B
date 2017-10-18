@@ -1,3 +1,5 @@
+package de.dhbw.Forum;
+
 //author Andreas Memmel
 public class Attachment {
 	private int id;

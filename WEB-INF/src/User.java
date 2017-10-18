@@ -1,3 +1,5 @@
+package de.dhbw.Forum;
+
 
 /**
  * Class to represent an Object of type User
