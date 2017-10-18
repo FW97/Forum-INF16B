@@ -2,7 +2,7 @@
 
 ## ER-Schema
 
-![ER-Schema](https://i.imgur.com/iOIzuIK.png) 
+![ER-Schema](https://i.imgur.com/5pgEunI.png) 
 
 ## MySQL Dump
 
