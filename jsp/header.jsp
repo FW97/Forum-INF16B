@@ -33,7 +33,7 @@
         <ul class="list">
           <% 
             if(session.getAttribute("username") == null 
-               || session.getAttribute("username") == "") { 
+               || ((String) session.getAttribute("username")).isEmpty()) {
           %>
           <li id="loginform">
             <a href="/jsp/register.jsp">
