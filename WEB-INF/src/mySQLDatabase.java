@@ -1,4 +1,4 @@
-package de.dhbw.Forum;
+package de.dhbw.StudentForum;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

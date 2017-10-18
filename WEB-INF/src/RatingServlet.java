@@ -1,5 +1,4 @@
-package de.dhbw.Forum;
-
+package de.dhbw.StudentForum;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
