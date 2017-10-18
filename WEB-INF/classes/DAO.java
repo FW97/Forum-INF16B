@@ -447,6 +447,31 @@ public class DAO {
 
             PreparedStatement ps = con.prepareStatement(sqlString);
 			ps.setString(1, user.getPwHash());
+			ps.setInt(2, user.getId());
+			ps.executeUpdate();
+			
+			ps.close();
+			con.close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+	}
+
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+	public static void updateImgurl(User user) {
+		try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "UPDATE USER "
+	        		+ "SET imgurl = ? "
+	        		+ "WHERE ID = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setString(1, user.getImgUrl());
+			ps.setInt(2, user.getId());
 			ps.executeUpdate();
 			
 			ps.close();
