@@ -4,7 +4,7 @@
   -- * Login Service to validate username and password and storing
   -- * the session into the database
   -->
-<%@ page import="DAO, User" %>
+<%@ page import="de.dhbw.StudentForum.DAO, de.dhbw.StudenForum.User" %>
 <%
 	response.setContentType("application/json");
 	String username = request.getParameter("username");
