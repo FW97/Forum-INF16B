@@ -23,7 +23,7 @@
   <tr>
     <th class="np_desc">Tags</th>
     <td class="np_content">
-    <input type="checkbox" class="np_tagbox"><label class="np_tagtext">für alle</label>
+    <input type="checkbox" class="np_tagbox"><label class="np_tagtext">f&uumlr alle</label>
     <input type="checkbox" class="np_tagbox"><label class="np_tagtext">Hausaufgaben</label>
     <input type="checkbox" class="np_tagbox"><label class="np_tagtext">Hilfe</label>
     </br>
@@ -32,6 +32,23 @@
     </td>
   </tr>
   
+  <tr>
+    <th class="np_desc"></th>
+    <td class="np_content">
+    <form action="select.html">
+        <label>Post in folgendem Forum erstellen: 
+            <select size="1"> 
+                <option>Allgemeines</option> 
+                <option>Java</option> 
+                <option>JavaScript</option> 
+                <option>Webservices</option> 
+                <option>Wasauchsonst</option>
+            </select> 
+        </label>
+    </form>
+    </td>
+  </tr>
+
   <tr>
     <th class="np_desc"></th>
     <td class="np_content">
