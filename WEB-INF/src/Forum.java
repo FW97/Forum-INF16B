@@ -1,3 +1,5 @@
+package de.dhbw.StudentForum;
+
 //author Andreas Memmel
 public class Forum {
 	private final int id;
@@ -8,7 +10,7 @@ public class Forum {
 	public Forum(int id) {
 		this.id = id;
 	}
-	public int get id() {
+	public int getId() {
 		return this.id;
 	}
 	public void setModeratorid(int modId) {

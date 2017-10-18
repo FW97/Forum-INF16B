@@ -1,9 +1,13 @@
+package de.dhbw.StudentForum;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
-
+import de.dhbw.StudentForum.MySQLDatabase;
+import de.dhbw.StudentForum.Posting;
+import de.dhbw.StudentForum.User;
 
 
 /*
