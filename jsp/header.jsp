@@ -74,12 +74,16 @@
         <%String[] a=request.getRequestURI().split("/");%>
           <li><a href="/index.jsp">
                 <%String[] b=a[1].split("\\.");
-                  out.println(b[0]);
-                %></a></li>                 
-          <li><a href="<%= a[a.length-1] %>">
-                <%String[] c=a[a.length-1].split("\\.");
-                  out.println(c[0]);
-                %></a></li>
+                  out.println(b[0]);%>
+              </a>
+	  </li>    
+		<%String[] c=a[a.length-1].split("\\.");%>
+		<%if(c[0].equals("index") || c[0].equals("forum")){}
+		  else{%>
+          <li><a href="/jsp/<%out.println(a[a.length-1]);%>">
+                <%out.println(c[0]);%>
+              </a>
+	  </li><%}%>
         </ul>
       </div>
     </div>
