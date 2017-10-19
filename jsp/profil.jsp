@@ -1,16 +1,30 @@
 <!--
   Authors: Michael Skrzypietz, Justus Grauel
+  
+  TODO: User importieren, dann kann man die auskommentierten Testdaten wieder einfügen
 -->
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.io.*,java.util.*, javax.servlet.*"%>
 
+<%
+	/*
+	User user = new User(1);
+	user.setEmail("max.mustermann@gmail.com");
+	user.setFirstname("Max");
+	user.setLastname("Mustermann");
+	user.setImgUrl("http://via.placeholder.com/150x150");
+	session.setAttribute("user", user);
+	*/
+%>
+
 <jsp:include page="header.jsp" />
+
 
   <div class="profil">
     <h1>Profileinstellungen</h1>
     
-    <form method="post" action="ProfilServlet">
+    <form method="post" action="ProfilServlet" enctype="multipart/form-data">
       <div class="settingBox">
         <div class="setting">
           <div class="settingLabel settingSpacing">
@@ -19,7 +33,7 @@
           <div class="settingContent settingSpacing">
             <input type="text" name="email" value="${user.email}" />
           </div>
-        </div>
+        </div> 
 
         <div class="setting">
           <div class="settingLabel settingSpacing">
@@ -45,8 +59,8 @@
           <div class="settingLabel">
             <label>Profilbild</label>
           </div>
-          <div class="settingContent">
-            <a href="https://placeholder.com"><img src="http://via.placeholder.com/150x150"></a>
+          <div class="settingContent"> 
+            <img src="${user.imgUrl}">
             <input type="file" name="file" id="uploadImage" value="Datei ausw&auml;hlen">
           </div>
         </div>

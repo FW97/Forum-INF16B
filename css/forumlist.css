@@ -9,7 +9,7 @@
 	margin-bottom: 50px;
 }
 
-.forumlist A.forum {
+.forumlist A.forum, a.tag, a.tag-link {
 	border-radius: 5px;
 	border: 1px solid #4CAF50;
 	background-color: #4CAF50;

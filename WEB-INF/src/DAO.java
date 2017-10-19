@@ -1,9 +1,13 @@
+package de.dhbw.StudentForum;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
-
+import de.dhbw.StudentForum.MySQLDatabase;
+import de.dhbw.StudentForum.Posting;
+import de.dhbw.StudentForum.User;
 
 
 /*
@@ -447,6 +451,31 @@ public class DAO {
 
             PreparedStatement ps = con.prepareStatement(sqlString);
 			ps.setString(1, user.getPwHash());
+			ps.setInt(2, user.getId());
+			ps.executeUpdate();
+			
+			ps.close();
+			con.close();
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+	}
+
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+	public static void updateImgurl(User user) {
+		try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "UPDATE USER "
+	        		+ "SET imgurl = ? "
+	        		+ "WHERE ID = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setString(1, user.getImgUrl());
+			ps.setInt(2, user.getId());
 			ps.executeUpdate();
 			
 			ps.close();
