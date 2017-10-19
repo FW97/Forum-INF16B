@@ -38,15 +38,19 @@ public class RatingServlet extends HttpServlet {
 		
 		if((action.equals("thumbsUp") || action.equals("thumbsDown")) && !hasUserRated){
 		
-			//d.insertRating(postId, userId, action);
 			//ratings = d.getRatings(postId);
 			//tUpCount = ratings[0];
 			//tDownCount = ratings[1];
 				
-			if(action.equals("thumbsUp"))
+			if(action.equals("thumbsUp")){
 				tUpCount += 1;
-			else if(action.equals("thumbsDown"))
+				//d.insertRating(postId, userId, 1);
+			}	
+			else if(action.equals("thumbsDown")){
 				tDownCount += 1;
+				//d.insertRating(postId, userId, -1);
+			}
+				
 				
 			status = "OK";
 			
