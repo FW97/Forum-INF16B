@@ -20,28 +20,24 @@
         <input type="search" placeholder="Forum durchsuchen"/>
         <input type="button" class="button-search" value="Suchen"/>
       </div>
+
       <%
         // if user == admin, show 'add forum'-button
         if((User) session.getAttribute("username") != null) {
           if(((User) session.getAttribute("username")).getRole() == 2) {
       %>
-	    <div class="newForumButton">
-        <ul class="list">
-          <li>
-            <a href="/jsp/newForum.jsp">
-              <span>Neues Forum erstellen</span>
-            </a>
-          </li>
-        </ul>
-      </div>
+	      <div class="newForumButton">
+          <input type="button" onclick="window.location.replace('/jsp/newForum.jsp');" 
+                 value="Neues Forum erstellen"/>
+        </div>
       <% }} %>
+
       <div class="right">
-        <ul class="list">
-          <% 
-            if(session.getAttribute("username") == null 
-               || ((String) session.getAttribute("username")).isEmpty()) {
-          %>
-          <li id="loginform">
+        <% 
+          if(session.getAttribute("username") == null 
+             || ((String) session.getAttribute("username")).isEmpty()) {
+        %>
+          <div id="loginform">
             <a href="/jsp/register.jsp">
               Noch nicht registriert?
             </a>
@@ -50,16 +46,15 @@
               <input type="password" name="password" id="password" placeholder="Passwort"/>
               <input type="submit" value=" Login "/>
             </form>
-            </li>
-          <% } else { %>
-          <li id="loggedin">
-             <a href="/jsp/profil.jsp">
-               <span>Hallo, <%=((User) session.getAttribute("username")).getFirstname() %></span>
-               <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-             </a>
-          </li>
-          <% } %>
-        </ul>
+          </div>
+        <% } else { %>
+          <div id="loggedin">
+            <a href="/jsp/profil.jsp">
+              Hallo, <%=((User) session.getAttribute("username")).getFirstname() %>
+              <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+            </a>
+          </div>
+        <% } %>
       </div>
     </div>
 
@@ -72,25 +67,27 @@
           <li><a href="/index.jsp">Neueste Beitr&auml;ge</a></li>
         </ul>
       </div>
-    </div><br/> 
+    </div>
+    
+    <br/> 
    
     <div class="breadcrumbs">
       <div class="left">
-        <ul class="list">
-        <%String[] a=request.getRequestURI().split("/");%>
-          <li><a href="/index.jsp">
-                <%String[] b=a[1].split("\\.");
-                  out.println(b[0]);%>
-              </a>
-	  </li>    
-		<%String[] c=a[a.length-1].split("\\.");%>
-		<%if(c[0].equals("index") || c[0].equals("forum")){}
-		  else{%>
-          <li><a href="/jsp/<%out.println(a[a.length-1]);%>">
-                <%out.println(c[0]);%>
-              </a>
-	  </li><%}%>
-        </ul>
+        <% 
+          String[] a = request.getRequestURI().split("/");
+          String[] b = a[1].split("\\.");
+          String[] c = a[a.length-1].split("\\.");
+        %>
+        <a href="/index.jsp">
+          <% out.println(b[0]); %>
+        </a>
+		    <%
+          if(!(c[0].equals("index")) || !(c[0].equals("forum"))) {
+        %>
+          <a href="/jsp/<%out.println(a[a.length-1]);%>">
+            <% out.println(c[0]); %>
+          </a>
+        <% } %>
       </div>
     </div>
   </nav>
