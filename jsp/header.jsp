@@ -78,7 +78,7 @@
               </a>
 	  </li>    
 		<%String[] c=a[a.length-1].split("\\.");%>
-		<% if (c[0].equals("index") || c[0].equals("forum")){}
+		<%if(c[0].equals("index") || c[0].equals("forum")){}
 		  else{%>
           <li><a href="/jsp/<%out.println(a[a.length-1]);%>">
                 <%out.println(c[0]);%>
