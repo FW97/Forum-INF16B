@@ -22,7 +22,8 @@
       </div>
       <%
         // if user == admin, show 'add forum'-button
-        if(((User) session.getAttribute("username")).getRole() == 2) {
+        if((User) session.getAttribute("username") != null) {
+          if(((User) session.getAttribute("username")).getRole() == 2) {
       %>
 	    <div class="newForumButton">
         <ul class="list">
@@ -33,7 +34,7 @@
           </li>
         </ul>
       </div>
-      <% } %>
+      <% }} %>
       <div class="right">
         <ul class="list">
           <% 
