@@ -5,17 +5,15 @@
 -->
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.io.*,java.util.*, javax.servlet.*"%>
+<%@ page import="java.io.*,java.util.*, javax.servlet.*, de.dhbw.StudentForum.User"%>
 
 <%
-	/*
 	User user = new User(1);
 	user.setEmail("max.mustermann@gmail.com");
 	user.setFirstname("Max");
 	user.setLastname("Mustermann");
 	user.setImgUrl("http://via.placeholder.com/150x150");
 	session.setAttribute("user", user);
-	*/
 %>
 
 <jsp:include page="header.jsp" />
