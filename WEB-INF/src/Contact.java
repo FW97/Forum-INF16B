@@ -12,7 +12,7 @@ import javax.mail.internet.MimeMessage;
 
 //author Maximilian Gerlach
 
-public class JavaEmail {
+public class Contact {
 
 	Properties emailProperties;
 	Session mailSession;
