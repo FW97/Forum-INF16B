@@ -20,7 +20,11 @@
         <input type="search" placeholder="Forum durchsuchen"/>
         <input type="button" class="button-search" value="Suchen"/>
       </div>
-	  <div class="newForumButton"> <!-- TODO: hide if not Admin -->
+      <%
+        // if user == admin, show 'add forum'-button
+        if(((User) session.getAttribute("username")).getRole() == 2) {
+      %>
+	    <div class="newForumButton">
         <ul class="list">
           <li>
             <a href="/jsp/newForum.jsp">
@@ -29,6 +33,7 @@
           </li>
         </ul>
       </div>
+      <% } %>
       <div class="right">
         <ul class="list">
           <% 
@@ -48,7 +53,7 @@
           <% } else { %>
           <li id="loggedin">
              <a href="/jsp/profil.jsp">
-               <span><%=((User) session.getAttribute("username")).getFirstname() %></span>
+               <span>Hallo, <%=((User) session.getAttribute("username")).getFirstname() %></span>
                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
              </a>
           </li>
@@ -63,7 +68,7 @@
           <li><a href="/index.jsp">Home</a></li>
           <li><a href="/jsp/search.jsp">Erweiterte Suche</a></li>
           <li><a href="/jsp/forumlist.jsp">Forenliste</a></li>
-          <li><a href="/index.jsp">Neuste Beitr&auml;ge</a></li>
+          <li><a href="/index.jsp">Neueste Beitr&auml;ge</a></li>
         </ul>
       </div>
     </div><br/> 
