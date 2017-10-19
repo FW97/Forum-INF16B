@@ -32,7 +32,7 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
     <h1><%=subjectTitle%>
     </h1>
     <p>
-        <c:forEach var="tag" items="<%=tags%>"><span class="tag"><c:out value="${tag}"/></span></c:forEach>
+        <c:forEach var="tag" items="<%=tags%>"><a class=tag href='postings.jsp'><c:out value="${tag}"/></a></c:forEach>
     </p>
 
     <c:forEach items="<%=postings%>" var="posting" varStatus="loop">
