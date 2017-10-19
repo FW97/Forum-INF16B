@@ -1,3 +1,5 @@
+package de.dhbw.StudentForum;
+
 import java.util.Date;
 
 /**

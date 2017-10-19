@@ -3,7 +3,7 @@
   -- * received through a GET request from the URL
 --> 
 
-<%@ page import = "java.io.*, java.util.*, javax.servlet.ServletRequest, java.lang.*" %>
+<%@ page import = "java.io.*, java.util.*, javax.servlet.ServletRequest, de.dhbw.Forum.*, java.lang.*" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
 <%!
@@ -15,29 +15,40 @@
     private static final String MAX_DATE_PARAMETER    = "maxdate";
 %>
 
-<%!
+<%
 	// Private Postings constants and container for
 	// filter criteria
-	private int postId = -1;
-	private int forumId = -1;
-	private int tagId = -1;
-	private int userId = -1;
-	private int maxPostings = 100;
-	private boolean latest = false;
-	private String searchTerm = null;
-	private Date minDate = null;
-	private Date maxDate = null;
-	private String name = "Max Mustermann";
-	private Date date = GregorianCalendar.getInstance().getTime();
-	private String category = "Campus";
-	private String subject = "Suche WG";
-	private String[] tags = { "Netztechnik", "Informatik", "INF16B" };
-	// TODO: Replace String with Posting after figuring out how to import the class
-	private Set<String> postSelection = new HashSet<>();
+    int postId = -1;
+    int forumId = -1;
+    int tagId = -1;
+    int userId = -1;
+    int maxPostings = 100;
+    boolean latest = false;
+    String searchTerm = null;
+    Date minDate = null;
+    Date maxDate = null;
+
+    Set<Posting> postSelection = new HashSet<>();
 
 	// Object instance to get access to the database
 	// private DAO daoObject = new DAO();
 	// TODO: Declare new instance of DAO Object when imported
+%>
+
+<%
+    // Dummy elements
+    String dummyAuthor = "Max Mustermann";
+
+    int index = 0;
+    Posting p1 = new Posting(index++);
+    p1.setTitle("Brauche Hilfe bei Doppelintegralen in Mathe");
+    p1.setWhenPosted(new Date());
+    String[] tags1 = { "Mathe", "Integral" };
+    p1.setTags(tags1);
+    postSelection.add(p1);
+
+
+
 %>
 
 <%!
@@ -47,11 +58,11 @@
      * Selects the latest 8 postings out of the database to show
      * on the index page
      */
-    public void selectTop8Postings() {
+    /*public void selectTop8Postings() {
         latest = true;
         maxPostings = 8;
         // Collections.addAll(postSelection, daoObject.getLatestPosts());
-    }
+    }*/
 
     /**
      * Applies the given parameters as query to the database object and selects
@@ -62,11 +73,11 @@
      * @param minDate the minimal date specifying the lower border of creation date
      * @param maxDate the maximal date specifying the upper border of creation date
      */
-    public void transmitSearchRequest(String searchTerm, int forumId, int tagId, Date minDate, Date maxDate) {
+    /*public void transmitSearchRequest(String searchTerm, int forumId, int tagId, Date minDate, Date maxDate) {
         if (searchTerm == null) {
 
         }
-    }
+    }*/
 %>
 
 <%
@@ -76,20 +87,21 @@
     */
 %>
 
-<c:forEach items="<%= postSelection %>" var="currentPost">
+<c:forEach items="${postSelection}" var="currentPost">
     <a href="posting.jsp?postid=${currentPost.getId()}">
         <div class="post">
             <div class="profilbild">
                 <img src="http://www.iconsdb.com/icons/preview/gray/user-xxl.png" height="60" width="60" >
             </div>
             <div>
-                <span class="author"> <%= name %> </span><span class="category"><%= category %></span>
-                <br> <span class="date"><%= date %></span>
+                <div>INF16B > Mathe</div>
+                <span class="author"> <%= dummyAuthor %> </span>
+                <span class="date"> ${currentPost.getWhenPosted()} </span>
 
-                <h1><i><%= subject %></i></h1>
+                <h1><i> ${currentPost.getTitle()} </i></h1>
 
-                <c:forEach items="<%= tags %>">
-                    <span class="tagbox"></span>
+                <c:forEach items="${currentPost.getTags()}" var="tag">
+                    <span class="tagbox">${tag}</span>
                 </c:forEach>
 
                 <span class="answer"> 200 Antworten </span>

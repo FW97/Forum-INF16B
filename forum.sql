@@ -69,6 +69,37 @@ DELETE FROM `posting`;
 /*!40000 ALTER TABLE `posting` ENABLE KEYS */;
 
 
+-- Exportiere Struktur von Tabelle forum.postingrating
+DROP TABLE IF EXISTS `postingrating`;
+CREATE TABLE IF NOT EXISTS `postingrating` (
+  `rating` int(11) DEFAULT NULL,
+  `postingId` int(11) DEFAULT NULL,
+  `userId` int(11) DEFAULT NULL,
+  KEY `userId` (`userId`),
+  KEY `postingId` (`postingId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Exportiere Daten aus Tabelle forum.postingrating: ~0 rows (ungefähr)
+DELETE FROM `postingrating`;
+/*!40000 ALTER TABLE `postingrating` DISABLE KEYS */;
+/*!40000 ALTER TABLE `postingrating` ENABLE KEYS */;
+
+
+-- Exportiere Struktur von Tabelle forum.postingtag
+DROP TABLE IF EXISTS `postingtag`;
+CREATE TABLE IF NOT EXISTS `postingtag` (
+  `tag` varchar(50) NOT NULL,
+  `postingId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`tag`),
+  KEY `postingId` (`postingId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Exportiere Daten aus Tabelle forum.postingtag: ~0 rows (ungefähr)
+DELETE FROM `postingtag`;
+/*!40000 ALTER TABLE `postingtag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `postingtag` ENABLE KEYS */;
+
+
 -- Exportiere Struktur von Tabelle forum.subject
 DROP TABLE IF EXISTS `subject`;
 CREATE TABLE IF NOT EXISTS `subject` (

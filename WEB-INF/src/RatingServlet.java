@@ -1,3 +1,5 @@
+package de.dhbw.StudentForum;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,8 +25,8 @@ public class RatingServlet extends HttpServlet {
 		int tUpCount = 0;
 		int tDownCount = 0;
 		String status = "";
-		String postId = request.getParameter("postId");
-		String userId = request.getParameter("userId");
+		int postId = Integer.parseInt(request.getParameter("postId"));
+		int userId = Integer.parseInt(request.getParameter("userId"));
 	
 		//DAO d = new DAO();
 		//hasUserRated = d.hasUserRated(postId, userId);
@@ -36,15 +38,19 @@ public class RatingServlet extends HttpServlet {
 		
 		if((action.equals("thumbsUp") || action.equals("thumbsDown")) && !hasUserRated){
 		
-			//d.insertRating(postId, userId, action);
 			//ratings = d.getRatings(postId);
 			//tUpCount = ratings[0];
 			//tDownCount = ratings[1];
 				
-			if(action.equals("thumbsUp"))
+			if(action.equals("thumbsUp")){
 				tUpCount += 1;
-			else if(action.equals("thumbsDown"))
+				//d.insertRating(postId, userId, 1);
+			}	
+			else if(action.equals("thumbsDown")){
 				tDownCount += 1;
+				//d.insertRating(postId, userId, -1);
+			}
+				
 				
 			status = "OK";
 			

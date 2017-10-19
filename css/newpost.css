@@ -67,6 +67,7 @@
 #np_button {
 	min-width: 50%;
 	height: 25px;
+	border-radius: 5px;
 	background-color: #4CAF50;
 	color: white;
 	font-size: 16pt;
