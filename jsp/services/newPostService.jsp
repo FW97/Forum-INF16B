@@ -3,24 +3,25 @@
 	Service to create a new posting
 -->
 
-<% page import = "StudentForum.DAO, StudentForum.Posting" %>
+<%@ page import = "StudentForum.DAO, StudentForum.Posting" %>
 
-	String title = request.getParameter("np_posting_titel");
-	Date whenDeleted = request.getParameter("");
-	Date whenPosted = request.getParameter("");
-	int id = request.getParameter("");
+<%	String title = request.getParameter("np_posting_titel");
 	String text = request.getParameter("np_posting_text");
+	int id = 100;
 	
 	DAO daoObject = new DAO();
-
+	
 		if (title.equals(null) || text.equals(null) || id == 0)
 		{
-			System.out.println("{status:\ERROR\, message:\Füllen Sie alle Informationen aus.\}");
+			out.println("{status:\"ERROR\", message:\"Füllen Sie alle Informationen aus.\"}");
 		}
 		else 
 		{
-			Posting postingObject = new Posting(whenDeleted, whenPosted, id, text);			
+			Posting postingObject = new Posting(id++);			
+			postingObject.setTitle(title)
+			postingObject.setText(text)
+			 
 			daoObject.addNewPosting(postingObject);
-			System.out.println("{status:\OK\}");
+			out.println("{status:\"OK\"}");
 		}
 %>
