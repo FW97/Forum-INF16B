@@ -10,9 +10,13 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# IntelliJ Configuration
+/.idea
+
 # Package Files #
 *.jar
 *.war
+!/WEB-INF/lib/*.jar
 *.ear
 *.zip
 *.tar.gz
