@@ -13,6 +13,11 @@
    <link rel="stylesheet" type="text/css" href="/css/forum.css">
 </head>
 
+<%
+    // Hold the current login session (if existent)
+    User loginSession = (User) session.getAttribute("username");
+%>
+
 <body>
   <nav>
     <div class="header">
@@ -23,8 +28,8 @@
 
       <%
         // if user == admin, show 'add forum'-button
-        if((User) session.getAttribute("username") != null) {
-          if(((User) session.getAttribute("username")).getRole() == 2) {
+        if(loginSession != null) {
+          if(loginSession.getRole() == 2) {
       %>
 	      <div class="newForumButton">
           <input type="button" onclick="window.location.replace('/jsp/newForum.jsp');" 
@@ -34,8 +39,7 @@
 
       <div class="right">
         <% 
-          if(session.getAttribute("username") == null 
-             || ((String) session.getAttribute("username")).isEmpty()) {
+          if(loginSession == null) {
         %>
           <div id="loginform">
             <a href="/jsp/register.jsp">
@@ -50,7 +54,7 @@
         <% } else { %>
           <div id="loggedin">
             <a href="/jsp/profil.jsp">
-              Hallo, <%=((User) session.getAttribute("username")).getFirstname() %>
+              Hallo, <%=loginSession.getFirstname() %>
               <i class="fa fa-user-circle-o" aria-hidden="true"></i>
             </a>
           </div>
