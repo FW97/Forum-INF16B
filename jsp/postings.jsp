@@ -3,7 +3,7 @@
   -- * received through a GET request from the URL
 --> 
 
-<%@ page import = "java.io.*, java.util.*, javax.servlet.ServletRequest, de.dhbw.Forum.*, java.lang.*" %>
+<%@ page import = "java.io.*, java.util.*, javax.servlet.ServletRequest, de.dhbw.StudentForum.Posting, java.lang.*" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
 <%!
