@@ -38,7 +38,7 @@ public class RatingServlet extends HttpServlet {
 		
 		if((action.equals("thumbsUp") || action.equals("thumbsDown")) && !hasUserRated){
 		
-			//ratings = d.getRatings(postId);
+			//ratings = d.getRatingByPostingId(postId);
 			//tUpCount = ratings[0];
 			//tDownCount = ratings[1];
 				
