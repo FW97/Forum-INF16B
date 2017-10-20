@@ -7,12 +7,12 @@
 <jsp:include page="header.jsp" />
 
 <%@ page import="de.dhbw.StudentForum.Contact"%>
-<%@ page import="javax.mail.MessagingException;"%>
+<%@ page import="javax.mail.MessagingException"%>
 <%
 	String message = null;
 	String status = null;
 	if (request.getParameter("submit") != null) {
-		JavaEmail javaEmail = new JavaEmail();
+		Contact javaEmail = new Contact();
 		javaEmail.setMailServerProperties();
 		String emailSubject = "Kontakt Formular Anfrage";
 		String emailBody = "";
