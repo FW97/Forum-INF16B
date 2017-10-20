@@ -1,46 +1,47 @@
-<!--
-  -- @author Niklas Portmann, Philipp Seitz, Morten Terhart
-  -- * created on 09.10.17
-  -- * Login Service to validate username and password and storing
-  -- * the session into the database
-  -->
-<%@ page import="de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User" %>
+<%@ page import="de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, de.dhbw.StudentForum.Hashing" %>
+
 <%
-	// TODO: Replace the out.write() method of type JspWriter with out.println()
-	// to send the reponse instead of writing it plain to the HTML
+
+	/**
+	  * @author Niklas Portmann, Philipp Seitz, Morten Terhart
+	  * created on 09.10.17
+	  * Login Service to validate username and password and storing
+	  * the session into the database
+	  */
+
 	response.setContentType("application/json");
-	String username = "jason"; //request.getParameter("username");
-	String password = "jason's password"; // request.getParameter("password");
+	String username = request.getParameter("username");
+	String password = request.getParameter("password");
 
 	final String wrongCredentialsMessage = "Username or password seems to be wrong!";
 	final String successfulLoginMessage  = "Authentication successful!";
 	final String loginErrorMessage       = "Authentication failed!";
 
 	if (username == null || password == null) {
-		out.write(createResponse("Error", wrongCredentialsMessage));
+		out.println(createResponse("Error", wrongCredentialsMessage));
 		return;
 	}
 
 	DAO databaseObject = new DAO();
-	User loggedUser = new User(0); //databaseObject.getUserByEmail(username);
+	User loggedUser = new User(0); // databaseObject.getUserByEmail(username);
 	loggedUser.setFirstname("Jason");
 	loggedUser.setLastname("Biggs");
 	loggedUser.setEmail("j.biggs24@t-online.de");
-	loggedUser.setPwHash("4tUs4DhaGkX3JlXC5jds4Do0rX");
-	loggedUser.setPwSalt("E1F53135E559C253");
+	loggedUser.setPwHash("+v1SQl2PKeYFFiPfoemlHQGttPLm5aj2MQEtuMHS78NbuKpIghr4VPKroGZTtKa3gKZMcy9ROKMkMUqLBnVGIw==");
+	loggedUser.setPwSalt("sqndpB7MOQO8rZ6mZJPIfs3UNwq87FEdUCoMgMDHa6V3v22OMMT+Bo019B6Fee5GaoTziWrm2l30BReYZYFWCA==");
 	loggedUser.setRole(2);
 	loggedUser.setImgUrl("https://i.imgur.com/5pgEunI.png");
 
 	if (loggedUser == null) {
-		out.write(createResponse("Error", wrongCredentialsMessage));
+		out.println(createResponse("Error", wrongCredentialsMessage));
 	}
 
-	String generatedHash = makeHash(loggedUser.getPwSalt(), password);
+	String generatedHash = hashPassword(password, loggedUser.getPwSalt());
 	if (generatedHash.equals(loggedUser.getPwHash())) {
 		session.setAttribute("username", loggedUser);
-		out.write(createResponse("OK", null));
+		out.println(createResponse("OK", null));
 	} else {
-		out.write(createResponse("Error", wrongCredentialsMessage));
+		out.println(createResponse("Error", wrongCredentialsMessage));
 	}
 %>
 
@@ -63,11 +64,11 @@
 	/**
 	 * Generate the hashcode for the applied salt and password phrase. This method serves
 	 * as comparison to the saved password hash in the user record to validate the passphrase.
-	 * @param salt The user's unique salt
 	 * @param password The user's password
+	 * @param salt The user's unique salt
 	 * @return the hash generated out of salt and password
 	 */
-	private String makeHash(String salt, String password) {
-	    return "4tUs4DhaGkX3JlXC5jds4Do0rX";
+	private String hashPassword(String password, String salt) {
+		return Hashing.getHashedPassword(password, salt);
 	}
 %>
