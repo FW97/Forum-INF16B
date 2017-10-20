@@ -81,9 +81,9 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 
             document.getElementById("reply-form").insertAdjacentHTML("beforebegin", html);
         };
-        xhr.open("POST", "postingdiv", false);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(JSON.stringify({postingid: postingid}));
+        xhr.open("POST", "postingdiv.jsp", false);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send("postingid=" + postingid);
     }
 
     function sendReply() {
@@ -104,9 +104,7 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
                      */
                     loadDiv(response["postingid"]);
                 } else {
-                    var html = "<div class='" + ( response["status"] == "Warning" ? "warningbox" : "errorbox" )
-                        + "'>" + response["message"] + "</div>";
-
+                    var html = "<div class='errorbox'>" + response["message"] + "</div>";
                     document.getElementById("reply-form").insertAdjacentHTML("beforebegin", html);
                 }
             }
