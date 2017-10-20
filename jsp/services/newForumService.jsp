@@ -4,7 +4,7 @@
 -- * New Forum Service
 -->
 
-<% page import = "StudentForum.DAO, StudentForum.User" %>
+<% page import ="de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, de.dhbw.StudentForum.Forum %>
 
 <%
 	response.setContentType("application/json");
@@ -14,16 +14,25 @@
 	final String ErrorForumStatus  = "ERROR";
 
 	String newForumName = request.getParameter("newForumName");
+	if (newForumName==0 || newForumName.length()==0){
+		out.println("{\"status\": \"Error\",\"message\":\"kein Forumname\"}");
+	}
 	String newForumKategorie = request.getParameter("newForumKategorie");
+	if (newForumKategorie==0 || newForumKategorie.length()==0){
+		out.println("{\"status\": \"Error\",\"message\":\"keine Forumkategorie\"}");
+	}
 
 	DAO databaseObject = new DAO();
-	Int loggedUserID = session.getAttribute("userid");
-	User loggedUser = databaseObject.getUserById(loggedUserID);
+	User loggedUser = (User)session.getAttribute("user");
+	Forum forum = new Forum(1);
+	forum.setName(newForumName);
+	forum.setCategory(newForumKategorie);
+	forum.setModeratorid(loggedUser.getId());
 
 	//Hierbei wird angenommen, dass wenn die Role eines Benutzers auf 1 steht, er Admin ist und die Berechtigung zum Erstellen von Foren hat.
 	if(loggedUser.getRole == 1)
 	{
-		databaseObject.addForum(newForumName, newForumKategorie, loggedUserID);
+		databaseObject.addForum(forum);
 		System.out.println("{ status: \"" + successfulForumStatus + "\", message: \"" + successfulForumMessage + "\" }");
 	} else {
 		System.out.println("{ status: \"" + ErrorForumStatus + "\", message: \"" + ErrorForumMessage + "\" }");
