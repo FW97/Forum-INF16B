@@ -1,0 +1,139 @@
+@import 'header.css';
+@import 'footer.css';
+@import 'errors.css';
+@import 'top8.css';
+@import 'forumlist.css';
+@import 'components.css';
+@import 'contact.css';
+@import 'privacy.css';
+@import 'imprint.css';
+@import 'createForum.css';
+@import 'newpost.css';
+
+/* general */
+
+* {
+    font-family: sans-serif;
+}
+
+html {
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+	max-width: 1280px;
+	margin: 0 auto;
+	margin-top: 8px;
+    padding: 0 9px;
+}
+
+/* posting */
+.posting {
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 15px;
+}
+
+.posting .forumcategory {
+    font-size: 10pt;
+    color: #888888;
+    display: block;
+}
+
+.posting h1 {
+    margin: 0;
+}
+
+.posting .author {
+    font-size: 12pt;
+    color: #444444;
+}
+
+ .posting .date {
+    font-size: 12pt;
+    color: #444444;
+}
+
+ .posting table {
+    width: 100%;
+    empty-cells: show;
+}
+
+.posting tr td:nth-child(even) {
+    background-color: #ccccce;
+}
+
+.posting tr td:nth-child(odd) {
+    background-color: #c3c3c9;
+}
+
+.posting a {
+    text-decoration: none;
+}
+
+.posting a:link {
+    color: #0000cc;
+}
+
+.posting a:hover {
+    color: #00ff33;
+}
+
+.posting a:active {
+    color: #ffffff;
+}
+
+.posting .comment {
+    padding: 15px;
+    border: 1px solid #dddddd;
+    margin: 5px;
+    border-radius: 8px;
+    font-size: 14pt;
+}
+
+.formlist H1 {
+    /* bisschen kleiner */
+}
+
+/* profil */
+
+
+
+.profil {
+    padding: 3rem;
+}
+
+#uploadImage {
+    float: right;
+    margin: 0;
+    padding: 0.5rem 1rem;
+}
+
+.settingLabel {
+    width: 14rem;
+    float: left;
+}
+
+.settingContent {
+    float: left;
+    width: 20rem;
+}
+
+.settingContent input[type=text] {
+    width: 16rem;
+}
+
+.setting {
+    display: block;
+}
+
+.settingSpacing {
+    padding-bottom: 0.5rem;
+}
+
+.settingBox {
+    display: table;
+    border-bottom: 1px solid #dad8de;
+    padding: 2rem 0;
+}
