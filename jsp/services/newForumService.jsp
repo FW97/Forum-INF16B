@@ -1,12 +1,14 @@
-<!--
-	@author Florian Keilhofer, Manuel Libal, Theresa Hillenbrand
--- * created on 11.10.17
--- * New Forum Service
--->
+
 
 <%@ page import ="de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, de.dhbw.StudentForum.Forum %>
 
 <%
+	/*
+	* @author Florian Keilhofer, Manuel Libal, Theresa Hillenbrand
+	* created on 11.10.17
+	* New Forum Service 
+	*/
+	
 	response.setContentType("application/json");
 	final String successfulForumMessage  = "Forum created successful!";
 	final String ErrorForumMessage  = "You have no permission!";
