@@ -7,7 +7,6 @@ Service to create a new posting
 
 <%	int subjectid = Integer.parseInt(request.getParameter("subjectid"));
     String replystring = request.getParameter("replystring");
-    int id = 0;
 
     DAO daoObject = new DAO();
 
