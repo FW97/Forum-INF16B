@@ -37,7 +37,7 @@
                 alert(xhr.responseText);
             }
         }
-        xhr.send("username=" + username + "&passwd=" + password);
+        xhr.send("username=" + username + "&password=" + password);
     }
     </script>
 
