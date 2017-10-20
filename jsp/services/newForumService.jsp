@@ -4,7 +4,7 @@
 -- * New Forum Service
 -->
 
-<% page import ="de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, de.dhbw.StudentForum.Forum %>
+<%@ page import ="de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, de.dhbw.StudentForum.Forum %>
 
 <%
 	response.setContentType("application/json");
@@ -14,11 +14,11 @@
 	final String ErrorForumStatus  = "ERROR";
 
 	String newForumName = request.getParameter("newForumName");
-	if (newForumName==0 || newForumName.length()==0){
+	if (newForumName==null || newForumName.length()==0){
 		out.println("{\"status\": \"Error\",\"message\":\"kein Forumname\"}");
 	}
 	String newForumKategorie = request.getParameter("newForumKategorie");
-	if (newForumKategorie==0 || newForumKategorie.length()==0){
+	if (newForumKategorie==null || newForumKategorie.length()==0){
 		out.println("{\"status\": \"Error\",\"message\":\"keine Forumkategorie\"}");
 	}
 
