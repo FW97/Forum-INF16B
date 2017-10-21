@@ -5,7 +5,7 @@
 <%@ page import="de.dhbw.StudentForum.User" %>
 <%
     // Hold the current login session (if existent)
-    User loginSession = (User) session.getAttribute("username");
+    User loginSession = (User) session.getAttribute("user");
 %>
 <nav>
 <div class="header">
