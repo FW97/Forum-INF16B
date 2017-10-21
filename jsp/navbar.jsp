@@ -2,6 +2,7 @@
    Assignment: 	Studentenforum
    Name: Eric Dussel, Hans Fuchs
  -->
+<body>
 <%@ page import="de.dhbw.StudentForum.User" %>
 <%
     // Hold the current login session (if existent)
