@@ -1,7 +1,6 @@
- <!--
-   Assignment: 	Studentenforum
-   Name: Eric Dussel, Hans Fuchs
- -->
+<body>
+<%  //   Assignment: 	Studentenforum
+    //   Name: Eric Dussel, Hans Fuchs      %>
 <%@ page import="de.dhbw.StudentForum.User" %>
 <%
     // Hold the current login session (if existent)
