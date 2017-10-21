@@ -25,7 +25,7 @@ abgelegt werden. Falls es letzteren Ordner noch nicht gibt, muss er dort erstell
 die Kompilierung mit dem Kommando
 
 ```text
-.../WEB-INF:$ javac -cp "lib/jstl-1.2.jar:lib/javax.mail-1.5.5.jar" -d classes src/*.java
+.../WEB-INF:$ javac -cp lib -d classes src/*.java
 ```
 
 abgeschlossen werden, während unter `classes` gleichzeitig automatisch die Paketstruktur vom `javac` angelegt wird.

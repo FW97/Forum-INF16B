@@ -454,7 +454,7 @@ public class DAO {
 	public int[] getRatingByPostingId(int postingId) {
 		Connection con = null;
         ResultSet rs; 
-        int[2] rating;
+        int[] rating = new int[2];
         
         try
         {
