@@ -1,6 +1,6 @@
 
 
-<%@ page import ="de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, de.dhbw.StudentForum.Forum %>
+<%@ page import ="de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, de.dhbw.StudentForum.Forum" %>
 
 <%
 	/*
@@ -31,8 +31,8 @@
 	forum.setCategory(newForumKategorie);
 	forum.setModeratorid(loggedUser.getId());
 
-	//Hierbei wird angenommen, dass wenn die Role eines Benutzers auf 1 steht, er Admin ist und die Berechtigung zum Erstellen von Foren hat.
-	if(loggedUser.getRole == 1)
+	//Hierbei wird angenommen, dass wenn die Rolle eines Benutzers auf 1 steht, er Admin ist und die Berechtigung zum Erstellen von Foren hat.
+	if(loggedUser.getRole() == 1)
 	{
 		databaseObject.addForum(forum);
 		System.out.println("{ status: \"" + successfulForumStatus + "\", message: \"" + successfulForumMessage + "\" }");
