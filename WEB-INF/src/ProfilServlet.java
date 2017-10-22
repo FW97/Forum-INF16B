@@ -86,6 +86,7 @@ public class ProfilServlet extends HttpServlet {
 	        //DAO.updateImgurl(user); -> uncomment in prodcution
 		}
  
+		response.sendRedirect("jsp/profil.jsp");
 	}
 	
 	private boolean isValidInput(User user) {
