@@ -38,7 +38,7 @@
 
 	String generatedHash = hashPassword(password, loggedUser.getPwSalt());
 	if (generatedHash.equals(loggedUser.getPwHash())) {
-		session.setAttribute("username", loggedUser);
+		session.setAttribute("user", loggedUser);
 		out.println(createResponse("OK", null));
 	} else {
 		out.println(createResponse("Error", wrongCredentialsMessage));
