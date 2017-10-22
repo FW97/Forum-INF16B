@@ -15,15 +15,18 @@
 	
 		if (title.equals(null) || text.equals(null) || id == 0)
 		{
-			out.println("{status:\"ERROR\", message:\"Füllen Sie alle Informationen aus.\"}");
+			out.println("{status:\"ERROR\", message:\"Möglicherweise sind nicht alle Felder korrekt ausgefüllt. Bitte überprüfen Sie Ihre Eingaben.\"}");
 		}
 		else 
 		{
+			Subject subjectObject = new Subejct(/*Subject-ID*/);
+			subjectObject.setName(title);
+			
 			Posting postingObject = new Posting(id);			
-			postingObject.setTitle(title)
-			postingObject.setText(text)
+			postingObject.setTitle(title);
+			postingObject.setText(text);
 			 
 			daoObject.addNewPosting(postingObject);
-			out.println("{status:\"OK\"}");
+			out.println("{status:\"OK\", message:\"Ihr Subject wurde erfolgreich erstellt.\"}");
 		}
 %>
