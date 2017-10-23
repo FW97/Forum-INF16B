@@ -25,7 +25,7 @@ abgelegt werden. Falls es letzteren Ordner noch nicht gibt, muss er dort erstell
 die Kompilierung mit dem Kommando
 
 ```text
-.../WEB-INF:$ javac -cp lib -encoding "UTF-8" -d classes src/*.java
+.../WEB-INF:$ javac -cp "lib/*:classes" -encoding "UTF-8" -d classes src/*.java
 ```
 
 abgeschlossen werden, während unter `classes` gleichzeitig automatisch die Paketstruktur vom `javac` angelegt wird.
