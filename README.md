@@ -64,4 +64,4 @@ zu vermeiden oder bei anderen auszulösen.
 Bitte nicht den Ordner `WEB-INF/classes` hier hochladen, da dort lediglich der Bytecode der Java-Klassen liegt,
 welcher nur lokal benutzt werden muss.
 
-Autoren: Niklas Portmann, Marek Hohmann, Morten Terhart
+**Autoren: Niklas Portmann, Marek Hohmann, Morten Terhart**
