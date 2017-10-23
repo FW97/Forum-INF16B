@@ -16,7 +16,7 @@
 
     <%
     // if user == admin, show 'add forum'-button
-    if((User) loginSession != null) {
+    if(loginSession != null) {
         if(loginSession.getRole() == 2) {
     %>
         <div class="newForumButton">

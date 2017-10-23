@@ -1,7 +1,3 @@
-<!--
-
--->
-
 <%@ page import = "de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.Posting" %>
 
 <%	//	@author Marco Dauber, Eric Dussel, Jacob Krauth
@@ -13,7 +9,7 @@
 	
 	DAO daoObject = new DAO();
 	
-		if (title.equals(null) || text.equals(null) || id == 0)
+		if (title == null || text == null || id == 0)
 		{
 			out.println("{status:\"ERROR\", message:\"Möglicherweise sind nicht alle Felder korrekt ausgefüllt. Bitte überprüfen Sie Ihre Eingaben.\"}");
 		}

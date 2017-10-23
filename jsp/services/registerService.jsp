@@ -29,7 +29,7 @@ package de.dhbw.StudentForum;
 			u.setEmail(email);
 			u.setFirstname(firstname);
 			u.setLastname(lastname);
-			u.setRole(1); <!-- normaler User -->
+			u.setRole(1); // normaler User
 			u.setPwHash(makeHash(password));
 			u.setPwSalt(salt);
 			
