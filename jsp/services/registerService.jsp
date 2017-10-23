@@ -1,13 +1,13 @@
-<!--
-	@author Laura Kaipl, Tobias Siebig
-	Service to register new Users to our forum
--->
-
 package de.dhbw.StudentForum;
 
 <%@ page import = "de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, java.util.Random" %>
 
 <%
+	/*
+	@author Laura Kaipl, Tobias Siebig
+	Service to register new Users to our forum
+	*/
+
 	String email = request.getParameter("email");
 	String firstname = request.getParameter("firstname");
 	String lastname = request.getParameter("lastname");
@@ -30,6 +30,7 @@ package de.dhbw.StudentForum;
 			u.setFirstname(firstname);
 			u.setLastname(lastname);
 			u.setRole(1); <!-- normaler User -->
+			u.setImgUrl("standardPic.png");
 			u.setPwHash(makeHash(password));
 			u.setPwSalt(salt);
 			
