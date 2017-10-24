@@ -1,44 +1,46 @@
 <!--
   Authors: Michael Skrzypietz, Justus Grauel
-  
-  TODO: User importieren, dann kann man die auskommentierten Testdaten wieder einfügen
 -->
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.io.*,java.util.*, javax.servlet.*, de.dhbw.StudentForum.User"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.io.*,java.util.*, javax.servlet.*, de.dhbw.StudentForum.User, de.dhbw.StudentForum.SettingErrors"%>
 
-<%
-	User user = new User(1);
-	user.setEmail("max.mustermann@gmail.com");
-	user.setFirstname("Max");
-	user.setLastname("Mustermann");
-	user.setImgUrl("http://via.placeholder.com/150x150");
-	session.setAttribute("user", user);
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="header.jsp" />
-
 
   <div class="profil">
     <h1>Profileinstellungen</h1>
     
-    <form method="post" action="ProfilServlet" enctype="multipart/form-data">
+    <form method="post" action="/ProfilServlet" enctype="multipart/form-data">
       <div class="settingBox">
         <div class="setting">
           <div class="settingLabel settingSpacing">
             <label>E-Mail</label>
           </div>
           <div class="settingContent settingSpacing">
-            <input type="text" name="email" value="${user.email}" />
+            <input type="text" name="email" value="${user.email}" /> 
+            <br>
+            <div class="settingError">
+              <c:if test = "${settingErrors.email.length() > 0}">
+                <c:out value="${settingErrors.email}"></c:out>
+              </c:if>
+            </div>
           </div>
         </div> 
-
+        
         <div class="setting">
           <div class="settingLabel settingSpacing">
             <label>Vorname</label>
           </div>
           <div class="settingContent settingSpacing">
             <input type="text" name="firstName" value="${user.firstname}" />
+            <br>
+            <div class="settingError">
+              <c:if test = "${settingErrors.firstName.length() > 0}">
+                <c:out value="${settingErrors.firstName}"></c:out>
+              </c:if>
+            </div>
           </div>
         </div>
   
@@ -48,6 +50,12 @@
             </div>
           <div class="settingContent">
             <input type="text" name="lastName" value="${user.lastname}" />
+            <br>
+            <div class="settingError">
+              <c:if test = "${settingErrors.lastName.length() > 0}">
+                <c:out value="${settingErrors.lastName}"></c:out>
+              </c:if>
+            </div>
           </div>
         </div>
       </div>
@@ -58,8 +66,15 @@
             <label>Profilbild</label>
           </div>
           <div class="settingContent"> 
-            <img src="${user.imgUrl}">
+            <img class="centered-and-cropped" src="<c:url value="/img/profilImages/${user.imgUrl}"/>" alt="Profil Image"  height="150" width="150">
+            <br>
             <input type="file" name="file" id="uploadImage" value="Datei ausw&auml;hlen">
+            <br>
+            <div class="settingError">
+              <c:if test = "${settingErrors.profilImage.length() > 0}">
+                <c:out value="${settingErrors.profilImage}"></c:out>
+              </c:if>
+            </div>
           </div>
         </div>
       </div>
@@ -89,11 +104,17 @@
           </div>
           <div class="settingContent">
             <input type="password" name="newPassword2"></input>
+            <br>
+            <div class="settingError">
+              <c:if test = "${settingErrors.password.length() > 0}">
+                <c:out value="${settingErrors.password}"></c:out>
+              </c:if>
+            </div>
           </div>
         </div>
       </div>
       <br>
-      <input type="submit" href="index.jsp" value="&Auml;nderungen speichern">
+      <input type="submit" value="&Auml;nderungen speichern">
     </form>
   </div>
 <jsp:include page="footer.jsp" />

@@ -25,8 +25,8 @@ public class RatingServlet extends HttpServlet {
 		int tUpCount = 0;
 		int tDownCount = 0;
 		String status = "";
-		String postId = request.getParameter("postId");
-		String userId = request.getParameter("userId");
+		int postId = Integer.parseInt(request.getParameter("postId"));
+		int userId = Integer.parseInt(request.getParameter("userId"));
 	
 		//DAO d = new DAO();
 		//hasUserRated = d.hasUserRated(postId, userId);
@@ -38,7 +38,7 @@ public class RatingServlet extends HttpServlet {
 		
 		if((action.equals("thumbsUp") || action.equals("thumbsDown")) && !hasUserRated){
 		
-			//ratings = d.getRatings(postId);
+			//ratings = d.getRatingByPostingId(postId);
 			//tUpCount = ratings[0];
 			//tDownCount = ratings[1];
 				
