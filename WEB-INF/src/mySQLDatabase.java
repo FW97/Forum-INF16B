@@ -1,11 +1,9 @@
-package de.dhbw.StudentForum;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 
 /*
@@ -19,23 +17,35 @@ import java.util.Collections;
  *
  *                     Singleton Database class
  *                     Only one instance can be instatiatet.
+ *               
+ **************************************************************************                    
+ *                     													*
+ *                     ::::::: REQUIREMENTS ::::::						*
+ *                     													*
+ *                     													*
+ *         Datenbank auf der es die Database >forum< aufgespielt ist 		*
+ *         Referenz in der Entwicklungsumgebung für jdbc Treiber			*
+ *         mysqladmin : User:= root  Password:= root						* 
+ *         																*
+ **************************************************************************        
+ *         
  */
 
 
 
-public class MySQLDatabase
+public class mySQLDatabase
 {
     
-    
-    private static MySQLDatabase mySQLDatabase; //Wird im Konstruktor gesetzt davor direkt initialisiert // festcodiert
-    
+
     private Connection connection;
-    private String dbURL;
-    private String dbUser;
-    private String dbPass;
+    private static String dbURL = "localhost:3306/forum";
+    private static String dbUser = "root";
+    private static String dbPass = "root";
+  
+    private static mySQLDatabase mySQLDatabase = new mySQLDatabase(dbURL, dbUser, dbPass);
     
     
-    private MySQLDatabase(String dbURL, String dbUser, String dbPass, String DatabaseUrl, String rootUser, String rootPw)
+    private mySQLDatabase(String dbURL, String dbUser, String dbPass)
     {
         
         this.dbURL = dbURL;
@@ -46,9 +56,9 @@ public class MySQLDatabase
         try
         {
             // Edit Driverinfo
-            Class.forName("com.mysql.jdbc.Driver");
-            
-            mySQLDatabase = new MySQLDatabase(DatabaseUrl, rootUser, rootPw);
+        		System.out.println("* Treiber laden"); 
+      	    Class.forName("org.gjt.mm.mysql.Driver").newInstance(); 
+      	    
         } catch (Exception e){
             e.printStackTrace();}
         
@@ -57,7 +67,7 @@ public class MySQLDatabase
     /*
      This method returns the instance of the class.
      */
-    public static MySQLDatabase getInstance()
+    public static mySQLDatabase getInstance()
     {
         return mySQLDatabase;
     }
@@ -69,7 +79,7 @@ public class MySQLDatabase
     {
         try
         {
-            this.connection = DriverManager.getConnection(this.dbURL, this.dbUser, this.dbPass);
+            this.connection = DriverManager.getConnection("jdbc:mysql://"+dbURL+"?verifyServerCertificate=false&useSSL=true", dbUser,dbPass);
         }catch (Exception e){e.printStackTrace();}
         return this.connection;
     }
