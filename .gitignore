@@ -27,3 +27,4 @@ hs_err_pid*
 
 # temporaty files
 *.swp
+.DS_Store
