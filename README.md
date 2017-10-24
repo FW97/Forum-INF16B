@@ -2,7 +2,7 @@
 
 ## ER-Schema
 
-![ER-Schema](https://i.imgur.com/5pgEunI.png) 
+![ER-Schema](https://i.imgur.com/BoJxF6s.png) 
 
 ## MySQL Dump
 Die Datenbank wurde mit MySQL Community Sever version 5.6.37 exportiert, diese kann von der
