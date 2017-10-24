@@ -1,3 +1,5 @@
+package de.dhbw.StudentForum;
+
 import java.sql.*;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ import java.sql.DriverManager;
 
 
 
-public class mySQLDatabase
+public class MySQLDatabase
 {
     
 
@@ -42,10 +44,10 @@ public class mySQLDatabase
     private static String dbUser = "root";
     private static String dbPass = "root";
   
-    private static mySQLDatabase mySQLDatabase = new mySQLDatabase(dbURL, dbUser, dbPass);
+    private static MySQLDatabase mySQLDatabase = new MySQLDatabase(dbURL, dbUser, dbPass);
     
     
-    private mySQLDatabase(String dbURL, String dbUser, String dbPass)
+    private MySQLDatabase(String dbURL, String dbUser, String dbPass)
     {
         
         this.dbURL = dbURL;
@@ -67,7 +69,7 @@ public class mySQLDatabase
     /*
      This method returns the instance of the class.
      */
-    public static mySQLDatabase getInstance()
+    public static MySQLDatabase getInstance()
     {
         return mySQLDatabase;
     }
