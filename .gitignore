@@ -16,7 +16,7 @@
 # Package Files #
 *.jar
 *.war
-!jstl-1.2.jar
+!/WEB-INF/lib/*.jar
 *.ear
 *.zip
 *.tar.gz
@@ -24,3 +24,6 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# temporaty files
+*.swp
