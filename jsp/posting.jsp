@@ -41,8 +41,9 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
         <!--<span class="author"><%--<%=author%>--%></span> &bull; -->
         <span class="author"><%=author[i]%><% i++;%></span> &bull;
         <!--<span class="date"><%--<%=posting.whenPosted%>--%></span> -->
-        <span class="date"><%=date%></span>    
+        <span class="date"><%=date%></span>
         <p class="posting">
+                <%--<c:out value="${posting.message}"/>-->
                 <c:out value="${posting}"/>
         <div class="attachment">
             <!-- temporary as placeholder-->
