@@ -3,8 +3,6 @@
 	Service to register new Users to our forum
 -->
 
-package de.dhbw.StudentForum;
-
 <%@ page import = "de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, java.util.Random" %>
 
 <%
