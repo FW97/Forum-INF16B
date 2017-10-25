@@ -30,6 +30,7 @@
 			u.setRole(1); // normaler User
 			u.setPwHash(makeHash(password));
 			u.setPwSalt(salt);
+			u.setImgUrl("/img/profilImages/standardPic.png");
 			
 			d.addNewUser(u);
 			
