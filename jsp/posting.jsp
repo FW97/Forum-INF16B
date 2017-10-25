@@ -43,7 +43,7 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
         <!--<span class="date"><%--<%=posting.whenPosted%>--%></span> -->
         <span class="date"><%=date%></span>
         <p class="posting">
-                <%--<c:out value="${posting.message}"/>-->
+                <%--<c:out value="${posting.message}"/> --%>
                 <c:out value="${posting}"/>
         <div class="attachment">
             <!-- temporary as placeholder-->
