@@ -1,11 +1,10 @@
-<!--
-@author Bernhard Koll, Jan Malchert
-Service to create a new posting
--->
-
 <%@ page import = "java.util.GregorianCalendar, de.dhbw.StudentForum.Posting, de.dhbw.StudentForum.DAO " %>
 
-<%	int subjectid = Integer.parseInt(request.getParameter("subjectid"));
+<%
+    // @author Bernhard Koll, Jan Malchert
+    // Service to create a new posting
+
+    int subjectid = Integer.parseInt(request.getParameter("subjectid"));
     String replystring = request.getParameter("replystring");
 
     DAO daoObject = new DAO();

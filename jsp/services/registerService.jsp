@@ -1,11 +1,9 @@
-<!--
-	@author Laura Kaipl, Tobias Siebig
-	Service to register new Users to our forum
--->
-
 <%@ page import = "de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, java.util.Random" %>
 
 <%
+	// @author Laura Kaipl, Tobias Siebig
+	// Service to register new Users to our forum
+
 	String email = request.getParameter("email");
 	String firstname = request.getParameter("firstname");
 	String lastname = request.getParameter("lastname");
