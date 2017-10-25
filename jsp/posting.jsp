@@ -10,6 +10,7 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 
     //Subject subject = new Subject(request.getParameter("id"));
     //Posting[] subjectPostings = subject.getPostings();
+    // DAO daoObject = new DAO();
 
     String forum = "Informatik";
     String subjectTitle = "INF16A: Brauche   hilfe bei Hausaufgaben";
@@ -36,8 +37,11 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
     <p><c:forEach var="tag" items="<%=tags%>"><a class="tag" href="posting.jsp"><c:out value="${tag}"/></a></c:forEach></p>
         <%-- <c:forEach items="<%=subjectPostings%>" var="posting"> --%>
         <c:forEach items="<%=postings%>" var="posting">
+        <% String author  = daoObject.getUserById(posting.userId);  %>
+        <!--<span class="author"><%--<%=author%>--%></span> &bull; -->
         <span class="author"><%=author[i]%><% i++;%></span> &bull;
-        <span class="date"><%=date%></span>
+        <!--<span class="date"><%--<%=posting.whenPosted%>--%></span> -->
+        <span class="date"><%=date%></span>    
         <p class="posting">
                 <c:out value="${posting}"/>
         <div class="attachment">
