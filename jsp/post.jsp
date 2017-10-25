@@ -52,7 +52,8 @@
   <tr>
     <th class="np_desc"></th>
     <td class="np_content">
-    	<button id="np_button">Erstellen</button>
+    	<!--<button id="np_button">Erstellen</button>-->
+      <input type="button" id="np_button" onclick="window.location.replace('/jsp/services/newPostService.jsp');" value="Erstellen"/>
     </td>
   </tr>
   

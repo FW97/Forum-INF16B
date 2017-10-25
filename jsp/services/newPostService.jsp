@@ -5,24 +5,29 @@
 
 	String title = request.getParameter("np_posting_titel");
 	String text = request.getParameter("np_posting_text");
-	int id = 0;
+	String[] tags = ;	// Checkboxen aus Form 
 	
 	DAO daoObject = new DAO();
 	
-		if (title == null || text == null || id == 0)
+		if (title == null || text == null )
 		{
 			out.println("{status:\"ERROR\", message:\"Möglicherweise sind nicht alle Felder korrekt ausgefüllt. Bitte überprüfen Sie Ihre Eingaben.\"}");
 		}
 		else 
 		{
-			Subject subjectObject = new Subejct(/*Subject-ID*/);
+			Subject subjectObject = new Subejct();
 			subjectObject.setName(title);
 			
-			Posting postingObject = new Posting(id);			
-			postingObject.setTitle(title);
+			Posting postingObject = new Posting();			
 			postingObject.setText(text);
-			 
-			daoObject.addNewPosting(postingObject);
-			out.println("{status:\"OK\", message:\"Ihr Subject wurde erfolgreich erstellt.\"}");
+			postingObject.setTags(tags);
+			
+			try{
+				daoObject.addNewPosting(postingObject);
+				daoObject.addNewSubject(subjectObject);
+				out.println("{status:\"OK\", message:\"Ihr Subject wurde erfolgreich erstellt.\"}");
+			}catch(IOException e){
+				out.println("{status:\"ERROR\", message:\" Probleme bei der Erstellung Ihres Posts. Bitte versuchen Sie es erneut. \"}");
+			}
 		}
 %>

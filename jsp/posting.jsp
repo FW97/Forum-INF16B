@@ -9,7 +9,8 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 <%
 
     //Subject subject = new Subject(request.getParameter("id"));
-    //Posting[] postingsdummy = subject.getPostings();
+    //Posting[] subjectPostings = subject.getPostings();
+    // DAO daoObject = new DAO();
 
     String forum = "Informatik";
     String subjectTitle = "INF16A: Brauche   hilfe bei Hausaufgaben";
@@ -31,26 +32,25 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 <jsp:include page="header.jsp"/>
 
 <div class="subject">
-    <span class="forumCategory"><%=forum%></span>
-    <h1><%=subjectTitle%>
-    </h1>
-    <p>
-        <c:forEach var="tag" items="<%=tags%>"><a class="tag" href="posting.jsp"><c:out value="${tag}"/></a></c:forEach>
-    </p>
-
-    <c:forEach items="<%=postings%>" var="posting" varStatus="loop">
-
-        <%-- <span class="author">${author[loop.index]}</span> &bull;--%>
+    <%-- <%=subject.name%> --%>
+    <h1><%=subjectTitle%></h1>
+    <p><c:forEach var="tag" items="<%=tags%>"><a class="tag" href="posting.jsp"><c:out value="${tag}"/></a></c:forEach></p>
+        <%-- <c:forEach items="<%=subjectPostings%>" var="posting"> --%>
+        <c:forEach items="<%=postings%>" var="posting">
+        <% String author  = daoObject.getUserById(posting.userId);  %>
+        <!--<span class="author"><%--<%=author%>--%></span> &bull; -->
         <span class="author"><%=author[i]%><% i++;%></span> &bull;
+        <!--<span class="date"><%--<%=posting.whenPosted%>--%></span> -->
         <span class="date"><%=date%></span>
         <p class="posting">
+                <%--<c:out value="${posting.message}"/> --%>
                 <c:out value="${posting}"/>
         <div class="attachment">
             <!-- temporary as placeholder-->
-                <%--<c:forEach var="attachment" items="${posting.attachments}">
-              <span>${attachment.attachmentFilename}</span>
-              </c:forEach>-
-              --%>
+            <%--<c:forEach var="attachment" items="${posting.attachments}">
+              <c:if test="${attachment.postingid == posting.id}"><a href=""><span>${attachment.attachmentFilename}</span></a></c:if>
+              </c:forEach>
+            --%>
             <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/101389-200.png" width="30" height="30">
         </div>
         </p>
