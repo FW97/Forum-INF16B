@@ -5,7 +5,7 @@
 
 	String title = request.getParameter("np_posting_titel");
 	String text = request.getParameter("np_posting_text");
-	String[] tags = ;	// Checkboxen aus Form 
+	//String[] tags = ;	// Checkboxen aus Form 
 	User loggedUser = (User) session.getAttribute("user");
 	
 	
@@ -23,7 +23,7 @@
 			
 			Posting postingObject = new Posting();			
 			postingObject.setText(text);
-			postingObject.setTags(tags);
+			/7postingObject.setTags(tags);
 			postingObject.setAuthorid(loggedUser);
 			postingObject.setsubjectid(id);
 			
