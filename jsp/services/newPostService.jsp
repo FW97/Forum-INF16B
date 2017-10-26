@@ -5,7 +5,7 @@
 
 	String title = request.getParameter("np_posting_titel");
 	String text = request.getParameter("np_posting_text");
-	String[] tags = ;	// Checkboxen aus Form 
+	//String[] tags = ;	 Checkboxen aus Form 
 	
 	DAO daoObject = new DAO();
 	
@@ -20,7 +20,7 @@
 			
 			Posting postingObject = new Posting();			
 			postingObject.setText(text);
-			postingObject.setTags(tags);
+			//postingObject.setTags(tags);
 			
 			try{
 				daoObject.addNewPosting(postingObject);
