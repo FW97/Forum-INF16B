@@ -20,7 +20,7 @@
         if(loginSession.getRole() == 2) {
     %>
     <div class="newForumButton">
-        <input type="button" onclick="window.location.replace('/newForum.jsp');" 
+        <input type="button" onclick="window.location.replace('newForum.jsp');" 
                 value="Neues Forum erstellen"/>
     </div>
     <% }} %>
@@ -69,10 +69,10 @@
 <div class="navbar">
     <div class="left">
         <ul class="list">
-            <li><a href="index.jsp">Home</a></li>
+            <li><a href="../index.jsp">Home</a></li>
             <li><a href="search.jsp">Erweiterte Suche</a></li>
             <li><a href="forumlist.jsp">Forenliste</a></li>
-            <li><a href="index.jsp">Neueste Beitr&auml;ge</a></li>
+            <li><a href="../index.jsp">Neueste Beitr&auml;ge</a></li>
         </ul>
     </div>
 </div>
@@ -86,15 +86,15 @@
             String[] b = a[1].split("\\.");
             String[] c = a[a.length-1].split("\\.");
         %>
-        <a href="index.jsp">
+        <a href="../index.jsp">
             <% out.println(b[0]); %>
         </a>
         <%
             if(!(c[0].equals("index")) || !(c[0].equals("forum"))) {
         %>
-        <a href="/<%out.println(a[a.length-1]);%>">
-            <% out.println(c[0]); %>
-        </a>
+               <a href="<%out.println(a[a.length-1]);%>">
+               <% out.println(c[0]); %>
+               </a>
         <% } %>
     </div>
 </div>
