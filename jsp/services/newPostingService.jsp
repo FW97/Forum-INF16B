@@ -1,4 +1,4 @@
-<%@ page import = "java.util.GregorianCalendar, de.dhbw.StudentForum.Posting, de.dhbw.StudentForum.DAO " %>
+<%@ page import = "de.dhbw.StudentForum.Posting, de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User" %>
 
 <%
     // @author Bernhard Koll, Jan Malchert
