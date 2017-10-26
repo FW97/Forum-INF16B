@@ -2,7 +2,6 @@
 <jsp:include page="jsp/header.jsp" />
 
 <h1>Angesagte Themen</h1>
-<!--dummy-->
 <c:set var="latest" value="true" scope="request"/>
 <jsp:include page="jsp/posting.jsp"/>
 
