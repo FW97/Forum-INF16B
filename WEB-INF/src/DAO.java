@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.mysql.jdbc.Statement;
 
@@ -461,6 +463,93 @@ public class DAO {
         }
         return postings;
 	} 
+	
+	public Set<Posting> getPostingsByUser(int userId) {
+		Connection con = null;
+        ResultSet rs; 
+        Set<Posting> postings = new HashSet<Posting>();
+        
+        try{
+            con = MySQLDatabase.getInstance().getConnection();
+        	
+            String sqlString = "SELECT ID, authorid, subjectid, text, whenposted, whendeleted, "
+	        		+ "(SELECT GROUP_CONCAT(t.tag) FROM POSTINGTAG t, POSTING p WHERE p.authorid=? AND t.postingId = p.ID) AS tags, "
+	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r, POSTING p WHERE p.authorid=? AND rating = 1 AND r.postingid = p.id) AS posrat, "
+	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r, POSTING p WHERE p.authorid=? AND rating = -1 AND r.postingid = p.id) AS negrat "
+	        		+ "FROM POSTING "
+	        		+ "WHERE authorid=?;";
+            
+            PreparedStatement ps = con.prepareStatement(sqlString);
+	        ps.setInt(1, userId);
+	        ps.setInt(2, userId);
+	        ps.setInt(3, userId);
+	        ps.setInt(4, userId);
+	        rs = ps.executeQuery();
+
+	        while(rs.next())
+	        {
+	        	Posting posting = new Posting(rs.getInt("ID"));
+	        	posting.setUserId(rs.getInt("authorid"));
+	        	posting.setSubjectId(rs.getInt("subjectid"));
+	        	posting.setMessage(rs.getString("text"));
+	        	posting.setWhenPosted(rs.getDate("whenposted"));
+	        	posting.setWhenDeleted(rs.getDate("whendeleted"));
+	        	posting.setTags(rs.getString("tags").split(";"));
+	        	posting.setPosRat(rs.getInt("posrat"));
+	        	posting.setNegRat(rs.getInt("negrat"));
+	        	postings.add(posting);
+	        }
+	        
+	        con.close();
+	    }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        }
+        return postings;
+	}
+	
+	public Set<Posting> getPostingsByTag(String tag) {
+		Connection con = null;
+        ResultSet rs; 
+        Set<Posting> postings = new HashSet<Posting>();
+        
+        try{
+            con = MySQLDatabase.getInstance().getConnection();
+        	
+            String sqlString = "SELECT parent.ID, parent.authorid, parent.subjectid, parent.text, parent.whenposted, parent.whendeleted, "
+	        		+ "(SELECT GROUP_CONCAT(t.tag) FROM POSTINGTAG t, POSTING p WHERE p.ID = parent.ID AND t.postingId = p.ID) AS tags, "
+	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r, POSTING p WHERE p.ID = parent.ID AND rating = 1 AND r.postingid = p.id) AS posrat, "
+	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r, POSTING p WHERE p.ID = parent.ID AND rating = -1 AND r.postingid = p.id) AS negrat "
+	        		+ "FROM POSTING AS parent "
+	        		+ "WHERE parent.ID IN (SELECT postingid FROM postingtag WHERE tag = ?);";
+            
+            PreparedStatement ps = con.prepareStatement(sqlString);
+	        ps.setString(1, tag);
+	        rs = ps.executeQuery();
+
+	        while(rs.next())
+	        {
+	        	Posting posting = new Posting(rs.getInt("ID"));
+	        	posting.setUserId(rs.getInt("authorid"));
+	        	posting.setSubjectId(rs.getInt("subjectid"));
+	        	posting.setMessage(rs.getString("text"));
+	        	posting.setWhenPosted(rs.getDate("whenposted"));
+	        	posting.setWhenDeleted(rs.getDate("whendeleted"));
+	        	posting.setTags(rs.getString("tags").split(";"));
+	        	posting.setPosRat(rs.getInt("posrat"));
+	        	posting.setNegRat(rs.getInt("negrat"));
+	        	postings.add(posting);
+	        }
+	        
+	        con.close();
+	    }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        }
+        return postings;
+	}
 	
 	public static ArrayList<Integer> getSubjectIDsByForum(int forumId) {
 		Connection con = null;
