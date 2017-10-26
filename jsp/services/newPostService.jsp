@@ -1,27 +1,38 @@
-<!--
-	@author Marco Dauber, Eric Dussel, Jacob Krauth
-	Service to create a new posting
--->
+<%@ page import = "de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.Posting, de.dhbw.StudentForum.Subject, de.dhbw.StudentForum.User" %>
 
-<%@ page import = "StudentForum.DAO, StudentForum.Posting" %>
+<%	//	@author Marco Dauber, Eric Dussel, Jacob Krauth
+	//	Service to create a new subject and the first post in it 
 
-<%	String title = request.getParameter("np_posting_titel");
+	String title = request.getParameter("np_posting_titel");
 	String text = request.getParameter("np_posting_text");
-	int id = 100;
+	String[] tags = ;	// Checkboxen aus Form 
+	User loggedUser = (User) session.getAttribute("user");
+	
 	
 	DAO daoObject = new DAO();
 	
-		if (title.equals(null) || text.equals(null) || id == 0)
+		if (title == null || text == null )
 		{
-			out.println("{status:\"ERROR\", message:\"Füllen Sie alle Informationen aus.\"}");
+			out.println("{status:\"ERROR\", message:\"Möglicherweise sind nicht alle Felder korrekt ausgefüllt. Bitte überprüfen Sie Ihre Eingaben.\"}");
 		}
 		else 
 		{
-			Posting postingObject = new Posting(id++);			
-			postingObject.setTitle(title)
-			postingObject.setText(text)
-			 
-			daoObject.addNewPosting(postingObject);
-			out.println("{status:\"OK\"}");
+			Subject subjectObject = new Subject();
+			subjectObject.setName(title);
+			int id = subjectObject.getId(title);
+			
+			Posting postingObject = new Posting();			
+			postingObject.setText(text);
+			postingObject.setTags(tags);
+			postingObject.setAuthorid(loggedUser);
+			postingObject.setsubjectid(id);
+			
+			try{
+				daoObject.addNewPosting(postingObject);
+				daoObject.addNewSubject(subjectObject);
+				out.println("{status:\"OK\", message:\"Ihr Subject wurde erfolgreich erstellt.\"}");
+			}catch(IOException e){
+				out.println("{status:\"ERROR\", message:\" Probleme bei der Erstellung Ihres Posts. Bitte versuchen Sie es erneut. \"}");
+			}
 		}
 %>

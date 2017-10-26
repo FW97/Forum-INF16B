@@ -3,8 +3,6 @@
 	Service to register new Users to our forum
 -->
 
-package de.dhbw.StudentForum;
-
 <%@ page import = "de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, java.util.Random" %>
 
 <%
@@ -29,9 +27,10 @@ package de.dhbw.StudentForum;
 			u.setEmail(email);
 			u.setFirstname(firstname);
 			u.setLastname(lastname);
-			u.setRole(1); <!-- normaler User -->
+			u.setRole(1); // normaler User
 			u.setPwHash(makeHash(password));
 			u.setPwSalt(salt);
+			u.setImgUrl("/img/profilImages/standardPic.png");
 			
 			d.addNewUser(u);
 			

@@ -18,11 +18,7 @@ Service to create a new posting
     {
         Posting newPosting = new Posting();
         newPosting.setMessage(replystring);
-        newPosting.setwhenDeleted(null);
-        newPosting.setwhenPosted(GregorianCalendar.getInstance().getTime());
         newPosting.setSubjectId(subjectid);
-        newPosting.setPosRat(0);
-        newPosting.setNegRat(0);
 
         int newPostingId = daoObject.addNewPosting(posting);
         out.println("{\"status\": \"OK\", \"postingid\": " + newPostingId + "}");

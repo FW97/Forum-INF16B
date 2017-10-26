@@ -14,11 +14,11 @@ public class Posting {
 	
 	private final int id;
 	private int userId;
-	private String title;
 	private String message;
 	private Date whenDeleted;
 	private Date whenPosted;
 	private int forumId;
+	private int subjectId;
 	private String[] tags;
 	private int posRat;
 	private int negRat;
@@ -39,13 +39,6 @@ public class Posting {
 	}
 	public void setUserId(int userId){
 		this.userId = userId;
-	}
-	
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
 	}
 	
 	public String getMessage(){
@@ -74,6 +67,14 @@ public class Posting {
 	}
 	public void setForumId(int forumId){
 		this.forumId = forumId;
+	}
+
+	public int getSubjectId() {
+		return subjectId;
+	}
+
+	public void setSubjectId(int subjectId) {
+		this.subjectId = subjectId;
 	}
 	
 	public String[] getTags(){

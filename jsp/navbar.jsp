@@ -5,7 +5,7 @@
 <%@ page import="de.dhbw.StudentForum.User" %>
 <%
     // Hold the current login session (if existent)
-    User loginSession = (User) session.getAttribute("username");
+    User loginSession = (User) session.getAttribute("user");
 %>
 <nav>
 <div class="header">
@@ -16,7 +16,7 @@
 
     <%
     // if user == admin, show 'add forum'-button
-    if((User) loginSession != null) {
+    if(loginSession != null) {
         if(loginSession.getRole() == 2) {
     %>
         <div class="newForumButton">
@@ -37,7 +37,7 @@
                 alert(xhr.responseText);
             }
         }
-        xhr.send("username=" + username + "&passwd=" + password);
+        xhr.send("username=" + username + "&password=" + password);
     }
     </script>
 
