@@ -62,40 +62,48 @@ if [ -d "WEB-INF" ]; then
 
 	printf "_______________________________________________\n\n";
 
-	printf "[%s]: Looking after Java sources in 'WEB-INF/src' ..." "${webapp_name}";
-	if [ -f "src/User.java" ]; then
-		printf " found!\n\n";
+	printf "[%s]: Checking if the Java compiler is correctly installed.\n" "${webapp_name}";
+	if type javac &> /dev/null; then
+		printf "[%s]: Looking after Java sources in 'WEB-INF/src' ..." "${webapp_name}";
+		if [ -f "src/User.java" ]; then
+			printf " found!\n\n";
 
-		declare -a erroneous_files=();
-		printf "[%s]: Compiling Java sources in 'WEB-INF/src'.\n" "${webapp_name}";
-		for java_source in src/*.java
-		do
-			printf "[%s]: Compiling %s ...\n" "${webapp_name}" "${java_source}";
-			javac -cp "lib/*:classes" -encoding "UTF-8" -d classes -Xlint:static "${java_source}";
-			if [ $? -ne 0 ]; then
-				printf "  %s> Errors detected%s\n" "${red_color}" "${clear_color}";
-				erroneous_files+=("${java_source}");
-				exit_status=1;
+			declare -a erroneous_files=();
+			printf "[%s]: Compiling Java sources in 'WEB-INF/src'.\n" "${webapp_name}";
+			for java_source in src/*.java
+			do
+				printf "[%s]: Compiling %s ...\n" "${webapp_name}" "${java_source}";
+				javac -cp "lib/*:classes" -encoding "UTF-8" -d classes -Xlint:static "${java_source}";
+				if [ $? -ne 0 ]; then
+					printf "  %s> Errors detected%s\n" "${red_color}" "${clear_color}";
+					erroneous_files+=("${java_source}");
+					exit_status=1;
+				else
+					printf "  %s> No errors%s\n" "${green_color}" "${clear_color}";
+				fi
+			done
+
+			printf "_______________________________________________\n\n";
+			if [ "${exit_status}" -ne 0 ]; then
+				error "The following files had compiling issues:";
+				printf "  ${red_color}> %s${clear_color}\n" "${erroneous_files[@]}" >&2;
+				error "Check them again and fix the errors!";
 			else
-				printf "  %s> No errors%s\n" "${green_color}" "${clear_color}";
+				printf "[%s]: No compilation errors were detected.\n" "${webapp_name}";
 			fi
-		done
 
-		printf "_______________________________________________\n\n";
-		if [ "${exit_status}" -ne 0 ]; then
-			error "The following files had compiling issues:";
-			printf "  ${red_color}> %s${clear_color}\n" "${erroneous_files[@]}" >&2;
-			error "Check them again and fix the errors!";
+			printf "\n[%s]: The Java bytecode was moved to 'WEB-INF/classes'.\n" "${webapp_name}";
 		else
-			printf "[%s]: No compilation errors were detected.\n" "${webapp_name}";
+			printf " not found!\n\n";
+			printf "[%s]: Could not find any java files in 'WEB-INF/src'.\n" "${webapp_name}";
+			printf "[%s]: Make sure they are inside 'WEB-INF/src'.\n" "${webapp_name}";
+			error "No Java source files found";
+			exit_status=2;
 		fi
-
-		printf "\n[%s]: The Java bytecode was moved to 'WEB-INF/classes'.\n" "${webapp_name}";
 	else
-		printf " not found!\n\n";
-		printf "[%s]: Could not find any java files in 'WEB-INF/src'.\n" "${webapp_name}";
-		printf "[%s]: Make sure they are inside 'WEB-INF/src'.\n" "${webapp_name}";
-		error "No Java source files found";
+		printf "[%s]: The 'javac' executable could not be found!\n" "${webapp_name}";
+		printf "[%s]: Make sure you have Java 8 correctly installed and the binaries folder appears in your PATH variable.\n" "${webapp_name}";
+		error "insufficient Java 8 installation";
 		exit_status=2;
 	fi
 else
