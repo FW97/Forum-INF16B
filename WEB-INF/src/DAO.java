@@ -720,6 +720,110 @@ public class DAO {
         	e.printStackTrace();
         }
 	}
+
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+    public static ArrayList<Subject> getSubjectsByUser(int userId) {
+		try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "SELECT id, name, forumid FROM subject s, posting p "
+	        		+ "WHERE s.id = p.authorid and p.authorid = ?";
+            /* replace when authorPostingId gets added to subject 
+            String sqlString = "SELECT id, name, forumid, authorPostingId FROM subject s, posting p "
+	        		+ "WHERE s.id = p.authorid and p.authorid = ?";
+            */
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setInt(1, userId);
+			ResultSet rs = ps.executeQuery();
+			
+            ArrayList<Subject> subjectsOfUser = new ArrayList<>();
+			if (rs.next()) {
+                Subject subject = new Subject(rs.getInt("id"));
+                subject.setName(rs.getString("name"));
+                subject.setForumid(rs.getInt("forumid"));
+                //subject.setAuthorPostingId(rs.getInt("authorPostingId")); -> uncomment if sqlString gets replaced
+                subjectsOfUser.add(subject);
+            }
+			
+			rs.close();
+			ps.close();
+			con.close();
+
+            return subjectsOfUser;
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+        
+		return null;
+	}
+
+    /**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+    public static String getForumNameById(int forumId) {
+		try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "SELECT id, name FROM forum "
+	        		+ "WHERE id = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setInt(1, forumId);
+			ResultSet rs = ps.executeQuery();
+			
+            String forumName;
+			if (rs.next()) {
+                forumName = rs.getString("name");
+            }
+			
+			rs.close();
+			ps.close();
+			con.close();
+
+            return forumName;
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+        
+		return "";
+	}
+
+    /**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+    public static int getNumberOfResponsesOfSubject(int subjectId) {
+		try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "SELECT id FROM posting "
+	        		+ "WHERE subjectid = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setInt(1, subjectId);
+			ResultSet rs = ps.executeQuery();
+			
+            int postingCounter = -1; // to get the number of responses minus the authorpost
+			if (rs.next()) {
+                postingCounter++;
+            }
+			
+			rs.close();
+			ps.close();
+			con.close();
+
+            return postingCounter;
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+        
+		return -1;
+	}
 	
 	public boolean hasUserRated(int postingId, int userId) {
 		try {
