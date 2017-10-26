@@ -54,7 +54,7 @@ public class DAO {
 	}
 	
 	//Add post to DB. 
-		public void addNewPosting(Posting posting) throws Exception
+		public int addNewPosting(Posting posting) throws Exception
 		{
 			Connection con = null;
 	        PreparedStatement ps = null;
@@ -70,8 +70,9 @@ public class DAO {
 				        		+ "authorid, subjectid, Text, whenposted, whendeleted) "
 				        		+ "VALUES (?, ?, ?, ?, ?)";
 	        
+	        String key[] = {"ID"};
 	        
-			ps = con.prepareStatement(sqlString, new String[]{"id"});
+			ps = con.prepareStatement(sqlString, key);
 	        ps.setInt(1, posting.getUserId());
 	        ps.setInt(2, posting.getSubjectId());
 	        ps.setString(3, posting.getMessage());
@@ -80,13 +81,14 @@ public class DAO {
 //	        ps.setString(4, new java.sql.Timestamp(System.currentTimeMillis()));	nur falls wir kein Objekt bekommen sollten
 //	        ps.setString(5, null);
 	        ps.executeUpdate();
-	        /*
+	        
 	        String[] tags = posting.getTags();
 	        ResultSet rs = ps.getGeneratedKeys();
+	        int postingId = -1;
 	        if(rs.next()) {
-	        	int postingId = Integer.parseInt(rs.getString("id"));
+	        	postingId = Integer.parseInt(rs.getString(1));
 	        
-	        if(tags.length>0) {
+	        if(tags != null) {
 	        
 	        	sqlString = "INSERT INTO POSTINGTAG("
 	        			+ "tag, postingid)"
@@ -107,10 +109,11 @@ public class DAO {
 	        	ps.executeUpdate();
 	        	}
 	        }
-	        */
+	        
 	        
 	        ps.close();
 	        con.close();
+	        return postingId;
 		}
 		
 		//Add attachement to DB. 
