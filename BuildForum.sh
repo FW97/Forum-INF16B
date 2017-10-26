@@ -14,17 +14,18 @@ exit_status=0;
 # activate colored output
 if [ -t 1 ]; then
 	red_color=$'\e[91m';
+	green_color=$'\e[92m';
 	clear_color=$'\e[0m';
 fi
 
 # Function to display a fancy banner at startup
 function launchBanner() {
- 	printf "\n%s\n" "_______   ______   .______       __    __  .___  ___.        __  .__   __.  _______ __     __   .______   ";
+ 	printf "\n%s\n" "${green_color}_______   ______   .______       __    __  .___  ___.        __  .__   __.  _______ __     __   .______   ";
 	printf "%s\n"   "|   ____| /  __  \  |   _  \     |  |  |  | |   \/   |       |  | |  \ |  | |   ____/_ |   / /   |   _  \  ";
 	printf "%s\n"   "|  |__   |  |  |  | |  |_)  |    |  |  |  | |  \  /  |       |  | |   \|  | |  |__   | |  / /_   |  |_)  | ";
 	printf "%s\n"   "|   __|  |  |  |  | |      /     |  |  |  | |  |\/|  |       |  | |  . \`  | |   __|  | | | '_ \  |   _  <  ";
 	printf "%s\n"   "|  |     |  \`--'  | |  |\  \----.|  \`--'  | |  |  |  |       |  | |  |\   | |  |     | | | (_) | |  |_)  | ";
-	printf "%s\n\n" "|__|      \______/  | _| \`._____| \______/  |__|  |__|       |__| |__| \__| |__|     |_|  \___/  |______/  ";
+	printf "%s\n\n" "|__|      \______/  | _| \`._____| \______/  |__|  |__|       |__| |__| \__| |__|     |_|  \___/  |______/  ${clear_color}";
 }
 
 # Function to output a uniform error message
@@ -74,6 +75,8 @@ if [ -d "WEB-INF" ]; then
 			if [ $? -ne 0 ]; then
 				erroneous_files+=("${java_source}");
 				exit_status=1;
+			else
+				printf -- "  ${green_color}> No errors${clear_color}\n";
 			fi
 		done
 
