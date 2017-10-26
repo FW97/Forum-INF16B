@@ -25,7 +25,7 @@ abgelegt werden. Falls es letzteren Ordner noch nicht gibt, muss er dort erstell
 die Kompilierung mit dem Kommando
 
 ```text
-.../WEB-INF:$ javac -cp "lib/*:classes" -encoding "UTF-8" -d classes src/*.java
+.../WEB-INF:$ javac -cp "lib/*:classes" -encoding "UTF-8" -d classes -Xlint:static src/*.java
 ```
 
 abgeschlossen werden, während unter `classes` gleichzeitig automatisch die Paketstruktur vom `javac` angelegt wird.
@@ -64,4 +64,4 @@ zu vermeiden oder bei anderen auszulösen.
 Bitte nicht den Ordner `WEB-INF/classes` hier hochladen, da dort lediglich der Bytecode der Java-Klassen liegt,
 welcher nur lokal benutzt werden muss.
 
-**Autoren: Niklas Portmann, Marek Hohmann, Morten Terhart**
+**Autoren: Niklas Portmann, Carsten Hagemann, Morten Terhart**

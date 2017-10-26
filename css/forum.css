@@ -99,7 +99,14 @@ body {
 /* profil */
 
 .profil {
-    padding: 3rem;
+}
+
+.profil .post {
+    margin: 6px 0;
+}
+
+.profil .clearTopPadding {
+    padding-top: 0;
 }
 
 #uploadImage {
@@ -118,8 +125,8 @@ body {
 }
 
 .settingError {
-    font-size: 0.9rem;
-    color: red;
+	font-size: 0.9rem;
+	color: red;
 }
 
 .settingContent input[type=text] {
