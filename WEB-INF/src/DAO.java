@@ -128,27 +128,30 @@ public class DAO {
 	}
 
 	// Add subject to DB.
-	public boolean addSubject(Subject s) throws Exception {
+	public int addSubject(Subject s) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
+		int returnvalue = -1;
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
 
-			String sqlString = "INSERT INTO SUBJECT (" + "name, forumid) " + "VALUES (?, ?)";
+			String sqlString = "INSERT INTO SUBJECT (" + "name, forumid) " + "VALUES (?, ?); ";
 
 			ps = con.prepareStatement(sqlString);
 			ps.setString(1, s.getName());
 			ps.setInt(2, s.getForumid());
 			ps.executeUpdate();
+			
+			sqlString = "SELECT LAST_INSERT_ID;";
+			returnvalue = ps.executeUpdate();
 
 			ps.close();
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
 		}
-		return true;
+		return returnvalue;
 	}
 
 	// Add forum to DB.
@@ -356,8 +359,8 @@ public class DAO {
 			newPosting.setMessage(rs.getString("text"));
 			newPosting.setUserId(rs.getInt("authorid"));
 			newPosting.setSubjectId(rs.getInt("subjectid"));
-			newPosting.setWhenDeleted(rs.getDate("whendeleted"));
-			newPosting.setWhenPosted(rs.getDate("whenposted"));
+			newPosting.setWhenDeleted(rs.getTimestamp("whendeleted"));
+			newPosting.setWhenPosted(rs.getTimestamp("whenposted"));
 			newPosting.setTags(rs.getString("tags").split(","));
 			newPosting.setPosRat(rs.getInt("posrat"));
 			newPosting.setNegRat(rs.getInt("negrat"));
@@ -391,9 +394,10 @@ public class DAO {
 				Posting posting = new Posting(rs.getInt("ID"));
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
+				// posting.setUser(new User(rs.getInt("authorid")));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				if (null != rs.getString("tags")) {
 					posting.setTags(rs.getString("tags").split(","));
 				}
@@ -433,8 +437,8 @@ public class DAO {
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				if (null != rs.getString("tags")) {
 					posting.setTags(rs.getString("tags").split(","));
 				}
@@ -473,8 +477,8 @@ public class DAO {
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				posting.setTags(rs.getString("tags").split(","));
 				posting.setPosRat(rs.getInt("posrat"));
 				posting.setNegRat(rs.getInt("negrat"));
@@ -512,8 +516,8 @@ public class DAO {
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				posting.setTags(rs.getString("tags").split(","));
 				posting.setPosRat(rs.getInt("posrat"));
 				posting.setNegRat(rs.getInt("negrat"));
@@ -525,6 +529,40 @@ public class DAO {
 			e.printStackTrace();
 		}
 		return postings;
+	}
+	
+	public Set<Posting> getLatestPostings() {
+		Connection con = null;
+		ResultSet rs;
+		Set<Posting> postings = new HashSet<Posting>();
+
+		try {
+			con = MySQLDatabase.getInstance().getConnection();
+
+			String sqlString = "SELECT parent.ID, parent.authorid, parent.subjectid, parent.text, parent.whenposted, parent.whendeleted FROM forum.POSTING AS parent Order by parent.whenPosted DESC LIMIT 4;";
+
+			PreparedStatement ps = con.prepareStatement(sqlString);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Posting posting = new Posting(rs.getInt("ID"));
+				posting.setUserId(rs.getInt("authorid"));
+				posting.setSubjectId(rs.getInt("subjectid"));
+				posting.setMessage(rs.getString("text"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
+				postings.add(posting);
+			}
+
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return postings;	
+	}
+	
+	public Set<Posting> searchPostings(String searchTerm) {
+		return null;
 	}
 
 	/**
@@ -565,8 +603,8 @@ public class DAO {
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				posting.setTags(rs.getString("tags").split(","));
 				posting.setPosRat(rs.getInt("posrat"));
 				posting.setNegRat(rs.getInt("negrat"));
