@@ -3,7 +3,6 @@
 
 <h1>Angesagte Themen</h1>
 <c:set var="latest" value="true" scope="request"/>
-<jsp:include page="jsp/posting.jsp"/>
 
 <h1>Angesagte Foren</h1>
 <!--dummy-->

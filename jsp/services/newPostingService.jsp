@@ -1,11 +1,10 @@
-<!--
-@author Bernhard Koll, Jan Malchert
-Service to create a new posting
--->
+<%@ page import = "de.dhbw.StudentForum.Posting, de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User" %>
 
-<%@ page import = "de.dhbw.StudentForum.Posting, de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User " %>
+<%
+    // @author Bernhard Koll, Jan Malchert
+    // Service to create a new posting
 
-<%	int subjectid = Integer.parseInt(request.getParameter("subjectid"));
+    int subjectid = Integer.parseInt(request.getParameter("subjectid"));
     String replystring = request.getParameter("replystring");
     User loggedUser = (User) session.getAttribute("user");
 
@@ -18,7 +17,7 @@ Service to create a new posting
     }
     else
     {
-        Posting newPosting = new Posting();
+        Posting newPosting = new Posting(0);
         newPosting.setMessage(replystring);
         newPosting.setSubjectId(subjectid);
         newPosting.setAuthorId(loggedUser);
