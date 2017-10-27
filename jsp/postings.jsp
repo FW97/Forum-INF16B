@@ -11,6 +11,7 @@
 <%@ page import="java.lang.*" %>
 <%@ page import="de.dhbw.StudentForum.Posting" %>
 <%@ page import="de.dhbw.StudentForum.User" %>
+<%@ page import="de.dhbw.StudentForum.DAO" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.ParseException" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
