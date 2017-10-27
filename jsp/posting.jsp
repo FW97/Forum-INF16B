@@ -29,7 +29,7 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
     <p><c:forEach var="tag" items="<%=tags%>"><a class="tag" href="posting.jsp"><c:out value="${tag}"/></a></c:forEach>
     </p>
     <c:forEach items="<%=subjectPostings%>" var="posting">
-        <% User author = daoObject.getUserById(posting.userId); %>
+        <% User author = daoObject.getUserById(posting.getUserId()); %>
         <span class="author"><%=author.getFirstname()%> <%=author.getLastname()%></span> &bull;
         <span class="date"><%=posting.getWhenPosted()%></span>
         <p class="posting">
