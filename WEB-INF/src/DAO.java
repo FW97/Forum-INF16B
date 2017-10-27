@@ -1,13 +1,18 @@
 package de.dhbw.StudentForum;
-
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
-import de.dhbw.StudentForum.MySQLDatabase;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.mysql.jdbc.Statement;
+
 import de.dhbw.StudentForum.Posting;
 import de.dhbw.StudentForum.User;
+import de.dhbw.StudentForum.MySQLDatabase;
 
 
 /*
@@ -20,7 +25,7 @@ import de.dhbw.StudentForum.User;
 public class DAO {
 	
 	//Add new user to DB. 
-	public void addNewUser(User user) throws Exception
+	public boolean addNewUser(User user) throws Exception
 	{
 		Connection con = null;
         PreparedStatement ps = null;
@@ -28,9 +33,6 @@ public class DAO {
         try
         {
             con = MySQLDatabase.getInstance().getConnection();
-
-        }
-        catch(Exception e) {e.printStackTrace();}
         
         String sqlString = "INSERT INTO USER ("
 			        		+ "firstname, lastname, email, role, pwsalt, pwhash, imgurl) "
@@ -49,47 +51,54 @@ public class DAO {
         
         ps.close();
         con.close();
+        }
+        catch(Exception e) {
+        	e.printStackTrace();
+        	return false;
+        }
+        return true;
 	}
 	
 	//Add post to DB. 
-		public void addNewPosting(Posting posting) throws Exception
+		public int addNewPosting(Posting posting) throws Exception
 		{
 			Connection con = null;
 	        PreparedStatement ps = null;
+	        int postingId = -1;
 	        
 	        try
 	        {
 	            con = MySQLDatabase.getInstance().getConnection();
-
-	        }
-	        catch(Exception e) {e.printStackTrace();}
 	        
 	        String sqlString = "INSERT INTO POSTING ("
 				        		+ "authorid, subjectid, Text, whenposted, whendeleted) "
 				        		+ "VALUES (?, ?, ?, ?, ?)";
 	        
+	        String key[] = {"ID"};
 	        
-			ps = con.prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS);
-	        ps.setInt(1, posting.getAuthorId());
+			ps = con.prepareStatement(sqlString, key);
+	        ps.setInt(1, posting.getUserId());
 	        ps.setInt(2, posting.getSubjectId());
-	        ps.setString(3, posting.getText());
-	        ps.setDate(4, posting.getWhenposted());
-	        ps.setDate(5, posting.getWhendeleted());
+	        ps.setString(3, posting.getMessage());
+	        ps.setDate(4, posting.getWhenPosted());
+	        ps.setDate(5, posting.getWhenDeleted());
 //	        ps.setString(4, new java.sql.Timestamp(System.currentTimeMillis()));	nur falls wir kein Objekt bekommen sollten
 //	        ps.setString(5, null);
 	        ps.executeUpdate();
 	        
 	        String[] tags = posting.getTags();
-	        int postingId = ps.getGeneratedKeys();
+	        ResultSet rs = ps.getGeneratedKeys();
+	        if(rs.next()) {
+	        	postingId = Integer.parseInt(rs.getString(1));
 	        
-	        if(tags.length>0) {
+	        if(tags != null) {
 	        
 	        	sqlString = "INSERT INTO POSTINGTAG("
 	        			+ "tag, postingid)"
 	        			+ "VALUES ";
 	        	
 	        	for(int i = 0; i < tags.length; i++) {
-	        		if (i=0) {
+	        		if (i == 0) {
 	        			sqlString.concat("(" + tags[i] + ", " + postingId + ")");
 	        		}
 	        		else {
@@ -101,14 +110,19 @@ public class DAO {
 	        	
 	        	ps = con.prepareStatement(sqlString);
 	        	ps.executeUpdate();
+	        	}
 	        }
+	        }
+	        catch(Exception e) {e.printStackTrace();}
+	        
 	        
 	        ps.close();
 	        con.close();
+	        return postingId;
 		}
 		
 		//Add attachement to DB. 
-		public void addAttachement(String filename, int postingId) throws Exception
+		public boolean addAttachement(String filename, int postingId) throws Exception
 		{
 			Connection con = null;
 	        PreparedStatement ps = null;
@@ -116,9 +130,6 @@ public class DAO {
 	        try
 	        {
 	            con = MySQLDatabase.getInstance().getConnection();
-
-	        }
-	        catch(Exception e) {e.printStackTrace();}
 	        
 	        String sqlString = "INSERT INTO ATTACHEMENT ("
 				        		+ "attachementfilename, postingid) "
@@ -131,10 +142,16 @@ public class DAO {
 	        
 	        ps.close();
 	        con.close();
+	        }
+	        catch(Exception e) {
+	        	e.printStackTrace();
+	        	return false;
+	        }
+	        return true;
 		}
 		
 		//Add subject to DB. 
-				public void addSubject(String name, int forumId) throws Exception
+				public boolean addSubject(Subject s) throws Exception
 				{
 					Connection con = null;
 			        PreparedStatement ps = null;
@@ -142,25 +159,28 @@ public class DAO {
 			        try
 			        {
 			            con = MySQLDatabase.getInstance().getConnection();
-
-			        }
-			        catch(Exception e) {e.printStackTrace();}
 			        
 			        String sqlString = "INSERT INTO SUBJECT ("
 						        		+ "name, forumid) "
 						        		+ "VALUES (?, ?)";
 			        
 					ps = con.prepareStatement(sqlString);
-			        ps.setString(1, name);
-			        ps.setString(2, forumId);
+			        ps.setString(1, s.getName());
+			        ps.setInt(2, s.getForumid());
 			        ps.executeUpdate();
 			        
 			        ps.close();
 			        con.close();
+			        }
+			        catch(Exception e) {
+			        	e.printStackTrace();
+			        	return false;
+			        }
+			        return true;
 				}
 				
 				//Add forum to DB. 
-				public void addForum(String name, String category, int modId) throws Exception
+				public boolean addForum(Forum f) throws Exception
 				{
 					Connection con = null;
 			        PreparedStatement ps = null;
@@ -168,38 +188,38 @@ public class DAO {
 			        try
 			        {
 			            con = MySQLDatabase.getInstance().getConnection();
-
-			        }
-			        catch(Exception e) {e.printStackTrace();}
 			        
 			        String sqlString = "INSERT INTO FORUM ("
-						        		+ "name, category, moteratorid) "
-						        		+ "VALUES (?, ?, ?)";
+						        		+ "name, moderatorid) "
+						        		+ "VALUES (?, ?)";
 			        
 					ps = con.prepareStatement(sqlString);
-			        ps.setString(1, name);
-			        ps.setString(2, category);
-			        ps.setInt(3, modId);
+			        ps.setString(1, f.getName());
+			        ps.setInt(2, f.getModeratorid());
 			        ps.executeUpdate();
 			        
 			        ps.close();
 			        con.close();
+			        }
+			        catch(Exception e) {
+			        	e.printStackTrace();
+			        	return false;
+			        }
+			        return true;
 				}
 				
-	public void insertRating(int postingId, int userId, int rating) {
+	public boolean insertRating(int postingId, int userId, int rating) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
 		
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
-		}
-		catch(Exception e) {e.printStackTrace();}
 		
 		String sqlString = "INSERT INTO POSTINGRATING ("
 				+ "rating, postingId, userId) "
 				+ "VALUES (?, ?, ?)";
 		
-		ps.con.prepareStatement(sqlString);
+		ps = con.prepareStatement(sqlString);
 		ps.setInt(1, rating);
 		ps.setInt(2, postingId);
 		ps.setInt(3, userId);
@@ -207,6 +227,38 @@ public class DAO {
 		
 		ps.close();
 		con.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean addTag(int postingId, String tag) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		
+		try {
+			con = MySQLDatabase.getInstance().getConnection();
+		
+		String sqlString = "INSERT INTO POSTINGTAG ("
+				+ "postingId, tag) "
+				+ "VALUES (?, ?)";
+		
+		ps = con.prepareStatement(sqlString);
+		ps.setInt(1, postingId);
+		ps.setString(2, tag);
+		ps.executeUpdate();
+		
+		ps.close();
+		con.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	
@@ -220,7 +272,7 @@ public class DAO {
         {
             con = MySQLDatabase.getInstance().getConnection();
         
-	        String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash FROM USERS WHERE firstname=? AND lastname=?;";
+	        String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash FROM USER WHERE firstname=? AND lastname=? LIMIT 1;";
 	        
 	        PreparedStatement ps = con.prepareStatement(sqlString);
 	        ps.setString(1, fName);
@@ -260,7 +312,7 @@ public class DAO {
         {
             con = MySQLDatabase.getInstance().getConnection();
         
-	        String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash FROM USERS WHERE email=?;";
+	        String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash FROM USER WHERE email=?;";
 	        
 	        PreparedStatement ps = con.prepareStatement(sqlString);
 	        ps.setString(1, email);
@@ -299,7 +351,7 @@ public class DAO {
         {
             con = MySQLDatabase.getInstance().getConnection();
         
-	        String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash FROM USERS WHERE id=?;";
+	        String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash FROM USER WHERE id=?;";
 	        
 	        PreparedStatement ps = con.prepareStatement(sqlString);
 	        ps.setInt(1, id);
@@ -332,14 +384,14 @@ public class DAO {
 	{
 		Connection con = null;
         ResultSet rs; 
-        User newUser = null;
+        Posting newPosting = null;
         
         try
         {
             con = MySQLDatabase.getInstance().getConnection();
         
 	        String sqlString = "SELECT ID, authorid, text, subjectid, whendeleted, whenposted, "
-	        		+ "(SELECT CONCAT_WS(\";\", tag) FROM POSTINGTAG WHERE postingid=?) AS tags "
+	        		+ "(SELECT GROUP_CONCAT(tag) FROM POSTINGTAG WHERE postingid=?) AS tags, "
 	        		+ "(SELECT SUM(rating) FROM POSTINGRATING WHERE rating = 1 AND postingid=?) AS posrat, "
 	        		+ "(SELECT SUM(rating) FROM POSTINGRATING WHERE rating = -1 AND postingid=?) AS negrat "
 	        		+ "FROM POSTING WHERE id=?;";
@@ -358,12 +410,12 @@ public class DAO {
 	        }
 	        
 	        newPosting = new Posting(rs.getInt("ID"));
-	        newPosting.setText(rs.getString("text"));
-	        newPosting.setAuthorid(rs.getInt("authorid"));
-	        newPosting.setSubjectid(rs.getInt("subjectid"));
-	        newPosting.setWhendeleted(rs.getDate("whendeleted"));
-	        newPosting.setWhenposted(rs.getDate("whenposted"));
-	        newPosting.setTags(rs.getString("tags").split(";"));
+	        newPosting.setMessage(rs.getString("text"));
+	        newPosting.setUserId(rs.getInt("authorid"));
+	        newPosting.setSubjectId(rs.getInt("subjectid"));
+	        newPosting.setWhenDeleted(rs.getDate("whendeleted"));
+	        newPosting.setWhenPosted(rs.getDate("whenposted"));
+	        newPosting.setTags(rs.getString("tags").split(","));
 	        newPosting.setPosRat(rs.getInt("posrat"));
 	        newPosting.setNegRat(rs.getInt("negrat"));
 	        
@@ -376,7 +428,7 @@ public class DAO {
         return newPosting;
 	}
 	
-	public static ArrayList<Posting> getPostingsBySubject(int subjectId) 
+	public ArrayList<Posting> getPostingsBySubject(int subjectId) 
 	{
 		Connection con = null;
         ResultSet rs; 
@@ -386,28 +438,28 @@ public class DAO {
         {
             con = MySQLDatabase.getInstance().getConnection();
 
-	        String sqlString = "SELECT ID, authorid, subjectid, text, whenposted, whedeleted "
-	        		+ "(SELECT CONCAT_WS(\";\", t.tag) FROM POSTINGTAG t, POSTING p ON t.postingid = p.id WHERE p.subjectid=?) AS tags "
-	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r, POSTING p ON r.postingid = p.id WHERE p.subjectid=? AND rating = 1) AS posrat, "
-	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r, POSTING p ON r.postingid = p.id WHERE p.subjectid=? AND rating = -1) AS negrat "
-	        		+ "FROM POSTING WHERE subjectid=?;";
+	        String sqlString = "SELECT parent.ID, parent.authorid, parent.subjectid, parent.text, parent.whenposted, parent.whendeleted, "
+	        		+ "(SELECT GROUP_CONCAT(t.tag) FROM POSTINGTAG t WHERE t.postingId = parent.ID) AS tags, "
+	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r WHERE r.rating = 1 AND r.postingid = parent.ID) AS posrat, "
+	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r WHERE r.rating = -1 AND r.postingid = parent.ID) AS negrat "
+	        		+ "FROM POSTING AS parent "
+	        		+ "WHERE subjectid=?;";
 	        
 	        PreparedStatement ps = con.prepareStatement(sqlString);
 	        ps.setInt(1, subjectId);
-	        ps.setInt(2, subjectId);
-	        ps.setInt(3, subjectId);
-	        ps.setInt(4, subjectId);
 	        rs = ps.executeQuery();
 
 	        while(rs.next())
 	        {
 	        	Posting posting = new Posting(rs.getInt("ID"));
-	        	posting.setAuthorId(rs.getInt("authorid"));
+	        	posting.setUserId(rs.getInt("authorid"));
 	        	posting.setSubjectId(rs.getInt("subjectid"));
-	        	posting.setText(rs.getString("text"));
+	        	posting.setMessage(rs.getString("text"));
 	        	posting.setWhenPosted(rs.getDate("whenposted"));
 	        	posting.setWhenDeleted(rs.getDate("whendeleted"));
-	        	posting.setTags(rs.getString("tags").split(";"));
+	        	if(null != rs.getString("tags")){
+	        		posting.setTags(rs.getString("tags").split(","));
+	        	}
 	        	posting.setPosRat(rs.getInt("posrat"));
 	        	posting.setNegRat(rs.getInt("negrat"));
 	        	postings.add(posting);
@@ -421,6 +473,147 @@ public class DAO {
         }
         return postings;
 	} 
+	
+	public Set<Posting> getPostingsByUser(int userId) {
+		Connection con = null;
+        ResultSet rs; 
+        Set<Posting> postings = new HashSet<Posting>();
+        
+        try{
+            con = MySQLDatabase.getInstance().getConnection();
+        	
+            String sqlString = "SELECT parent.ID, parent.authorid, parent.subjectid, parent.text, parent.whenposted, parent.whendeleted, "
+	        		+ "(SELECT GROUP_CONCAT(t.tag) FROM POSTINGTAG t WHERE t.postingId = parent.ID) AS tags, "
+	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r WHERE rating = 1 AND r.postingid = parent.ID) AS posrat, "
+	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r WHERE rating = -1 AND r.postingid = parent.ID) AS negrat "
+	        		+ "FROM POSTING AS parent "
+	        		+ "WHERE authorid=?;";
+            
+            PreparedStatement ps = con.prepareStatement(sqlString);
+	        ps.setInt(1, userId);
+	        rs = ps.executeQuery();
+
+	        while(rs.next())
+	        {
+	        	Posting posting = new Posting(rs.getInt("ID"));
+	        	posting.setUserId(rs.getInt("authorid"));
+	        	posting.setSubjectId(rs.getInt("subjectid"));
+	        	posting.setMessage(rs.getString("text"));
+	        	posting.setWhenPosted(rs.getDate("whenposted"));
+	        	posting.setWhenDeleted(rs.getDate("whendeleted"));
+	        	posting.setTags(rs.getString("tags").split(","));
+	        	posting.setPosRat(rs.getInt("posrat"));
+	        	posting.setNegRat(rs.getInt("negrat"));
+	        	postings.add(posting);
+	        }
+	        
+	        con.close();
+	    }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        }
+        return postings;
+	}
+	
+	public Set<Posting> getPostingsByTag(String tag) {
+		Connection con = null;
+        ResultSet rs; 
+        Set<Posting> postings = new HashSet<Posting>();
+        
+        try{
+            con = MySQLDatabase.getInstance().getConnection();
+        	
+            String sqlString = "SELECT parent.ID, parent.authorid, parent.subjectid, parent.text, parent.whenposted, parent.whendeleted, "
+	        		+ "(SELECT GROUP_CONCAT(t.tag) FROM POSTINGTAG t WHERE t.postingId = parent.ID) AS tags, "
+	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r WHERE rating = 1 AND r.postingid = parent.ID) AS posrat, "
+	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r WHERE rating = -1 AND r.postingid = parent.ID) AS negrat "
+	        		+ "FROM POSTING AS parent "
+	        		+ "WHERE parent.ID IN (SELECT postingid FROM postingtag WHERE tag = ?);";
+            
+            PreparedStatement ps = con.prepareStatement(sqlString);
+	        ps.setString(1, tag);
+	        rs = ps.executeQuery();
+
+	        while(rs.next())
+	        {
+	        	Posting posting = new Posting(rs.getInt("ID"));
+	        	posting.setUserId(rs.getInt("authorid"));
+	        	posting.setSubjectId(rs.getInt("subjectid"));
+	        	posting.setMessage(rs.getString("text"));
+	        	posting.setWhenPosted(rs.getDate("whenposted"));
+	        	posting.setWhenDeleted(rs.getDate("whendeleted"));
+	        	posting.setTags(rs.getString("tags").split(","));
+	        	posting.setPosRat(rs.getInt("posrat"));
+	        	posting.setNegRat(rs.getInt("negrat"));
+	        	postings.add(posting);
+	        }
+	        
+	        con.close();
+	    }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        }
+        return postings;
+	}
+	
+	/**
+	 * 
+	 * authors: Fabian Schulz,
+	 * 			Andreas Memmel
+	 */
+	public Set<Posting> searchPostings(String searchTerm, int forumid, String tag, Date minDate, Date maxDate) {
+		Connection con = null;
+        ResultSet rs; 
+        Set<Posting> postings = new HashSet<Posting>();
+        
+        try{
+            con = MySQLDatabase.getInstance().getConnection();
+        	
+            String sqlString = "SELECT parent.ID, parent.authorid, parent.subjectid, parent.text, parent.whenposted, parent.whendeleted, "
+	        		+ "(SELECT GROUP_CONCAT(t.tag) FROM POSTINGTAG t, POSTING p WHERE p.ID = parent.ID AND t.postingId = p.ID) AS tags, "
+	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r, POSTING p WHERE p.ID = parent.ID AND rating = 1 AND r.postingid = p.id) AS posrat, "
+	        		+ "(SELECT SUM(rating) FROM POSTINGRATING r, POSTING p WHERE p.ID = parent.ID AND rating = -1 AND r.postingid = p.id) AS negrat "
+	        		+ "From Posting as parent "
+	        		+ "Where parent.subjectid in (Select subjectid From subject where forumid = ?) "
+	        		+ "And parent.whenposted Between ? AND ? "
+	        		+ "AND parent.postingID IN (SELECT postingId where tag = ?)";
+            
+            String[] searchwords = searchTerm.split(" ");
+            for (int i = 0; i<searchwords.length; i++) {
+            	sqlString.concat("AND p.text like '%"+searchwords[i]+"%'");
+            }
+            
+            PreparedStatement ps = con.prepareStatement(sqlString);
+	        ps.setInt(1, forumid);
+	        ps.setDate(2, minDate);
+	        ps.setDate(3,  maxDate);
+	        ps.setString(4, tag);
+	        rs = ps.executeQuery();
+
+	        while(rs.next())
+	        {
+	        	Posting posting = new Posting(rs.getInt("ID"));
+	        	posting.setUserId(rs.getInt("authorid"));
+	        	posting.setSubjectId(rs.getInt("subjectid"));
+	        	posting.setMessage(rs.getString("text"));
+	        	posting.setWhenPosted(rs.getDate("whenposted"));
+	        	posting.setWhenDeleted(rs.getDate("whendeleted"));
+	        	posting.setTags(rs.getString("tags").split(","));
+	        	posting.setPosRat(rs.getInt("posrat"));
+	        	posting.setNegRat(rs.getInt("negrat"));
+	        	postings.add(posting);
+	        }
+	        
+	        con.close();
+	    }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        }
+        return postings;
+	}
 	
 	public static ArrayList<Integer> getSubjectIDsByForum(int forumId) {
 		Connection con = null;
@@ -454,7 +647,7 @@ public class DAO {
 	public int[] getRatingByPostingId(int postingId) {
 		Connection con = null;
         ResultSet rs; 
-        int[2] rating;
+        int[] rating = {0,0};
         
         try
         {
@@ -471,9 +664,9 @@ public class DAO {
 	        	rating[0] = rs.getInt("posrat");
 	        }
 	        
-	        String sqlString = "SELECT COUNT(rating) AS negrat FROM POSTINGRATING WHERE postingid=? AND rating = -1;";
+	        sqlString = "SELECT COUNT(rating) AS negrat FROM POSTINGRATING WHERE postingid=? AND rating = -1;";
 	        
-	        PreparedStatement ps = con.prepareStatement(sqlString);
+	        ps = con.prepareStatement(sqlString);
 	        ps.setInt(1, postingId);
 	        rs = ps.executeQuery();
 
@@ -488,7 +681,7 @@ public class DAO {
         {
         	e.printStackTrace();
         }
-        return subjects;
+        return rating;
 	}
 		
 	/**
@@ -591,6 +784,110 @@ public class DAO {
         	e.printStackTrace();
         }
 	}
+
+	/**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+    public static ArrayList<Subject> getSubjectsByUser(int userId) {
+		try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "SELECT id, name, forumid FROM subject s, posting p "
+	        		+ "WHERE s.id = p.authorid and p.authorid = ?";
+            /* replace when authorPostingId gets added to subject 
+            String sqlString = "SELECT id, name, forumid, authorPostingId FROM subject s, posting p "
+	        		+ "WHERE s.id = p.authorid and p.authorid = ?";
+            */
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setInt(1, userId);
+			ResultSet rs = ps.executeQuery();
+			
+            ArrayList<Subject> subjectsOfUser = new ArrayList<>();
+			if (rs.next()) {
+                Subject subject = new Subject(rs.getInt("id"));
+                subject.setName(rs.getString("name"));
+                subject.setForumid(rs.getInt("forumid"));
+                //subject.setAuthorPostingId(rs.getInt("authorPostingId")); -> uncomment if sqlString gets replaced
+                subjectsOfUser.add(subject);
+            }
+			
+			rs.close();
+			ps.close();
+			con.close();
+
+            return subjectsOfUser;
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+        
+		return null;
+	}
+
+    /**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+    public static String getForumNameById(int forumId) {
+		try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "SELECT id, name FROM forum "
+	        		+ "WHERE id = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setInt(1, forumId);
+			ResultSet rs = ps.executeQuery();
+			
+            String forumName = null;
+			if (rs.next()) {
+                forumName = rs.getString("name");
+            }
+			
+			rs.close();
+			ps.close();
+			con.close();
+
+            return forumName;
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+        
+		return "";
+	}
+
+    /**
+	 * 
+	 * @author Michael Skrzypietz
+	 */
+    public static int getNumberOfResponsesOfSubject(int subjectId) {
+		try {
+        	Connection con = MySQLDatabase.getInstance().getConnection();
+            
+            String sqlString = "SELECT id FROM posting "
+	        		+ "WHERE subjectid = ?";
+
+            PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setInt(1, subjectId);
+			ResultSet rs = ps.executeQuery();
+			
+            int postingCounter = -1; // to get the number of responses minus the authorpost
+			if (rs.next()) {
+                postingCounter++;
+            }
+			
+			rs.close();
+			ps.close();
+			con.close();
+
+            return postingCounter;
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+        
+		return -1;
+	}
 	
 	public boolean hasUserRated(int postingId, int userId) {
 		try {
@@ -600,8 +897,8 @@ public class DAO {
 	        		+ "WHERE postingId = ? AND userId = ?";
 
             PreparedStatement ps = con.prepareStatement(sqlString);
-			ps.setString(1, postingId);
-			ps.setString(2, userId);
+			ps.setInt(1, postingId);
+			ps.setInt(2, userId);
 			ResultSet rs = ps.executeQuery();
 			
 			if (rs.next()) return true;
