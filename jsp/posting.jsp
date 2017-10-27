@@ -100,7 +100,7 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.responseText);
 
-                if (response["status"] == "OK") {
+                if (response["status"] == "Ok") {
                     /* Falls die Response nicht die ID des angelegten Posting zurückgeben wird/kann/darf,
                      * muss das zu ladene Posting auf andere Art ermittelt werden.
                      * Evtl. serverseitig das neueste Posting ermitteln und hierfür den div zurückliefern.
