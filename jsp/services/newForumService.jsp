@@ -42,7 +42,6 @@
 		if(loggedUser.getRole() == 1)
 		{
 			databaseObject.addForum(forum);
-			out.println("{ status: \"" + successfulForumStatus + "\", message: \"" + successfulForumMessage + "\" }");
 		} else {
 			out.println("{ status: \"" + ErrorForumStatus + "\", message: \"" + ErrorForumMessage + "\" }");
 			return;
