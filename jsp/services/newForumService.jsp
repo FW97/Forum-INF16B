@@ -28,18 +28,24 @@
 
 	DAO databaseObject = new DAO();
 	User loggedUser = (User)session.getAttribute("user");
-	Forum forum = new Forum(1);
-	forum.setName(newForumName);
-	forum.setCategory(newForumKategorie);
-	forum.setModeratorid(loggedUser.getId());
-
-	//Hierbei wird angenommen, dass wenn die Rolle eines Benutzers auf 1 steht, er Admin ist und die Berechtigung zum Erstellen von Foren hat.
-	if(loggedUser.getRole() == 1)
-	{
-		databaseObject.addForum(forum);
-		System.out.println("{ status: \"" + successfulForumStatus + "\", message: \"" + successfulForumMessage + "\" }");
-	} else {
-		System.out.println("{ status: \"" + ErrorForumStatus + "\", message: \"" + ErrorForumMessage + "\" }");
+	if (loggedUser==null){
+		out.println("{\"status\": \"Error\",\"message\":\"kein eingeloggter User\"}");
 		return;
+	}
+	else{
+		Forum forum = new Forum(1);
+		forum.setName(newForumName);
+		forum.setCategory(newForumKategorie);
+		forum.setModeratorid(loggedUser.getId());
+
+		//Hierbei wird angenommen, dass wenn die Rolle eines Benutzers auf 1 steht, er Admin ist und die Berechtigung zum Erstellen von Foren hat.
+		if(loggedUser.getRole() == 1)
+		{
+			databaseObject.addForum(forum);
+			out.println("{ status: \"" + successfulForumStatus + "\", message: \"" + successfulForumMessage + "\" }");
+		} else {
+			out.println("{ status: \"" + ErrorForumStatus + "\", message: \"" + ErrorForumMessage + "\" }");
+			return;
+		}
 	}
 %>
