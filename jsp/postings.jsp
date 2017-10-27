@@ -4,8 +4,8 @@
 --> 
 
 <%-- Import Statements --%>
-<%@ page import="java.util.Set" %>
-<%@ page import="java.util.HashSet" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.lang.*" %>
@@ -46,19 +46,19 @@
 
     // Collection of retrieved postings to iterate over
     // to display as list overview
-    Set<Posting> postSelection = new HashSet<>();
+    List<Posting> postSelection = new ArrayList<>();
 %>
 
 <%
     // Dummy elements
     String dummyAuthor = "Max Mustermann";
 
-    int index = 0;
-    Posting p1 = new Posting(index++);
-    p1.setTitle("Brauche Hilfe bei Doppelintegralen in Mathe");
-    p1.setWhenPosted(new Date());
-    String[] tags1 = { "Mathe", "Integral" };
-    p1.setTags(tags1);
+    // int index = 0;
+    Posting p1 = new Posting(0);
+    // p1.setTitle("Brauche Hilfe bei Doppelintegralen in Mathe");
+    // p1.setWhenPosted(new Date());
+    //String[] tags1 = { "Mathe", "Integral" };
+    // p1.setTags(tags1);
     postSelection.add(p1);
 %>
 
@@ -139,7 +139,7 @@
     } else {
         // If none of these use cases is matched, create an empty set
         // and display nothing
-        postSelection = new HashSet<Posting>();
+        postSelection = new ArrayList<Posting>();
     }
 %>
 
@@ -152,7 +152,7 @@
      */
     private void selectTop8Postings() {
         latest = true;
-        Collections.addAll(postSelection, databaseObject.getLatestPostings());
+        // Collections.addAll(postSelection, databaseObject.getLatestPostings());
     }
 
     /**
@@ -165,7 +165,7 @@
      * @param maxDate the maximal date specifying the upper border of creation date
      */
     private void extendedSearchRequest(String searchTerm, int forumId, int tagId, Date minDate, Date maxDate) {
-        postSelection = databaseObject.searchPostings(searchTerm, forumId, tagId, minDate, maxDate);
+        // postSelection = databaseObject.searchPostings(searchTerm, forumId, tagId, minDate, maxDate);
     }
 
     /**
@@ -173,7 +173,7 @@
      * @param searchTerm the specific search term to look after
      */
     private void simpleSearchRequest(String searchTerm) {
-        postSelection = databaseObject.searchPostings(searchTerm);
+        // postSelection = databaseObject.searchPostings(searchTerm);
     }
 
     /**
@@ -181,7 +181,7 @@
      * @param forumId the id of the specific forum
      */
     private void selectForumPostings(int forumId) {
-        postSelection = databaseObject.selectPostingsByForum(forumId);
+        // postSelection = databaseObject.selectPostingsByForum(forumId);
     }
 
     /**
@@ -189,7 +189,7 @@
      * @param tagId the id of the specific tag
      */
     private void selectTagPostings(int tagId) {
-        postSelection = databaseObject.selectPostingsByTag(tagId);
+        // postSelection = databaseObject.selectPostingsByTag(tagId);
     }
 
     /**
@@ -197,7 +197,7 @@
      * @param userId the id of the specific user
      */
     private void selectUserPostings(int userId) {
-        postSelection = databaseObject.selectPostingsByUser(userId);
+        // postSelection = databaseObject.selectPostingsByUser(userId);
     }
 %>
 
