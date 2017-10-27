@@ -136,12 +136,14 @@ public class DAO {
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
 
-			String sqlString = "INSERT INTO SUBJECT (" + "name, forumid) " + "VALUES (?, ?); "
-					+ "SELECT LAST_INSERT_ID";
+			String sqlString = "INSERT INTO SUBJECT (" + "name, forumid) " + "VALUES (?, ?); ";
 
 			ps = con.prepareStatement(sqlString);
 			ps.setString(1, s.getName());
 			ps.setInt(2, s.getForumid());
+			ps.executeUpdate();
+			
+			sqlString = "SELECT LAST_INSERT_ID;";
 			returnvalue = ps.executeUpdate();
 
 			ps.close();
@@ -526,6 +528,14 @@ public class DAO {
 			e.printStackTrace();
 		}
 		return postings;
+	}
+	
+	public Set<Posting> getLatestPostings() {
+		return null;
+	}
+	
+	public Set<Posting> searchPostings(String searchTerm) {
+		return null;
 	}
 
 	/**
