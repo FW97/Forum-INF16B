@@ -10,9 +10,7 @@
 	*/
 	
 	response.setContentType("application/json");
-	final String successfulForumMessage  = "Forum created successful!";
 	final String ErrorForumMessage  = "You have no permission!";
-	final String successfulForumStatus  = "OK";
 	final String ErrorForumStatus  = "ERROR";
 
 	String newForumName = request.getParameter("newForumName");
@@ -31,8 +29,7 @@
 	if (loggedUser==null){
 		out.println("{\"status\": \"Error\",\"message\":\"kein eingeloggter User\"}");
 		return;
-	}
-	else{
+	} else {
 		Forum forum = new Forum(1);
 		forum.setName(newForumName);
 		forum.setCategory(newForumKategorie);
