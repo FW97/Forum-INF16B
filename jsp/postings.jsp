@@ -24,7 +24,7 @@
     private static final String SEARCH_TERM_PARAMETER   = "searchterm";
     private static final String MAX_POSTINGS_PARAMETER  = "maxpostings";
     private static final String FORUM_ID_PARAMETER      = "forumid";
-    private static final String TAG_ID_PARAMETER        = "tagid";
+    private static final String TAG_ID_PARAMETER        = "tag";
     private static final String MIN_DATE_PARAMETER      = "mindate";
     private static final String MAX_DATE_PARAMETER      = "maxdate";
     private static final String POPULAR_POSTS_PARAMETER = "popular";
@@ -40,7 +40,7 @@
     // GET or POST request)
     private int postId = -1;
     private int forumId = -1;
-    private int tagId = -1;
+    private String tag = null;
     private int userId = -1;
     private int maxPostings = 100;
     private boolean latest = false;
@@ -70,7 +70,7 @@
     // --- Parameter Handling ---
     // Accessing the Parameters
     String postIdString        = request.getParameter(POST_ID_PARAMETER);
-    String tagIdString         = request.getParameter(TAG_ID_PARAMETER);
+    String tagString           = request.getParameter(TAG_ID_PARAMETER);
     String userIdString        = request.getParameter(USER_ID_PARAMETER);
     String forumIdString       = request.getParameter(FORUM_ID_PARAMETER);
     String latestString        = request.getParameter(LATEST_PARAMETER);
@@ -87,9 +87,6 @@
     try {
         if (postIdString != null) {
             postId = Integer.parseInt (postIdString);
-        }
-        if (tagIdString != null) {
-            tagId = Integer.parseInt (tagIdString);
         }
         if (userIdString != null) {
             userId = Integer.parseInt (userIdString);
@@ -145,9 +142,9 @@
     } else if (forumIdString != null) {
         // Postings of a specific forum
         selectForumPostings(forumId);
-    } else if (tagIdString != null) {
+    } else if (tagString != null) {
         // Postings of a specific tag
-        selectTagPostings(tagId);
+        selectTagPostings(tag);
     } else if (userIdString != null) {
         // Postings of a specific user
         selectUserPostings(userId);
@@ -167,7 +164,7 @@
      */
     private void selectTop8Postings() {
         latest = true;
-        Collections.addAll(postSelection, databaseObject.getLatestPostings());
+        postSelection, databaseObject.getLatestPostings();
     }
 
     /**
@@ -179,8 +176,8 @@
      * @param minDate the minimal date specifying the lower border of creation date
      * @param maxDate the maximal date specifying the upper border of creation date
      */
-    private void extendedSearchRequest(String searchTerm, int forumId, int tagId, Date minDate, Date maxDate) {
-        postSelection = databaseObject.searchPostings(searchTerm, forumId, tagId, minDate, maxDate);
+    private void extendedSearchRequest(String searchTerm, int forumId, String tag, Date minDate, Date maxDate) {
+        postSelection = databaseObject.searchPostings(searchTerm, forumId, tag, minDate, maxDate);
     }
 
     /**
@@ -203,8 +200,8 @@
      * Initializes the postSelection with all postings attached with a specific tag
      * @param tagId the id of the specific tag
      */
-    private void selectTagPostings(int tagId) {
-        postSelection = databaseObject.selectPostingsByTag(tagId);
+    private void selectTagPostings(String tag) {
+        postSelection = databaseObject.selectPostingsByTag(tag);
     }
 
     /**
@@ -219,7 +216,7 @@
      *
      */
     private void selectPopularPostings() {
-        Collections.addAll(postSelection, databaseObject.selectPopularPostings());
+        postSelection = databaseObject.selectPopularPostings();
     }
 %>
 
