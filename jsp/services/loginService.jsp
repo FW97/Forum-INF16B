@@ -47,9 +47,9 @@
 	 */
 	private String createResponse(String status, String message) {
 		if (message != null) {
-			return "{ status: \"" + status + "\", message: \"" + message + "\" }";
+			return "{ \"status\": \"" + status + "\", \"message\": \"" + message + "\" }";
 		} else {
-			return "{ status: \"" + status + "\" }";
+			return "{ \"status\": \"" + status + "\" }";
 		}
 	}
 
