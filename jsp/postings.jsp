@@ -222,7 +222,7 @@
     }
 %>
 
-<c:if test="displayHeader && !postSelection.isEmpty()">
+<c:if test="${displayHeader && !postSelection.isEmpty()}">
     <h1>Kommentare zu eigenen Postings</h1>
 </c:if>
 <c:forEach items="${postSelection}" var="currentPost" end="${maxPostings}">
