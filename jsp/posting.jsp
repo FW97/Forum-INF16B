@@ -22,7 +22,7 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 
 <jsp:include page="header.jsp"/>
 
-<c:if test="subjectid>0">
+<c:if test="${subjectid>0}">
 <div class="subject">
     <h1><%=subject.name%>
     </h1>
@@ -55,7 +55,7 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 
 </div>
 </c:if>
-<c:if test="subjectid<=0"><div class='errorbox'>Fehler beim Laden</div></c:if>
+<c:if test="${subjectid<=0}"><div class='errorbox'>Fehler beim Laden</div></c:if>
 
 <jsp:include page="footer.jsp"/>
 
