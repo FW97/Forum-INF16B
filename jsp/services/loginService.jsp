@@ -23,14 +23,7 @@
 	}
 
 	DAO databaseObject = new DAO();
-	User loggedUser = new User(0); // databaseObject.getUserByEmail(username);
-	loggedUser.setFirstname("Jason");
-	loggedUser.setLastname("Biggs");
-	loggedUser.setEmail("j.biggs24@t-online.de");
-	loggedUser.setPwHash("+v1SQl2PKeYFFiPfoemlHQGttPLm5aj2MQEtuMHS78NbuKpIghr4VPKroGZTtKa3gKZMcy9ROKMkMUqLBnVGIw==");
-	loggedUser.setPwSalt("sqndpB7MOQO8rZ6mZJPIfs3UNwq87FEdUCoMgMDHa6V3v22OMMT+Bo019B6Fee5GaoTziWrm2l30BReYZYFWCA==");
-	loggedUser.setRole(2);
-	loggedUser.setImgUrl("https://i.imgur.com/5pgEunI.png");
+	User loggedUser = databaseObject.getUserByEmail(username);
 
 	if (loggedUser == null) {
 		out.println(createResponse("Error", wrongCredentialsMessage));
