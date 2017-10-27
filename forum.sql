@@ -1,4 +1,4 @@
--- --------------------------------------------------------
+﻿-- --------------------------------------------------------
 -- Host:                         127.0.0.1
 -- Server Version:               5.6.37-log - MySQL Community Server (GPL)
 -- Server Betriebssystem:        Win64
@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS `posting` (
   `Text` text,
   `subjectid` int(11) DEFAULT NULL,
   `authorid` int(11) DEFAULT NULL,
-  `whendeleted` date DEFAULT NULL,
-  `whenposted` date DEFAULT NULL,
+  `whendeleted` timestamp NULL DEFAULT NULL,
+  `whenposted` timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
   KEY `subjectid` (`subjectid`),
   KEY `authorid` (`authorid`)
