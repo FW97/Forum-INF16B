@@ -98,16 +98,20 @@ body {
 
 /* profil */
 
-
-
 .profil {
-    padding: 3rem;
+}
+
+.profil .post {
+    margin: 6px 0;
+}
+
+.profil .clearTopPadding {
+    padding-top: 0;
 }
 
 #uploadImage {
-    float: right;
     margin: 0;
-    padding: 0.5rem 1rem;
+    padding-top: 0.5rem;
 }
 
 .settingLabel {
@@ -120,9 +124,16 @@ body {
     width: 20rem;
 }
 
+.settingError {
+	font-size: 0.9rem;
+	color: red;
+}
+
 .settingContent input[type=text] {
     width: 16rem;
 }
+
+.centered-and-cropped { object-fit: cover }
 
 .setting {
     display: block;

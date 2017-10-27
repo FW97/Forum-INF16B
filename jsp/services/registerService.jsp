@@ -1,37 +1,41 @@
-<!--
-	@author Laura Kaipl, Tobias Siebig
-	Service to register new User to our forum
--->
+package de.dhbw.StudentForum;
 
-<%@ page import = "StudentForum.DAO, StudentForum.User" %>
+<%@ page import = "de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, de.dhbw.StudentForum.Hashing" %>
 
 <%
-	import java.util.Random;
+	/*
+	@author Laura Kaipl, Tobias Siebig
+	Service to register new Users to our forum
+	*/
 
 	String email = request.getParameter("email");
 	String firstname = request.getParameter("firstname");
 	String lastname = request.getParameter("lastname");
 	String password = request.getParameter("password1");
-	int id = 1000;
-	byte[] salt = new byte[16];
-	random.nextBytes(salt);
+	
+	User u = new User();
 	DAO d = new DAO();
-	User u = new User(id++);
+    Hashing h = new Hashing();
 	
 	if(d.getUserByEmail(email) == null)
 	{
-		if (email == null || firstname == null || lastname == null|| password == null)
+		if (email == null || firstname == null || lastname == null || password == null)
 		{
-			out.println("{status:\"ERROR\", message:\"Please fulfill all of the information.\"}");
+			out.println("{status:\"Error\", message:\"Please fulfill all of the information.\"}");
 		}
 		else 
 		{
 			u.setEmail(email);
 			u.setFirstname(firstname);
 			u.setLastname(lastname);
-			u.setRole(1); <!--ist 1 normaler User?-->
-			u.setPwHash(makeHash(password));
-			u.setPwSalt(salt);
+			u.setRole(1); <!-- normaler User -->
+			u.setImgUrl("standardPic.png");
+			
+			String[] saltAndHash = new String[2];
+			saltAndHash[] = h.hashNewUser(password);
+			
+			u.setPwSalt(saltAndHash[0]);
+			u.setPwHash(saltAndHash[1]);
 			
 			d.addNewUser(u);
 			
@@ -40,7 +44,7 @@
 	}
 	else
 	{
-		out.println("{status:\"ERROR\", message:\"Emails already registered.\"}");
+		out.println("{status:\"Error\", message:\"Email is already registered, please try to login.\"}");
 	}
 
 %>
