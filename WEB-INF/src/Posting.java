@@ -59,7 +59,9 @@ public class Posting {
 		return whenDeleted;
 	}
 	public void setWhenDeleted(Timestamp whenDeleted) {
-		this.whenDeleted = new Date(whenDeleted.getTime());
+		if(whenDeleted != null) {
+			this.whenDeleted = new Date(whenDeleted.getTime());
+		}
 	}
 	
 	public Date getWhenPosted() {
