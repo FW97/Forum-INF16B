@@ -49,7 +49,7 @@
         <a href="register.jsp">
             Noch nicht registriert?
         </a>
-        <form action="" method="post" onsubmit="loginAjax(); return false;">
+        <form action="<%= request.getContextPath() %>/services/loginService.jsp" method="post" onsubmit="loginAjax(); return false;">
             <input type="text" name="username" id="username" placeholder="Benutzername"/>
             <input type="password" name="password" id="password" placeholder="Passwort"/>
             <input type="submit" value=" Login "/>
