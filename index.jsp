@@ -8,12 +8,10 @@
 <jsp:include page="jsp/postings.jsp?latest=true&maxpostings=8" />
 
 <h1>Angesagte Foren</h1>
-<!--dummy-->
-<jsp:include page="jsp/top8d.jsp" />
+<jsp:include page="jsp/postings.jsp?popular=true&maxpostings=8" />
 
 <% if(loginSession != null) { %>
-    <h1>Kommentare zu eigenen Postings</h1>
-    <jsp:include page="jsp/postings.jsp?userid=<%= loginSession.getId() %>%maxpostings=8" />
+    <jsp:include page="jsp/postings.jsp?userid=<%= loginSession.getId() %>&maxpostings=8&displayheader=true" />
 <% } %>
 
 <jsp:include page="jsp/footer.jsp" />
