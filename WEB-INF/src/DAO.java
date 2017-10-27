@@ -359,8 +359,8 @@ public class DAO {
 			newPosting.setMessage(rs.getString("text"));
 			newPosting.setUserId(rs.getInt("authorid"));
 			newPosting.setSubjectId(rs.getInt("subjectid"));
-			newPosting.setWhenDeleted(rs.getDate("whendeleted"));
-			newPosting.setWhenPosted(rs.getDate("whenposted"));
+			newPosting.setWhenDeleted(rs.getTimestamp("whendeleted"));
+			newPosting.setWhenPosted(rs.getTimestamp("whenposted"));
 			newPosting.setTags(rs.getString("tags").split(","));
 			newPosting.setPosRat(rs.getInt("posrat"));
 			newPosting.setNegRat(rs.getInt("negrat"));
@@ -394,9 +394,10 @@ public class DAO {
 				Posting posting = new Posting(rs.getInt("ID"));
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
+				// posting.setUser(new User(rs.getInt("authorid")));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				if (null != rs.getString("tags")) {
 					posting.setTags(rs.getString("tags").split(","));
 				}
@@ -436,8 +437,8 @@ public class DAO {
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				if (null != rs.getString("tags")) {
 					posting.setTags(rs.getString("tags").split(","));
 				}
@@ -476,8 +477,8 @@ public class DAO {
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				posting.setTags(rs.getString("tags").split(","));
 				posting.setPosRat(rs.getInt("posrat"));
 				posting.setNegRat(rs.getInt("negrat"));
@@ -515,8 +516,8 @@ public class DAO {
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				posting.setTags(rs.getString("tags").split(","));
 				posting.setPosRat(rs.getInt("posrat"));
 				posting.setNegRat(rs.getInt("negrat"));
@@ -531,7 +532,33 @@ public class DAO {
 	}
 	
 	public Set<Posting> getLatestPostings() {
-		return null;
+		Connection con = null;
+		ResultSet rs;
+		Set<Posting> postings = new HashSet<Posting>();
+
+		try {
+			con = MySQLDatabase.getInstance().getConnection();
+
+			String sqlString = "SELECT parent.ID, parent.authorid, parent.subjectid, parent.text, parent.whenposted, parent.whendeleted FROM forum.POSTING AS parent Order by parent.whenPosted DESC LIMIT 4;";
+
+			PreparedStatement ps = con.prepareStatement(sqlString);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Posting posting = new Posting(rs.getInt("ID"));
+				posting.setUserId(rs.getInt("authorid"));
+				posting.setSubjectId(rs.getInt("subjectid"));
+				posting.setMessage(rs.getString("text"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
+				postings.add(posting);
+			}
+
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return postings;	
 	}
 	
 	public Set<Posting> searchPostings(String searchTerm) {
@@ -576,8 +603,8 @@ public class DAO {
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				posting.setTags(rs.getString("tags").split(","));
 				posting.setPosRat(rs.getInt("posrat"));
 				posting.setNegRat(rs.getInt("negrat"));
