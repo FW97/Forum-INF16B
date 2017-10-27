@@ -8,46 +8,32 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 
-    /*  DAO daoObject = new DAO();
-        int subjectid = Integer.parseInt(request.getParameter("id"))
-        Subject subject = daoObject.getSubjectbyId(subjectid)
-        ArrayList<Posting> subjectPostings = daoObject.getPostings(subject.id);*/
+    DAO daoObject = new DAO();
+    int subjectid = 0;
+    try {
+        subjectid = Integer.parseInt(request.getParameter("id"));
+    }
+    catch(Exception e) {}
 
-    String forum = "Informatik";
-    String subjectTitle = "INF16A: Brauche   hilfe bei Hausaufgaben";
-    Date date = GregorianCalendar.getInstance().getTime();
-    String postings[] = {"Actually im new to angular JS. We started to learn angular 4 but there are no much tutorials on angular 4. If it is fine to learn Angular 2 for Angular 4, Hope there was no much differences between 2 and 4.\n" +
-            "\n" +
-            "Can any one provide link of angular 4 and what are the major changes between them.\n" +
-            "\n", "There is nothing path breaking between angular 2 and angular 4 like angular 1 and angular 2. They are just doing it to maintain SEMVER(Sementic Versioning). Angular 2 is stable now so it would be better to prefer angular 2 instead of angular 4.\n" +
-            "\n" +
-            "Angular 2 was a complete rewrite of AngularJS 1.x with many new concepts. Angular 4 however is the next version of Angular 2. The underlying concepts are still the same and if you have already learned Angular 2 you’re well prepared to switch to Angular 4 now.\n" +
-            "\n" +
-            "The reason it’s Angular 4 and not Angular 3 is that the Angular Router package has already been in version 3 before. The Angular team would like to avoid confusion and decided to skip version 3 for Angular and continue with Version 4."};
-    String tags[] = {"Angular", "Controller", "Material Design"};
-    String author[] = {"Ike Broflovski", "Homer Nukular Simpson"};
-    int i = 0;
+    Subject subject = daoObject.getSubjectbyId(subjectid);
+    ArrayList<Posting> subjectPostings = daoObject.getPostings(subject.id);*/
 
 %>
 
 <jsp:include page="header.jsp"/>
 
+<c:if test="subjectid>0">
 <div class="subject">
-    <%-- <%=subject.name%> --%>
-    <h1><%=subjectTitle%>
+    <h1><%=subject.name%>
     </h1>
     <p><c:forEach var="tag" items="<%=tags%>"><a class="tag" href="posting.jsp"><c:out value="${tag}"/></a></c:forEach>
     </p>
-    <%-- <c:forEach items="<%=subjectPostings%>" var="posting"> --%>
-    <c:forEach items="<%=postings%>" var="posting">
-        <%--<% String author = daoObject.getUserById(posting.userId); %>--%>
-        <!--<span class="author"><%--<%=author%>--%></span> &bull; -->
-        <span class="author"><%=author[i]%><% i++;%></span> &bull;
-        <!--<span class="date"><%--<%=posting.whenPosted%>--%></span> -->
-        <span class="date"><%=date%></span>
+    <c:forEach items="<%=subjectPostings%>" var="posting">
+        <% User author = daoObject.getUserById(posting.userId); %>
+        <span class="author"><%=author.getFirstname()%> <%=author.getLastname()%></span> &bull;
+        <span class="date"><%=posting.getWhenPosted()%></span>
         <p class="posting">
-                <%--<c:out value="${posting.message}"/> --%>
-                <c:out value="${posting}"/>
+                <c:out value="${posting.message}"/>
         <div class="attachment">
             <!-- temporary as placeholder-->
                 <%--<c:forEach var="attachment" items="${posting.attachments}">
@@ -68,6 +54,9 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 
 
 </div>
+</c:if>
+<c:if test="subjectid<=0"><div class='errorbox'>Fehler beim Laden</div></c:if>
+
 <jsp:include page="footer.jsp"/>
 
 <script>
