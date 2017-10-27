@@ -22,14 +22,14 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 
 <jsp:include page="header.jsp"/>
 
-<c:if test="subjectid>0">
+<c:if test="${subjectid>0}">
 <div class="subject">
     <h1><%=subject.name%>
     </h1>
     <p><c:forEach var="tag" items="<%=tags%>"><a class="tag" href="posting.jsp"><c:out value="${tag}"/></a></c:forEach>
     </p>
     <c:forEach items="<%=subjectPostings%>" var="posting">
-        <% User author = daoObject.getUserById(posting.userId); %>
+        <% User author = daoObject.getUserById(posting.getUserId()); %>
         <span class="author"><%=author.getFirstname()%> <%=author.getLastname()%></span> &bull;
         <span class="date"><%=posting.getWhenPosted()%></span>
         <p class="posting">
@@ -55,7 +55,7 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 
 </div>
 </c:if>
-<c:if test="subjectid<=0"><div class='errorbox'>Fehler beim Laden</div></c:if>
+<c:if test="${subjectid<=0}"><div class='errorbox'>Fehler beim Laden</div></c:if>
 
 <jsp:include page="footer.jsp"/>
 
