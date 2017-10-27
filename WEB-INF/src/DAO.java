@@ -128,27 +128,28 @@ public class DAO {
 	}
 
 	// Add subject to DB.
-	public boolean addSubject(Subject s) throws Exception {
+	public int addSubject(Subject s) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
+		int returnvalue = -1;
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
 
-			String sqlString = "INSERT INTO SUBJECT (" + "name, forumid) " + "VALUES (?, ?)";
+			String sqlString = "INSERT INTO SUBJECT (" + "name, forumid) " + "VALUES (?, ?); "
+					+ "SELECT LAST_INSERT_ID";
 
 			ps = con.prepareStatement(sqlString);
 			ps.setString(1, s.getName());
 			ps.setInt(2, s.getForumid());
-			ps.executeUpdate();
+			returnvalue = ps.executeUpdate();
 
 			ps.close();
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
 		}
-		return true;
+		return returnvalue;
 	}
 
 	// Add forum to DB.
