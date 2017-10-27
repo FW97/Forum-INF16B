@@ -18,10 +18,12 @@
 	String newForumName = request.getParameter("newForumName");
 	if (newForumName==null || newForumName.length()==0){
 		out.println("{\"status\": \"Error\",\"message\":\"kein Forumname\"}");
+		return;
 	}
 	String newForumKategorie = request.getParameter("newForumKategorie");
 	if (newForumKategorie==null || newForumKategorie.length()==0){
 		out.println("{\"status\": \"Error\",\"message\":\"keine Forumkategorie\"}");
+		return;
 	}
 
 	DAO databaseObject = new DAO();
@@ -38,5 +40,6 @@
 		System.out.println("{ status: \"" + successfulForumStatus + "\", message: \"" + successfulForumMessage + "\" }");
 	} else {
 		System.out.println("{ status: \"" + ErrorForumStatus + "\", message: \"" + ErrorForumMessage + "\" }");
+		return;
 	}
 %>
