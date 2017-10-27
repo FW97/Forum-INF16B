@@ -17,7 +17,7 @@
     }
     else
     {
-        Posting newPosting = new Posting();
+        Posting newPosting = new Posting(0);
         newPosting.setMessage(replystring);
         newPosting.setSubjectId(subjectid);
         newPosting.setAuthorId(loggedUser);

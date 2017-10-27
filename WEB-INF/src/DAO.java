@@ -128,27 +128,30 @@ public class DAO {
 	}
 
 	// Add subject to DB.
-	public boolean addSubject(Subject s) throws Exception {
+	public int addSubject(Subject s) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
+		int returnvalue = -1;
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
 
-			String sqlString = "INSERT INTO SUBJECT (" + "name, forumid) " + "VALUES (?, ?)";
+			String sqlString = "INSERT INTO SUBJECT (" + "name, forumid) " + "VALUES (?, ?); ";
 
 			ps = con.prepareStatement(sqlString);
 			ps.setString(1, s.getName());
 			ps.setInt(2, s.getForumid());
 			ps.executeUpdate();
+			
+			sqlString = "SELECT LAST_INSERT_ID;";
+			returnvalue = ps.executeUpdate();
 
 			ps.close();
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
 		}
-		return true;
+		return returnvalue;
 	}
 
 	// Add forum to DB.
@@ -159,11 +162,12 @@ public class DAO {
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
 
-			String sqlString = "INSERT INTO FORUM (" + "name, moderatorid) " + "VALUES (?, ?)";
+			String sqlString = "INSERT INTO FORUM (" + "name, moderatorid, category) " + "VALUES (?, ?, ?)";
 
 			ps = con.prepareStatement(sqlString);
 			ps.setString(1, f.getName());
 			ps.setInt(2, f.getModeratorid());
+			ps.setString(3, f.getCategory());
 			ps.executeUpdate();
 
 			ps.close();
@@ -524,6 +528,14 @@ public class DAO {
 			e.printStackTrace();
 		}
 		return postings;
+	}
+	
+	public Set<Posting> getLatestPostings() {
+		return null;
+	}
+	
+	public Set<Posting> searchPostings(String searchTerm) {
+		return null;
 	}
 
 	/**
