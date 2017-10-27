@@ -29,7 +29,7 @@ package de.dhbw.StudentForum;
 			u.setFirstname(firstname);
 			u.setLastname(lastname);
 			u.setRole(1); <!-- normaler User -->
-			u.setImgUrl("img/profilImages/standardPic.png");
+			u.setImgUrl("/img/profilImages/standardPic.png");
 			
 			String[] saltAndHash = new String[2];
 			saltAndHash[] = h.hashNewUser(password);
