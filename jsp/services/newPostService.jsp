@@ -17,15 +17,14 @@
 		}
 		else 
 		{
-			Subject subjectObject = new Subject();
+			Subject subjectObject = new Subject(0);
 			subjectObject.setName(title);
-			int id = subjectObject.getId(title);
+			//int id = subjectObject.getId();
 			
-			Posting postingObject = new Posting();			
+			Posting postingObject = new Posting(0);			
 			postingObject.setText(text);
-			/7postingObject.setTags(tags);
+			//postingObject.setTags(tags);
 			postingObject.setAuthorid(loggedUser);
-			postingObject.setsubjectid(id);
 			
 			try{
 				daoObject.addNewPosting(postingObject);
