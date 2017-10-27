@@ -3,11 +3,8 @@ package de.dhbw.StudentForum;
 import java.sql.Date;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.mysql.jdbc.Statement;
 
 import de.dhbw.StudentForum.Posting;
 import de.dhbw.StudentForum.User;
@@ -531,10 +528,10 @@ public class DAO {
 		return postings;
 	}
 	
-	public Set<Posting> getLatestPostings() {
+	public ArrayList<Posting> getLatestPostings() {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		ArrayList<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -562,6 +559,50 @@ public class DAO {
 	}
 	
 	public Set<Posting> searchPostings(String searchTerm) {
+			/*Connection con = null;
+			ResultSet rs;
+			Set<Posting> postings = new HashSet<Posting>();
+
+			try {
+				con = MySQLDatabase.getInstance().getConnection();
+
+				String sqlString = "SELECT parent.ID, parent.authorid, parent.subjectid, parent.text, parent.whenposted, parent.whendeleted, "
+						+ "(SELECT GROUP_CONCAT(t.tag) FROM POSTINGTAG t, POSTING p WHERE p.ID = parent.ID AND t.postingId = p.ID) AS tags, "
+						+ "(SELECT SUM(rating) FROM POSTINGRATING r, POSTING p WHERE p.ID = parent.ID AND rating = 1 AND r.postingid = p.id) AS posrat, "
+						+ "(SELECT SUM(rating) FROM POSTINGRATING r, POSTING p WHERE p.ID = parent.ID AND rating = -1 AND r.postingid = p.id) AS negrat "
+						+ "From Posting as parent "
+						+ "WHERE ";
+
+				String[] searchwords = searchTerm.split(" ");
+				for (int i = 0; i < searchwords.length; i++) {
+					if(i == 0) {
+						sqlString.concat("p.text like '%" + searchwords[i] + "%' ");
+					}else {
+						sqlString.concat("AND p.text like '%" + searchwords[i] + "%' ");
+					}
+				}
+
+				PreparedStatement ps = con.prepareStatement(sqlString);
+				rs = ps.executeQuery();
+
+				while (rs.next()) {
+					Posting posting = new Posting(rs.getInt("ID"));
+					posting.setUserId(rs.getInt("authorid"));
+					posting.setSubjectId(rs.getInt("subjectid"));
+					posting.setMessage(rs.getString("text"));
+					posting.setWhenPosted(rs.getTimestamp("whenposted"));
+					posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
+					posting.setTags(rs.getString("tags").split(","));
+					posting.setPosRat(rs.getInt("posrat"));
+					posting.setNegRat(rs.getInt("negrat"));
+					postings.add(posting);
+				}
+
+				con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return postings;*/
 		return null;
 	}
 
