@@ -13,9 +13,7 @@
 	String username = request.getParameter("username");
 	String password = request.getParameter("password");
 
-	final String wrongCredentialsMessage = "Username or password seems to be wrong!";
-	final String successfulLoginMessage  = "Authentication successful!";
-	final String loginErrorMessage       = "Authentication failed!";
+	final String wrongCredentialsMessage = "Username or password is wrong! Please correct and try again!";
 
 	if (username == null || password == null) {
 		out.println(createResponse("Error", wrongCredentialsMessage));
@@ -27,6 +25,7 @@
 
 	if (loggedUser == null) {
 		out.println(createResponse("Error", wrongCredentialsMessage));
+		return;
 	}
 
 	String generatedHash = hashPassword(password, loggedUser.getPwSalt());
