@@ -159,11 +159,12 @@ public class DAO {
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
 
-			String sqlString = "INSERT INTO FORUM (" + "name, moderatorid) " + "VALUES (?, ?)";
+			String sqlString = "INSERT INTO FORUM (" + "name, moderatorid, category) " + "VALUES (?, ?, ?)";
 
 			ps = con.prepareStatement(sqlString);
 			ps.setString(1, f.getName());
 			ps.setInt(2, f.getModeratorid());
+			ps.setString(3, f.getCategory());
 			ps.executeUpdate();
 
 			ps.close();
