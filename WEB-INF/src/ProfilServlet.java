@@ -49,9 +49,10 @@ public class ProfilServlet extends HttpServlet {
 		} 
 
 		if (isValidInputChange(request, user.getEmail().trim())) {
-			user.setFirstname(request.getParameter("firstName"));
-			user.setLastname(request.getParameter("lastName"));
-			user.setEmail(request.getParameter("email"));
+			user.setFirstname(request.getParameter("firstName").trim());
+			user.setLastname(request.getParameter("lastName").trim());
+			user.setEmail(request.getParameter("email").trim());
+
 			session.setAttribute("user", user);
 			DAO.updateProfilSettings(user);
 		}
@@ -62,7 +63,7 @@ public class ProfilServlet extends HttpServlet {
 			user.setPwHash(pwhash);
 			
 			session.setAttribute("user", user);
-			System.out.println("Successfull pw update: " + DAO.updatePassword(user));
+			DAO.updatePassword(user);
 		} 
 		
 		if (isValidImageUpload(request)) {
