@@ -52,7 +52,7 @@ public class ProfilServlet extends HttpServlet {
 			user.setFirstname(request.getParameter("firstName").trim());
 			user.setLastname(request.getParameter("lastName").trim());
 			user.setEmail(request.getParameter("email").trim());
-			System.out.println("isinputchange");
+			
 			session.setAttribute("user", user);
 			session.setAttribute("settingSuccess", true);
 			DAO.updateProfilSettings(user);
@@ -71,18 +71,18 @@ public class ProfilServlet extends HttpServlet {
 		if (isValidImageUpload(request)) {
 			Part filePart = request.getPart("file");
 			String userFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-			String fileType = userFileName.substring(userFileName.indexOf("."), userFileName.length());	
-		    String fileName = ((User) request.getSession().getAttribute("user")).getId() + fileType.toLowerCase();
+			String fileType = userFileName.substring(userFileName.indexOf("."), userFileName.length());
+			String fileName = ((User) request.getSession().getAttribute("user")).getId() + fileType.toLowerCase();
 		   
 			filePart.write(request.getServletContext().getRealPath("") + SAVE_DIR + fileName);
-
-	        user = (User) session.getAttribute("user");
+			
+			user = (User) session.getAttribute("user");
 			String imgurl = request.getContextPath() + File.separator + SAVE_DIR + fileName;
 			user.setImgUrl(imgurl);
 			
 			session.setAttribute("settingSuccess", true);
 			session.setAttribute("user", user);
-	        DAO.updateImgurl(user);
+			DAO.updateImgurl(user);
 		}
 		
 		session.setAttribute("settingErrors", this.errors);
@@ -158,10 +158,10 @@ public class ProfilServlet extends HttpServlet {
 	}
 	
 	private boolean isValidImageUpload(HttpServletRequest request) throws IOException, ServletException {
-		if (request.getPart("file") == null) return false; 
+		if (request.getPart("file") == null) return false;
 		Part filePart = request.getPart("file");
-	    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-	    String fileType = fileName.substring(fileName.indexOf(".") + 1, fileName.length());
+		String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+		String fileType = fileName.substring(fileName.indexOf(".") + 1, fileName.length());
 
 		boolean result = !fileName.equals("") && (fileType.toUpperCase().equals("PNG") || fileType.toUpperCase().equals("JPEG") || fileType.toUpperCase().equals("JPG"));
 		if (!result && !fileName.equals("")) {
