@@ -3,6 +3,7 @@
    Name: Eric Dussel, Hans Fuchs
  -->
 <%@ page import="de.dhbw.StudentForum.User" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     // Hold the current login session (if existent)
     User loginSession = (User) session.getAttribute("user");
@@ -14,16 +15,13 @@
         <input type="button" class="button-search" value="Suchen"/>
     </div>
 
-    <%
-    // if user == admin, show 'add forum'-button
-    if(loginSession != null) {
-        if(loginSession.getRole() == 2) {
-    %>
-    <div class="newForumButton">
-        <input type="button" onclick="window.location.replace('newForum.jsp');" 
-                value="Neues Forum erstellen"/>
-    </div>
-    <% }} %>
+    <%-- if user == admin, show 'add forum'-button --%>
+    <c:if test="${loginSession != null && loginSession.getRole() == 2}">
+        <div class="newForumButton">
+            <input type="button" onclick="window.location.replace('newForum.jsp');"
+                   value="Neues Forum erstellen"/>
+        </div>
+    </c:if>
 
     <script>
     function loginAjax() {
@@ -63,30 +61,30 @@
     </script>
 
     <div class="right">
-    <% 
-        if(loginSession == null) {
-    %>
-        <div id="loginform">
-            <a href="jsp/register.jsp">
-                Noch nicht registriert?</a>
-            <form action="" method="post" onsubmit="loginAjax(); return false;">
-                <input type="text" name="username" id="username" placeholder="Benutzername"/>
-                <input type="password" name="password" id="password" placeholder="Passwort"/>
-                <input type="submit" value=" Login "/>
-            </form>
-            <div class="alert alert--error" id="loginerrorbox" style="display: none;"></div>
-        </div>
-    <% } else { %>
-        <div id="loggedin">
-            <a href="jsp/profil.jsp">
-                Hallo, <%=loginSession.getFirstname() %>
-                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-            </a>
-            <a href="#" onclick="logoutAjax(); return false;">
-                Logout
-            </a>
-        </div>
-    <% } %>
+        <c:if test="${loginSession == null}">
+            <div id="loginform">
+                <a href="jsp/register.jsp">
+                    Noch nicht registriert?</a>
+                <form action="" method="post" onsubmit="loginAjax(); return false;">
+                    <input type="text" name="username" id="username" placeholder="Benutzername"/>
+                    <input type="password" name="password" id="password" placeholder="Passwort"/>
+                    <input type="submit" value=" Login "/>
+                </form>
+                <div class="alert alert--error" id="loginerrorbox" style="display: none;"></div>
+            </div>
+        </c:if>
+
+        <c:if test="${loginSession != null}">
+            <div id="loggedin">
+                <a href="jsp/profil.jsp">
+                    Hallo, ${loginSession.getFirstname()}
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                </a>
+                <a href="#" onclick="logoutAjax(); return false;">
+                    Logout
+                </a>
+            </div>
+        </c:if>
     </div>
 </div>
 
