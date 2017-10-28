@@ -838,7 +838,7 @@ public class DAO {
 	 * 
 	 * @author Michael Skrzypietz
 	 */
-	public static void updateImgurl(User user) {
+	public static boolean updateImgurl(User user) {
 		try {
 			Connection con = MySQLDatabase.getInstance().getConnection();
 
@@ -851,9 +851,12 @@ public class DAO {
 
 			ps.close();
 			con.close();
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return false;
 	}
 
 	public boolean hasUserRated(int postingId, int userId) {
