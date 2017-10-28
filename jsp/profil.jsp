@@ -11,7 +11,7 @@
 
   <div class="profil">
     <h1>Profileinstellungen</h1>
-    
+  
     <form method="post" action="../ProfilServlet" enctype="multipart/form-data">
       <div class="settingBox clearTopPadding">
         <div class="setting">
@@ -118,6 +118,21 @@
     </form>
     <br>
 
+    <c:if test="${settingSuccess == true}">
+      <div id="successAlert" class="success-alert alert alert--confirm elementToFadeInAndOut">
+        &Auml;nderungen wurden erfoglreich gespeichert.
+      </div>
+      <script type="text/javascript">
+        setTimeout(function() {
+          var alert = document.getElementById('successAlert');
+          alert.style.display = "none";
+        }, 5000);
+      </script>
+      <%
+        session.setAttribute("settingSuccess", false);
+      %>
+    </c:if>
+  
     <!--
     <h1>Eigene Beiträge</h1>
     -->
