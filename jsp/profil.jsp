@@ -8,7 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%!
-  ArrayList<PostingLink> userPostings = new ArrayList<>();
+  List<PostingLink> userPostings = new ArrayList<>();
 %>
 
 <%
@@ -134,7 +134,7 @@
             <label>Altes Passwort</label>
           </div>
           <div class="settingContent settingSpacing">
-            <input type="password" name="currentPassword"></input>
+            <input type="password" name="currentPassword" />
           </div>
         </div>
 
@@ -143,7 +143,7 @@
             <label>Neues Passwort</label>
           </div>
           <div class="settingContent settingSpacing">
-            <input type="password" name="newPassword"></input>
+            <input type="password" name="newPassword" />
           </div>
         </div>
 
@@ -152,7 +152,7 @@
             <label>Neues Passwort best&auml;tigen</label>
           </div>
           <div class="settingContent">
-            <input type="password" name="newPassword2"></input>
+            <input type="password" name="newPassword2" />
             <br>
             <div class="settingError">
               <c:if test = "${settingErrors.password.length() > 0}">
