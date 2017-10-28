@@ -666,7 +666,7 @@ public class DAO {
 		return postings;
 	}
 
-	public static List<Integer> getSubjectIDsByForum(int forumId) {
+	public List<Integer> getSubjectIDsByForum(int forumId) {
 		Connection con = null;
 		ResultSet rs;
 		List<Integer> subjects = new ArrayList<Integer>();
@@ -691,7 +691,7 @@ public class DAO {
 		return subjects;
 	}
 
-	public static Subject getSubjectById(int subjectid) {
+	public Subject getSubjectById(int subjectid) {
 		Connection con = null;
 		ResultSet rs;
 		Subject subject = null;
