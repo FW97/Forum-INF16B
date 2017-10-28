@@ -39,7 +39,7 @@ public class ProfilServlet extends HttpServlet {
 		super();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		this.errors = new SettingErrors();
 		User user = (User) session.getAttribute("user");
@@ -48,7 +48,7 @@ public class ProfilServlet extends HttpServlet {
 			return;
 		} 
 
-		if (isValidInputChange(request)) {
+		if (isValidInputChange(request, user.getEmail().trim())) {
 			user.setFirstname(request.getParameter("firstName"));
 			user.setLastname(request.getParameter("lastName"));
 			user.setEmail(request.getParameter("email"));
@@ -62,23 +62,22 @@ public class ProfilServlet extends HttpServlet {
 			user.setPwHash(pwhash);
 			
 			session.setAttribute("user", user);
-			DAO.updatePassword(user);
+			System.out.println("Successfull pw update: " + DAO.updatePassword(user));
 		} 
 		
 		if (isValidImageUpload(request)) {
 			Part filePart = request.getPart("file");
 			String userFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-			String fileType = userFileName.substring(userFileName.indexOf("."), userFileName.length());
-			
+			String fileType = userFileName.substring(userFileName.indexOf("."), userFileName.length());	
 		    String fileName = ((User) request.getSession().getAttribute("user")).getId() + fileType;
 		    
 			String appPath = request.getServletContext().getRealPath("");
-			String savePath = appPath + "img" + File.separator + SAVE_DIR;
+			String savePath = appPath + File.separator + "img" + File.separator + SAVE_DIR;
    
 	        filePart.write(savePath + File.separator  + fileName); 
 
 	        user = (User) session.getAttribute("user");
-	        user.setImgUrl(fileName);
+			user.setImgUrl(appPath + "/img/" + SAVE_DIR + "/" + fileName);
 			session.setAttribute("user", user);
 	        DAO.updateImgurl(user);
 		}
@@ -87,7 +86,7 @@ public class ProfilServlet extends HttpServlet {
 		response.sendRedirect("jsp/profil.jsp");
 	}
 	
-	private boolean isValidInputChange(HttpServletRequest request) {
+	private boolean isValidInputChange(HttpServletRequest request, String userEmail) {
 		if (!isValidFirstName(request.getParameter("firstName"))) {
 			this.errors.setFirstName("Vornamen dürfen keine Zahlen enthalten und müssen zwischen 2 und 16 Zeichen lang sein.");
 			System.out.println("Profil settings change Error: invalid firstname");
@@ -105,9 +104,8 @@ public class ProfilServlet extends HttpServlet {
 			System.out.println("Profil settings change Error: invalid email");
 			return false;
 		}
-
-
-		if (DAO.isEmailTaken(request.getParameter("email"))) {
+		
+		if (!userEmail.equals(request.getParameter("email").trim()) && DAO.isEmailTaken(request.getParameter("email"))) {
 			this.errors.setEmail("Die Email ist bereits vergeben.");
 			System.out.println("Profil settings change Error: email is taken");
 			return false;
@@ -142,7 +140,7 @@ public class ProfilServlet extends HttpServlet {
 		User user = (User) request.getSession().getAttribute("user");
 		String newPassword = request.getParameter("newPassword");
 		String newPassword2 = request.getParameter("newPassword2");	
-		String pwhash = Hashing.getHashedPassword(request.getParameter("newPassword"), user.getPwSalt());
+		String pwhash = Hashing.getHashedPassword(request.getParameter("currentPassword"), user.getPwSalt());
 		if (newPassword.equals(newPassword2) && pwhash.equals(user.getPwHash())) return true; 
 		
 		this.errors.setPassword("Das alte Passwort ist falsch oder die neuen Passwörter stimmen nicht überein.");
@@ -157,7 +155,7 @@ public class ProfilServlet extends HttpServlet {
 	    String fileType = fileName.substring(fileName.indexOf(".") + 1, fileName.length());
 
 		boolean result = !fileName.equals("") && (fileType.toUpperCase().equals("PNG") || fileType.toUpperCase().equals("JPEG") || fileType.toUpperCase().equals("JPG"));
-		if (!result && !fileName.equals("")) {
+		if (!result) {
 			this.errors.setProfilImage("Bitte wählen Sie nur png oder jpeg Dateien aus.");
 			System.out.println("Bitte wählen Sie nur png oder jpeg Dateien aus.");
 		}
