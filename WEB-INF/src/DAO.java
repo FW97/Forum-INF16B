@@ -559,7 +559,7 @@ public class DAO {
 	}
 	
 	public Set<Posting> searchPostings(String searchTerm) {
-			/*Connection con = null;
+			Connection con = null;
 			ResultSet rs;
 			Set<Posting> postings = new HashSet<Posting>();
 
@@ -574,13 +574,17 @@ public class DAO {
 						+ "WHERE ";
 
 				String[] searchwords = searchTerm.split(" ");
+				System.out.println(searchwords[0]);
+				System.out.println(searchwords.length);
 				for (int i = 0; i < searchwords.length; i++) {
 					if(i == 0) {
-						sqlString.concat("p.text like '%" + searchwords[i] + "%' ");
+						sqlString = sqlString.concat("parent.text like '%" + searchwords[i] + "%' ");
 					}else {
-						sqlString.concat("AND p.text like '%" + searchwords[i] + "%' ");
+						sqlString = sqlString.concat("AND parent.text like '%" + searchwords[i] + "%' ");
 					}
 				}
+				sqlString = sqlString.concat(";");
+				System.out.println(sqlString);
 
 				PreparedStatement ps = con.prepareStatement(sqlString);
 				rs = ps.executeQuery();
@@ -592,7 +596,9 @@ public class DAO {
 					posting.setMessage(rs.getString("text"));
 					posting.setWhenPosted(rs.getTimestamp("whenposted"));
 					posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
-					posting.setTags(rs.getString("tags").split(","));
+					if(rs.getString("tags") != null) {
+						posting.setTags(rs.getString("tags").split(","));
+					}
 					posting.setPosRat(rs.getInt("posrat"));
 					posting.setNegRat(rs.getInt("negrat"));
 					postings.add(posting);
@@ -602,8 +608,8 @@ public class DAO {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return postings;*/
-		return null;
+			return postings;
+		//return null;
 	}
 
 	/**
