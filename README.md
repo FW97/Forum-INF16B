@@ -78,10 +78,13 @@ Falls erforderlich, kann die manuelle Kompilierung mit dem Kommando
 abgeschlossen werden, während unter `classes` gleichzeitig automatisch die Paketstruktur vom `javac` angelegt wird.
 Für den Befehl wird vorausgesetzt, dass man sich auf der Kommandozeile im Verzeichnis `WEB-INF` befindet.
 
----------------------- -----------------------------------------------
-![INFO](img/info.png)   **Das Verzeichnis `WEB-INF/classes` wird selbst
-                        nicht im Versionskontrollsystem registriert.**
----------------------- -----------------------------------------------
+---
+
+**HINWEIS**
+
+Das Verzeichnis `WEB-INF/classes` wird selbst nicht im Versionskontrollsystem registriert.
+
+---
 
 
 ## Verzeichnisstruktur
