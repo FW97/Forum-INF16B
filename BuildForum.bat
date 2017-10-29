@@ -79,13 +79,16 @@ IF EXIST "WEB-INF" (
 			IF !exit_status! NEQ 0 (
 				call :error The following files had compiling issues:
 
-				:: First calculate the length of the array and assign
-				:: it to the new defined variable `array_length`
+				REM :: Other comment style because if '::' comment is not
+				REM :: on the beginning of a line, it causes errors.
+
+				REM :: First calculate the length of the array and assign
+				REM :: it to the new defined variable `array_length`
 				set /A array_length=0
 				call :arrayLength
 
-				:: Reduce array_length by 1 because the for loop iterates
-				:: including the upper border
+				REM :: Reduce array_length by 1 because the for loop iterates
+				REM :: including the upper border
 				set /A array_length-=1
 
 				:: Iterate over the array using the length to output all erroneous files
