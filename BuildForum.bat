@@ -34,6 +34,10 @@ IF "%display_usage%" == "true" (
 	echo     C:\...\Forum-INF16B^> %filename%
 	echo.
 	echo   without any arguments from the root directory of the project.
+	echo.
+	echo   This script was written by Morten Terhart for the Forum
+	echo   website of INF16B from the DHBW Mosbach.
+	echo   Copyright (C) 2017 INF16B Mosbach
 	exit /B 0
 )
 

@@ -42,7 +42,10 @@ case "$1" in
 		printf "  at the end a summary of error files or non-error files will\n";
 		printf "  be displayed. All you have to do is to call this script\n\n";
 		printf "    $ %s\n\n" "./${0##*/}";
-		printf "  without any arguments from the root directory of the project.\n";
+		printf "  without any arguments from the root directory of the project.\n\n";
+		printf "  This script was written by Morten Terhart for the Forum\n";
+		printf "  website of INF16B from the DHBW Mosbach.\n";
+		printf "  Copyright (C) 2017 INF16B Mosbach\n";
 		exit 0;
 esac
 
