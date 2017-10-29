@@ -14,7 +14,7 @@ SetLocal EnableDelayedExpansion
 :: Define script constants
 set filename=%~nx0
 set dirname=%~dp0
-set usage_message=usage: %filename% [-h | --help]
+set usage_message="usage: %filename% [-h | --help]"
 set webapp_name=Forum-INF16B
 set /A "exit_status=0"
 
