@@ -6,7 +6,7 @@
 #    * Includes a lot of safety checks for requirements
 
 # Define script constants
-usage_message="usage: ./${0##*/} [--help]";
+usage_message="usage: ./${0##*/} [-h | --help]";
 webapp_name="Forum-INF16B";
 exit_status=0;
 
@@ -28,7 +28,7 @@ function launchBanner() {
 	printf "%s%s\n\n" "|__|      \______/  | _| \`._____| \______/  |__|  |__|       |__| |__| \__| |__|     |_|  \___/  |______/  " "${clear_color}";
 }
 
-# Function to output a uniform error message
+# Function to output a uniform error message in red color
 function error() {
 	printf "%sERROR: %s%s\n" "${red_color}" "$*" "${clear_color}" >&2;
 }
@@ -36,6 +36,13 @@ function error() {
 case "$1" in
 	--help | -h)
 		printf "%s\n" "${usage_message}";
+		printf "  This compilation script searches after java source files\n";
+		printf "  located under 'WEB-INF/src' and compiles them automatically.\n";
+		printf "  All potential syntax errors will be shown on the output and\n"
+		printf "  at the end a summary of error files or non-error files will\n";
+		printf "  be displayed. All you have to do is to call this script\n\n";
+		printf "    $ %s\n\n" "./${0##*/}";
+		printf "  without any arguments from the root directory of the project.\n";
 		exit 0;
 esac
 

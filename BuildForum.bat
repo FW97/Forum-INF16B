@@ -12,7 +12,9 @@
 SetLocal EnableDelayedExpansion
 
 :: Define script constants
-set usage_message=usage: %0 [--help]
+set filename=%~nx0
+set dirname=%~dp0
+set usage_message=usage: %filename% [-h | --help]
 set webapp_name=Forum-INF16B
 set /A "exit_status=0"
 
@@ -23,6 +25,15 @@ IF NOT "%1" == "-h" IF NOT "%1" == "--help" (
 
 IF "%display_usage%" == "true" (
 	echo %usage_message%
+	echo   This compilation script searches after java source files
+	echo   located under 'WEB-INF/src' and compiles them automatically.
+	echo   All potential syntax errors will be shown on the output and
+	echo   at the end a summary of error files or non-error files will
+	echo   be displayed. All you have to do is to call this script
+	echo.
+	echo     C:\...\Forum-INF16B^> %filename%
+	echo.
+	echo   without any arguments from the root directory of the project.
 	exit /B 0
 )
 
@@ -117,12 +128,12 @@ IF EXIST "WEB-INF" (
 		call :error insufficient Java 8 installation
 		set exit_status=2;
 	)
-	echo [%webapp_name%]: Changing back to root directory %0.
+	echo [%webapp_name%]: Changing back to root directory %dirname%.
 	cd ..
 ) ELSE (
 	echo  failed!
-	echo [%webapp_name%]: Switch to the project's directory %0 first to execute this script:
-	echo    $ cd %0
+	echo [%webapp_name%]: Switch to the project's directory %dirname% first to execute this script:
+	echo    $ cd %dirname%
 	call :error Executing from wrong directory
 	set exit_status=2
 )
