@@ -1,18 +1,25 @@
-<!-- @author Niklas Portmann -->
 # Forum-INF16B
 
-## ER-Schema
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
 
-![ER-Schema](https://i.imgur.com/BoJxF6s.png) 
+- [Installation und Kompilierung](#installation-und-kompilierung)
+  - [Voraussetzungen](#voraussetzungen)
+  - [Installation](#installation)
+  - [Kompilierung](#kompilierung)
+    - [Windows](#windows)
+    - [Linux / MacOS](#linux--macos)
+- [Manuelle Kompilierung](#manuelle-kompilierung)
+- [Verzeichnisstruktur](#verzeichnisstruktur)
+- [ER-Schema](#er-schema)
+- [MySQL Dump](#mysql-dump)
 
-<!-- @author Carsten Hagemann, Morten Terhart -->
-## MySQL Dump
-Die Datenbank wurde mit MySQL Community Sever Version 5.6.37 exportiert, diese kann von der
-[offiziellen MySQL-Seite heruntergeladen werden](https://dev.mysql.com/downloads/mysql/5.6.html#downloads).
-Der MySQL JDBC Connector Version 5.1.44 wird auch benötigt und kann
-[hier](https://dev.mysql.com/downloads/connector/j/5.1.html) heruntergeladen werden.
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 <!-- @author Morten Terhart -->
+
 ## Installation und Kompilierung
 
 ### Voraussetzungen
@@ -37,6 +44,14 @@ wird.
 Nun müssen die Java-Klassen unter `WEB-INF/src` kompiliert werden und die Paketstruktur in `WEB-INF/classes`
 abgelegt werden. Aus diesem Grund befinden sich im Hauptverzeichnis zwei Kompilierungsskripte, die dies
 einfach übernehmen können.
+
+---
+
+**HINWEIS**
+
+Das Verzeichnis `WEB-INF/classes` wird selbst nicht im Versionskontrollsystem registriert.
+
+---
 
 #### Windows
 Falls Sie einen Windows-Rechner benutzen, verwenden sie das Batch-Skript `BuildForum.bat`. Öffnen Sie
@@ -78,14 +93,6 @@ Falls erforderlich, kann die manuelle Kompilierung mit dem Kommando
 abgeschlossen werden, während unter `classes` gleichzeitig automatisch die Paketstruktur vom `javac` angelegt wird.
 Für den Befehl wird vorausgesetzt, dass man sich auf der Kommandozeile im Verzeichnis `WEB-INF` befindet.
 
----
-
-**HINWEIS**
-
-Das Verzeichnis `WEB-INF/classes` wird selbst nicht im Versionskontrollsystem registriert.
-
----
-
 ## Verzeichnisstruktur
 Die Ordnerstruktur ist zum Teil vom Apache Tomcat für Projekte vorgeschrieben (z.B. `META-INF` und `WEB-INF`)
 und notwendig, um Klassen zu finden und Bibliotheken einzubinden. In unserem Projekt sieht sie wie folgt aus:
@@ -117,5 +124,22 @@ zu vermeiden oder bei anderen auszulösen.
 
 Bitte nicht den Ordner `WEB-INF/classes` hier hochladen, da dort lediglich der Bytecode der Java-Klassen liegt,
 welcher nur lokal benutzt werden muss.
+
+
+<!-- @author Niklas Portmann -->
+
+## ER-Schema
+
+![ER-Schema](https://i.imgur.com/BoJxF6s.png) 
+
+
+<!-- @author Carsten Hagemann, Morten Terhart -->
+
+## MySQL Dump
+Die Datenbank wurde mit MySQL Community Sever Version 5.6.37 exportiert, diese kann von der
+[offiziellen MySQL-Seite heruntergeladen werden](https://dev.mysql.com/downloads/mysql/5.6.html#downloads).
+Der MySQL JDBC Connector Version 5.1.44 wird auch benötigt und kann
+[hier](https://dev.mysql.com/downloads/connector/j/5.1.html) heruntergeladen werden.
+
 
 **Autoren: Niklas Portmann, Carsten Hagemann, Morten Terhart**
