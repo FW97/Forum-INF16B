@@ -2,6 +2,7 @@ package de.dhbw.StudentForum;
 
 import java.sql.Date;
 import java.sql.*;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -79,13 +80,13 @@ public class DAO {
 
 					for (int i = 0; i < tags.length; i++) {
 						if (i == 0) {
-							sqlString.concat("(" + tags[i] + ", " + postingId + ")");
+							sqlString = sqlString.concat("(" + tags[i] + ", " + postingId + ")");
 						} else {
-							sqlString.concat(",(" + tags[i] + ", " + postingId + ")");
+							sqlString = sqlString.concat(",(" + tags[i] + ", " + postingId + ")");
 						}
 					}
 
-					sqlString.concat(";");
+					sqlString = sqlString.concat(";");
 
 					ps = con.prepareStatement(sqlString);
 					ps.executeUpdate();
@@ -327,7 +328,7 @@ public class DAO {
 		return newUser;
 	}
 
-	public Posting gePostingById(int id) {
+	public Posting getPostingById(int id) {
 		Connection con = null;
 		ResultSet rs;
 		Posting newPosting = null;
@@ -370,10 +371,10 @@ public class DAO {
 		return newPosting;
 	}
 
-	public ArrayList<Posting> getPostingsBySubject(int subjectId) {
+	public List<Posting> getPostingsBySubject(int subjectId) {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Posting> postings = new ArrayList<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -411,10 +412,10 @@ public class DAO {
 		return postings;
 	}
 
-	public ArrayList<Posting> getPostingsByForum(int forumid) {
+	public List<Posting> getPostingsByForum(int forumid) {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Posting> postings = new ArrayList<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -452,10 +453,10 @@ public class DAO {
 		return postings;
 	}
 	
-	public Set<Posting> getPostingsByUser(int userId) {
+	public List<Posting> getPostingsByUser(int userId) {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -490,10 +491,10 @@ public class DAO {
 		return postings;
 	}
 
-	public Set<Posting> getPostingsByTag(String tag) {
+	public List<Posting> getPostingsByTag(String tag) {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -529,10 +530,10 @@ public class DAO {
 		return postings;
 	}
 	
-	public ArrayList<Posting> getLatestPostings() {
+	public List<Posting> getLatestPostings() {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Posting> postings = new ArrayList<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -559,10 +560,10 @@ public class DAO {
 		return postings;	
 	}
 	
-	public Set<Posting> searchPostings(String searchTerm) {
+	public List<Posting> searchPostings(String searchTerm) {
 			Connection con = null;
 			ResultSet rs;
-			Set<Posting> postings = new HashSet<Posting>();
+			List<Posting> postings = new ArrayList<Posting>();
 
 			try {
 				con = MySQLDatabase.getInstance().getConnection();
@@ -617,10 +618,10 @@ public class DAO {
 	 * 
 	 * authors: Fabian Schulz, Andreas Memmel
 	 */
-	public Set<Posting> searchPostings(String searchTerm, int forumid, String tag, Date minDate, Date maxDate) {
+	public List<Posting> searchPostings(String searchTerm, int forumid, String tag, Date minDate, Date maxDate) {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -666,10 +667,10 @@ public class DAO {
 		return postings;
 	}
 
-	public static ArrayList<Integer> getSubjectIDsByForum(int forumId) {
+	public List<Integer> getSubjectIDsByForum(int forumId) {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Integer> subjects = new ArrayList<Integer>();
+		List<Integer> subjects = new ArrayList<Integer>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -691,7 +692,7 @@ public class DAO {
 		return subjects;
 	}
 
-	public static Subject getSubjectById(int subjectid) {
+	public Subject getSubjectById(int subjectid) {
 		Connection con = null;
 		ResultSet rs;
 		Subject subject = null;
@@ -830,7 +831,7 @@ public class DAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
 
@@ -855,7 +856,7 @@ public class DAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
 
@@ -883,3 +884,4 @@ public class DAO {
 		return false;
 	}
 }
+

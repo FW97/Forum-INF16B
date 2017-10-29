@@ -1,4 +1,3 @@
-
 <%@ page import = "de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, de.dhbw.StudentForum.Hashing" %>
 
 <%

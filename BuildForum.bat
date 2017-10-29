@@ -101,7 +101,6 @@ IF EXIST "WEB-INF" (
 			
 			echo.
 			echo [%webapp_name%]: The Java bytecode was moved to 'WEB-INF\classes'.
-			exit /B !exit_status!
 		) ELSE (
 			echo  not found!
 			echo.
@@ -114,7 +113,10 @@ IF EXIST "WEB-INF" (
 		echo [%webapp_name%]: The 'javac' executable could not be found!
 		echo [%webapp_name%]: Make sure you have Java 8 correctly installed and the binaries folder appears in your PATH variable.
 		call :error insufficient Java 8 installation
+		set exit_status=2;
 	)
+	echo [%webapp_name%]: Changing back to root directory %0.
+	cd ..
 ) ELSE (
 	echo  failed!
 	echo [%webapp_name%]: Switch to the project's directory %0 first to execute this script:
