@@ -80,17 +80,13 @@ IF EXIST "WEB-INF" (
 				call :error The following files had compiling issues:
 				
 				:: First determine the length of array erroneous_files
-				set /A length=0
-				:LengthLoop
-				IF DEFINED erroneous_files[!length!] (
-					set /A "length+=1"
-					GOTO LengthLoop
-				)
+				set /A array_length=0
+				call :arrayLength
 				
-				set /A "length-=1"
+				set /A array_length-=1
 				
 				:: Iterate over the array using the length to output all erroneous files
-				FOR /L %%i IN (0, 1, !length!) DO (
+				FOR /L %%i IN (0, 1, !array_length!) DO (
 					echo   ^> !erroneous_files[%%i]!
 				)
 				
@@ -142,4 +138,15 @@ exit /B 0
 :: Function to output a uniform error message
 :error
 	echo ERROR: %* >&2
+exit /B 0
+
+:arrayLength
+	set /A length=0
+
+	:nextIndexLoop
+	IF DEFINED erroneous_files[!length!] (
+		set /A length+=1
+		GOTO :nextIndexLoop
+	)
+	set /A array_length=%length%
 exit /B 0
