@@ -14,7 +14,7 @@ SetLocal EnableDelayedExpansion
 :: Define script constants
 set filename=%~nx0
 set dirname=%~dp0
-set usage_message=usage: %filename% [-h ^| --help]
+set usage_message="usage: %filename% [-h | --help]"
 set webapp_name=Forum-INF16B
 set /A "exit_status=0"
 
@@ -24,7 +24,7 @@ IF NOT "%1" == "-h" IF NOT "%1" == "--help" (
 )
 
 IF "%display_usage%" == "true" (
-	echo "%usage_message%"
+	echo %usage_message%
 	echo   This compilation script searches after java source files
 	echo   located under 'WEB-INF/src' and compiles them automatically.
 	echo   All potential syntax errors will be shown on the output and
