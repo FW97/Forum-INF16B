@@ -3,65 +3,16 @@
 -->
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.io.*,java.util.*, javax.servlet.*, de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.PostingLink, de.dhbw.StudentForum.Posting, de.dhbw.StudentForum.User, de.dhbw.StudentForum.SettingErrors"%>
+<%@ page import="java.io.*,java.util.*, javax.servlet.*, de.dhbw.StudentForum.Hashing, de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, de.dhbw.StudentForum.SettingErrors"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<%!
-  List<PostingLink> userPostings = new ArrayList<>();
-%>
-
-<%
-  // profile settings dummy data
-  if (session.getAttribute("user") == null) {
-    User user = new User(1);
-    user.setEmail("max.mustermann@gmail.com");
-    user.setFirstname("Max");
-    user.setLastname("Mustermann");
-    user.setImgUrl("/img/profilImages/standardPic.png");
-    session.setAttribute("user", user);
-  }
-
-  // posts dummy data
-  userPostings.clear();
-  PostingLink testPostingLink = new PostingLink();
-  testPostingLink.setPostingId(0);
-  testPostingLink.setForumName("Campus");
-  testPostingLink.setSubjectName("Brauche Hilfe bei Doppelintegralen in Mathe");
-  String[] tags = new String[]{"Hilfe", "Wohnung"};
-  testPostingLink.setTags(tags);
-  testPostingLink.setAuthorName("Max Musterman");
-  testPostingLink.setWhenPosted("12 Sep 2017");
-  testPostingLink.setResponses(10);
-  userPostings.add(testPostingLink);
-%>
-
-<%
-/*
-  User user = (User) session.getAttribute("user");
-  ArrayList<Subject> subjectsOfCurrentUser = DAO.getSubjectsByUser(user.getId());
-  for (subject : subjectsOfCurrentUser) {
-    PostingLink postingLink = new PostingLink();
-    Posting posting = new Posting(subject.getAuthorPostingId());
-    postingLink.setPostingId(posting.getId());
-    postingLink.setForumName(DAO.getForumNameById(posting.getForumId()));
-    postingLink.setSubjectName(subject.getName());
-    postingLink.setTags(posting.getTags());
-    User author = (User) DAO.getUserById(posting.getId());
-    postingLink.setAuthorName(author.getFirstname() + " " + author.getLastname());
-    postingLink.setWhenPosted(posting.getWhenPosted());
-    postingLink.setResponses(DAO.getNumberOfResponsesOfSubject(subject.getId()));
-    userPostings.add(postingLink);
-  }
-  */
-%>
 
 <jsp:include page="header.jsp" />
 
   <div class="profil">
     <h1>Profileinstellungen</h1>
-    
-    <form method="post" action="/ProfilServlet" enctype="multipart/form-data">
+  
+    <form method="post" action="../ProfilServlet" enctype="multipart/form-data">
       <div class="settingBox clearTopPadding">
         <div class="setting">
           <div class="settingLabel settingSpacing">
@@ -167,38 +118,23 @@
     </form>
     <br>
 
+    <c:if test="${settingSuccess == true}">
+      <div id="successAlert" class="success-alert alert alert--confirm elementToFadeInAndOut">
+        &Auml;nderungen wurden erfoglreich gespeichert.
+      </div>
+      <script type="text/javascript">
+        setTimeout(function() {
+          var alert = document.getElementById('successAlert');
+          alert.style.display = "none";
+        }, 5000);
+      </script>
+      <%
+        session.setAttribute("settingSuccess", false);
+      %>
+    </c:if>
+  
+    <!--
     <h1>Eigene Beiträge</h1>
-
-    <div class="postings">
-      <c:forEach items="<%= userPostings %>" var="currentPosting">
-        <a href="posting.jsp?postid=${currentPosting.getPostingId()}">
-          <div class="post">
-            <!-- <span class="category">${currentPosting.getForumName()} &gt; ${currentPosting.getSubjectName()}</span> -->
-            <span class="category">${currentPosting.getForumName()}</span>
-            <h1>${currentPosting.getSubjectName()}</h1>   
-            <span class="tagbox">
-              <c:forEach items="${currentPosting.getTags()}" var="tag">
-                <span class="tag">${tag}</span> 
-              </c:forEach>
-            </span>
-            <span class="author">
-              ${currentPosting.getAuthorName()} 
-              &bull; 
-              ${currentPosting.getWhenPosted()} 
-              &bull; 
-              <c:if test="${currentPosting.getResponses() == 0}">
-                Keine Antworten
-              </c:if>
-              <c:if test="${currentPosting.getResponses() == 1}">
-                1 Antwort
-              </c:if>
-              <c:if test="${currentPosting.getResponses() > 1}">
-                ${currentPosting.getResponses()} Antworten
-              </c:if>
-            </span>
-          </div>
-        </a>
-      </c:forEach>
-    </div>
+    -->
   </div>
 <jsp:include page="footer.jsp" />

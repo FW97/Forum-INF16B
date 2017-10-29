@@ -11,9 +11,8 @@
 	String lastname = request.getParameter("lastname");
 	String password = request.getParameter("password1");
 	
-	User u = new User();
+	User u = new User(0);
 	DAO d = new DAO();
-    Hashing h = new Hashing();
 	
 	if(d.getUserByEmail(email) == null)
 	{
@@ -26,11 +25,10 @@
 			u.setEmail(email);
 			u.setFirstname(firstname);
 			u.setLastname(lastname);
-			u.setRole(1); <!-- normaler User -->
-			u.setImgUrl("/img/profilImages/standardPic.png");
+			u.setRole(1);
+			u.setImgUrl(request.getContextPath()+"/img/profilImages/standardPic.png");
 			
-			String[] saltAndHash = new String[2];
-			saltAndHash[] = h.hashNewUser(password);
+			String[] saltAndHash = Hashing.hashNewUser(password);
 			
 			u.setPwSalt(saltAndHash[0]);
 			u.setPwHash(saltAndHash[1]);

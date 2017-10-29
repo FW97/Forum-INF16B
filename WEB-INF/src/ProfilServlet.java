@@ -32,14 +32,14 @@ public class ProfilServlet extends HttpServlet {
 	private static final String EMAIL_PATTERN =
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-	private static final String SAVE_DIR = "profilImages";
+	private static final String SAVE_DIR = "img" + File.separator + "profilImages" + File.separator;
 	private SettingErrors errors;
 	
 	public ProfilServlet() {
 		super();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		this.errors = new SettingErrors();
 		User user = (User) session.getAttribute("user");
@@ -48,11 +48,13 @@ public class ProfilServlet extends HttpServlet {
 			return;
 		} 
 
-		if (isValidInputChange(request)) {
-			user.setFirstname(request.getParameter("firstName"));
-			user.setLastname(request.getParameter("lastName"));
-			user.setEmail(request.getParameter("email"));
+		if (isInputChange(request, user) && isValidInputChange(request, user.getEmail().trim())) {
+			user.setFirstname(request.getParameter("firstName").trim());
+			user.setLastname(request.getParameter("lastName").trim());
+			user.setEmail(request.getParameter("email").trim());
+			
 			session.setAttribute("user", user);
+			session.setAttribute("settingSuccess", true);
 			DAO.updateProfilSettings(user);
 		}
 		
@@ -61,6 +63,7 @@ public class ProfilServlet extends HttpServlet {
 			String pwhash = Hashing.getHashedPassword(request.getParameter("newPassword"), user.getPwSalt());
 			user.setPwHash(pwhash);
 			
+			session.setAttribute("settingSuccess", true);
 			session.setAttribute("user", user);
 			DAO.updatePassword(user);
 		} 
@@ -69,25 +72,30 @@ public class ProfilServlet extends HttpServlet {
 			Part filePart = request.getPart("file");
 			String userFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 			String fileType = userFileName.substring(userFileName.indexOf("."), userFileName.length());
+			String fileName = ((User) request.getSession().getAttribute("user")).getId() + fileType.toLowerCase();
+		   
+			filePart.write(request.getServletContext().getRealPath("") + SAVE_DIR + fileName);
 			
-		    String fileName = ((User) request.getSession().getAttribute("user")).getId() + fileType;
-		    
-			String appPath = request.getServletContext().getRealPath("");
-			String savePath = appPath + "img" + File.separator + SAVE_DIR;
-   
-	        filePart.write(savePath + File.separator  + fileName); 
-
-	        user = (User) session.getAttribute("user");
-	        user.setImgUrl(fileName);
+			user = (User) session.getAttribute("user");
+			String imgurl = request.getContextPath() + File.separator + SAVE_DIR + fileName;
+			user.setImgUrl(imgurl);
+			
+			session.setAttribute("settingSuccess", true);
 			session.setAttribute("user", user);
-	        DAO.updateImgurl(user);
+			DAO.updateImgurl(user);
 		}
 		
 		session.setAttribute("settingErrors", this.errors);
 		response.sendRedirect("jsp/profil.jsp");
 	}
+
+	private boolean isInputChange(HttpServletRequest request, User user) {
+		return !user.getFirstname().trim().equals(request.getParameter("firstName").trim()) ||
+			!user.getLastname().trim().equals(request.getParameter("lastName").trim()) ||
+			!user.getEmail().trim().equals(request.getParameter("email").trim());
+	}
 	
-	private boolean isValidInputChange(HttpServletRequest request) {
+	private boolean isValidInputChange(HttpServletRequest request, String userEmail) {
 		if (!isValidFirstName(request.getParameter("firstName"))) {
 			this.errors.setFirstName("Vornamen dürfen keine Zahlen enthalten und müssen zwischen 2 und 16 Zeichen lang sein.");
 			System.out.println("Profil settings change Error: invalid firstname");
@@ -105,9 +113,8 @@ public class ProfilServlet extends HttpServlet {
 			System.out.println("Profil settings change Error: invalid email");
 			return false;
 		}
-
-
-		if (DAO.isEmailTaken(request.getParameter("email"))) {
+		
+		if (!userEmail.equals(request.getParameter("email").trim()) && DAO.isEmailTaken(request.getParameter("email"))) {
 			this.errors.setEmail("Die Email ist bereits vergeben.");
 			System.out.println("Profil settings change Error: email is taken");
 			return false;
@@ -142,7 +149,7 @@ public class ProfilServlet extends HttpServlet {
 		User user = (User) request.getSession().getAttribute("user");
 		String newPassword = request.getParameter("newPassword");
 		String newPassword2 = request.getParameter("newPassword2");	
-		String pwhash = Hashing.getHashedPassword(request.getParameter("newPassword"), user.getPwSalt());
+		String pwhash = Hashing.getHashedPassword(request.getParameter("currentPassword"), user.getPwSalt());
 		if (newPassword.equals(newPassword2) && pwhash.equals(user.getPwHash())) return true; 
 		
 		this.errors.setPassword("Das alte Passwort ist falsch oder die neuen Passwörter stimmen nicht überein.");
@@ -151,10 +158,10 @@ public class ProfilServlet extends HttpServlet {
 	}
 	
 	private boolean isValidImageUpload(HttpServletRequest request) throws IOException, ServletException {
-		if (request.getPart("file") == null) return false; 
+		if (request.getPart("file") == null) return false;
 		Part filePart = request.getPart("file");
-	    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-	    String fileType = fileName.substring(fileName.indexOf(".") + 1, fileName.length());
+		String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+		String fileType = fileName.substring(fileName.indexOf(".") + 1, fileName.length());
 
 		boolean result = !fileName.equals("") && (fileType.toUpperCase().equals("PNG") || fileType.toUpperCase().equals("JPEG") || fileType.toUpperCase().equals("JPG"));
 		if (!result && !fileName.equals("")) {

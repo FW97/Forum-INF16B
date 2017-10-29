@@ -1,6 +1,6 @@
 <!-- @author Marco Dauber, Philipp Seitz, Morten Terhart
-  -- * Displays a list of posts supplying certain filter criteria
-  -- * received through a GET request from the URL
+     * Displays a list of posts supplying certain filter criteria
+     * received through a GET request from the URL
 --> 
 
 <%-- Import Statements --%>
