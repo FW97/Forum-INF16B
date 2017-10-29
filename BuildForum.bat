@@ -58,7 +58,7 @@ IF EXIST "WEB-INF" (
 			set error_index=0
 			set erroneous_files[0]=
 			echo [%webapp_name%]: Compiling Java sources in 'WEB-INF\src'.
-		
+
 			FOR %%J IN (.\src\*.java) DO (
 				echo [%webapp_name%]: Compiling %%J ...
 				javac -cp "lib/*:classes" -encoding "UTF-8" -d ".\classes" -Xlint:static %%J
@@ -71,30 +71,33 @@ IF EXIST "WEB-INF" (
 					echo   ^> No errors
 				)
 			)
-			
+
 			echo _______________________________________________
 			echo.
 			echo.
-			
+
 			IF !exit_status! NEQ 0 (
 				call :error The following files had compiling issues:
-				
-				:: First determine the length of array erroneous_files
+
+				:: First calculate the length of the array and assign
+				:: it to the new defined variable `array_length`
 				set /A array_length=0
 				call :arrayLength
-				
+
+				:: Reduce array_length by 1 because the for loop iterates
+				:: including the upper border
 				set /A array_length-=1
-				
+
 				:: Iterate over the array using the length to output all erroneous files
 				FOR /L %%i IN (0, 1, !array_length!) DO (
 					echo   ^> !erroneous_files[%%i]!
 				)
-				
+
 				call :error Check them again and fix the errors!
 			) ELSE (
 				echo [%webapp_name%]: No compilation errors were detected.
 			)
-			
+
 			echo.
 			echo [%webapp_name%]: The Java bytecode was moved to 'WEB-INF\classes'.
 		) ELSE (
@@ -126,7 +129,7 @@ exit /B !exit_status!
 :: Function to display a fancy banner at startup
 :launchBanner
 	echo.
- 	echo    _______   ______   .______       __    __  .___  ___.        __  .__   __.  _______ __     __   .______   
+	echo    _______   ______   .______       __    __  .___  ___.        __  .__   __.  _______ __     __   .______   
 	echo   ^|   ____^| /  __  \  ^|   _  \     ^|  ^|  ^|  ^| ^|   \/   ^|       ^|  ^| ^|  \ ^|  ^| ^|   ____/_ ^|   / /   ^|   _  \  
 	echo   ^|  ^|__   ^|  ^|  ^|  ^| ^|  ^|_^)  ^|    ^|  ^|  ^|  ^| ^|  \  /  ^|       ^|  ^| ^|   \^|  ^| ^|  ^|__   ^| ^|  / /_   ^|  ^|_^)  ^| 
 	echo   ^|   __^|  ^|  ^|  ^|  ^| ^|      /     ^|  ^|  ^|  ^| ^|  ^|\/^|  ^|       ^|  ^| ^|  . `  ^| ^|   __^|  ^| ^| ^| '_ \  ^|   _  ^<  
@@ -140,6 +143,12 @@ exit /B 0
 	echo ERROR: %* >&2
 exit /B 0
 
+:: This function fixes the previous bug provoking the execution of else
+:: parts after if. That was because the GOTO in the IF expression caused
+:: that the interpreter forgot that he was located in nested IFs and just
+:: continued execution sequentially so the ELSE parts were executed too.
+:: Now the logic for calculating the length of the array was displaced
+:: to an own method call which fixes the bug.
 :arrayLength
 	set /A length=0
 
@@ -150,3 +159,4 @@ exit /B 0
 	)
 	set /A array_length=%length%
 exit /B 0
+
