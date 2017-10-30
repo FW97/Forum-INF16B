@@ -68,7 +68,7 @@
           <div class="settingContent"> 
             <img class="centered-and-cropped" src="<c:url value="${user.imgUrl}"/>" alt="Profil Image"  height="150" width="150">
             <br>
-            <input type="file" name="file" id="uploadImage" value="Datei ausw&auml;hlen">
+            <input type="file" name="file" id="uploadImage" value="Datei ausw&auml;hlen" />
             <br>
             <div class="settingError">
               <c:if test = "${settingErrors.profilImage.length() > 0}">
@@ -133,8 +133,8 @@
       %>
     </c:if>
   
-    <!--
+    <%--
     <h1>Eigene Beiträge</h1>
-    -->
+    --%>
   </div>
 <jsp:include page="footer.jsp" />

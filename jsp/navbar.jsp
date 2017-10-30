@@ -8,6 +8,8 @@
     // Hold the current login session (if existent)
     User loginSession = (User) session.getAttribute("user");
 %>
+
+<c:set var="loginSession" value="<%= loginSession %>" />
 <nav>
 <div class="header">
     <div class="left">
