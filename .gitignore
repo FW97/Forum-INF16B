@@ -10,9 +10,13 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# IntelliJ Configuration
+/.idea
+
 # Package Files #
 *.jar
 *.war
+!/WEB-INF/lib/*.jar
 *.ear
 *.zip
 *.tar.gz
@@ -20,3 +24,13 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# temporaty files
+*.swp
+.DS_Store
+
+# Ignore profile images uploaded by the JSP webpage
+/img/profilImages/*.jpg
+/img/profilImages/*.jpeg
+/img/profilImages/*.png
+!/img/profilImages/standardPic.png
