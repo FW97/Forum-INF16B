@@ -3,6 +3,7 @@
    Name: Eric Dussel, Hans Fuchs
  -->
 <%@ page import="de.dhbw.StudentForum.User" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     // Hold the current login session (if existent)
     User loginSession = (User) session.getAttribute("user");
@@ -14,33 +15,35 @@
         <input type="button" class="button-search" value="Suchen"/>
     </div>
 
-    <%
-    // if user == admin, show 'add forum'-button
-    if(loginSession != null) {
-        if(loginSession.getRole() == 2) {
-    %>
-    <div class="newForumButton">
-        <input type="button" onclick="window.location.replace('newForum.jsp');" 
-                value="Neues Forum erstellen"/>
-    </div>
-    <% }} %>
+    <%-- if user == admin, show 'add forum'-button --%>
+    <c:if test="${loginSession != null && loginSession.getRole() == 2}">
+        <div class="newForumButton">
+            <input type="button" onclick="window.location.replace('newForum.jsp');"
+                   value="Neues Forum erstellen"/>
+        </div>
+    </c:if>
 
     <script>
     function loginAjax() {
         var xhr = new XMLHttpRequest();
         var curr_url = window.location.href;
         xhr.open("POST", "jsp/services/loginService.jsp", true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         var username = document.getElementById("username").value;                
         var password = document.getElementById("password").value;
         xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && this.status == 200) {
+            if (xhr.readyState === 4 && this.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-                if (response.status == "Error") {
-                    alert(response.message);
+                var errorBox = document.getElementById("loginerrorbox");
+
+                if (response.status === "Error") {
+                    errorBox.innerHTML = response.message;
+                    errorBox.style.display = "inline-block";
+                } else if (response.status === "OK") {
+                    errorBox.style.display = "none";
                 }
             }
-        }
+        };
         xhr.send("username=" + username + "&password=" + password);
     }
 
@@ -49,39 +52,39 @@
         var curr_url = window.location.href;
         xhr.open("GET", "jsp/services/logoutService.jsp", true);
         xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && this.status == 200) {
+            if (xhr.readyState === 4 && this.status === 200) {
                 console.log("Logged out!");
             }
-        }
+        };
         xhr.send();
     }
     </script>
 
     <div class="right">
-    <% 
-        if(loginSession == null) {
-    %>
-        <div id="loginform">
-        <a href="jsp/register.jsp">
-            Noch nicht registriert?
-        </a>
-        <form action="" method="post" onsubmit="loginAjax(); return false;">
-            <input type="text" name="username" id="username" placeholder="Benutzername"/>
-            <input type="password" name="password" id="password" placeholder="Passwort"/>
-            <input type="submit" value=" Login "/>
-        </form>
-        </div>
-    <% } else { %>
-        <div id="loggedin">
-            <a href="jsp/profil.jsp">
-                Hallo, <%=loginSession.getFirstname() %>
-                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-            </a>
-            <a onclick="logoutAjax();">
-                Logout
-            </a>
-        </div>
-    <% } %>
+        <c:if test="${loginSession == null}">
+            <div id="loginform">
+                <a href="jsp/register.jsp">
+                    Noch nicht registriert?</a>
+                <form action="" method="post" onsubmit="loginAjax(); return false;">
+                    <input type="text" name="username" id="username" placeholder="Benutzername"/>
+                    <input type="password" name="password" id="password" placeholder="Passwort"/>
+                    <input type="submit" value=" Login "/>
+                </form>
+                <div class="alert alert--error" id="loginerrorbox" style="display: none;"></div>
+            </div>
+        </c:if>
+
+        <c:if test="${loginSession != null}">
+            <div id="loggedin">
+                <a href="jsp/profil.jsp">
+                    Hallo, ${loginSession.getFirstname()}
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                </a>
+                <a href="#" onclick="logoutAjax(); return false;">
+                    Logout
+                </a>
+            </div>
+        </c:if>
     </div>
 </div>
 

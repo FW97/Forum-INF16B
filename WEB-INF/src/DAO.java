@@ -2,6 +2,7 @@ package de.dhbw.StudentForum;
 
 import java.sql.Date;
 import java.sql.*;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -79,13 +80,13 @@ public class DAO {
 
 					for (int i = 0; i < tags.length; i++) {
 						if (i == 0) {
-							sqlString.concat("(" + tags[i] + ", " + postingId + ")");
+							sqlString = sqlString.concat("(" + tags[i] + ", " + postingId + ")");
 						} else {
-							sqlString.concat(",(" + tags[i] + ", " + postingId + ")");
+							sqlString = sqlString.concat(",(" + tags[i] + ", " + postingId + ")");
 						}
 					}
 
-					sqlString.concat(";");
+					sqlString = sqlString.concat(";");
 
 					ps = con.prepareStatement(sqlString);
 					ps.executeUpdate();
@@ -266,7 +267,7 @@ public class DAO {
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
 
-			String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash FROM USER WHERE email=?;";
+			String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash, imgurl FROM USER WHERE email=?;";
 
 			PreparedStatement ps = con.prepareStatement(sqlString);
 			ps.setString(1, email);
@@ -284,6 +285,7 @@ public class DAO {
 			newUser.setRole(rs.getInt("role"));
 			newUser.setPwSalt(rs.getString("pwsalt"));
 			newUser.setPwHash(rs.getString("pwhash"));
+			newUser.setImgUrl(rs.getString("imgurl"));
 
 			con.close();
 		} catch (Exception e) {
@@ -326,7 +328,7 @@ public class DAO {
 		return newUser;
 	}
 
-	public Posting gePostingById(int id) {
+	public Posting getPostingById(int id) {
 		Connection con = null;
 		ResultSet rs;
 		Posting newPosting = null;
@@ -369,10 +371,10 @@ public class DAO {
 		return newPosting;
 	}
 
-	public ArrayList<Posting> getPostingsBySubject(int subjectId) {
+	public List<Posting> getPostingsBySubject(int subjectId) {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Posting> postings = new ArrayList<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -410,10 +412,10 @@ public class DAO {
 		return postings;
 	}
 
-	public ArrayList<Posting> getPostingsByForum(int forumid) {
+	public List<Posting> getPostingsByForum(int forumid) {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Posting> postings = new ArrayList<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -451,10 +453,10 @@ public class DAO {
 		return postings;
 	}
 	
-	public Set<Posting> getPostingsByUser(int userId) {
+	public List<Posting> getPostingsByUser(int userId) {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -489,10 +491,10 @@ public class DAO {
 		return postings;
 	}
 
-	public Set<Posting> getPostingsByTag(String tag) {
+	public List<Posting> getPostingsByTag(String tag) {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -528,10 +530,10 @@ public class DAO {
 		return postings;
 	}
 	
-	public ArrayList<Posting> getLatestPostings() {
+	public List<Posting> getLatestPostings() {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Posting> postings = new ArrayList<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -558,10 +560,10 @@ public class DAO {
 		return postings;	
 	}
 	
-	public Set<Posting> searchPostings(String searchTerm) {
+	public List<Posting> searchPostings(String searchTerm) {
 			Connection con = null;
 			ResultSet rs;
-			Set<Posting> postings = new HashSet<Posting>();
+			List<Posting> postings = new ArrayList<Posting>();
 
 			try {
 				con = MySQLDatabase.getInstance().getConnection();
@@ -616,10 +618,10 @@ public class DAO {
 	 * 
 	 * authors: Fabian Schulz, Andreas Memmel
 	 */
-	public Set<Posting> searchPostings(String searchTerm, int forumid, String tag, Date minDate, Date maxDate) {
+	public List<Posting> searchPostings(String searchTerm, int forumid, String tag, Date minDate, Date maxDate) {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -665,10 +667,10 @@ public class DAO {
 		return postings;
 	}
 
-	public static ArrayList<Integer> getSubjectIDsByForum(int forumId) {
+	public List<Integer> getSubjectIDsByForum(int forumId) {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Integer> subjects = new ArrayList<Integer>();
+		List<Integer> subjects = new ArrayList<Integer>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -690,7 +692,7 @@ public class DAO {
 		return subjects;
 	}
 
-	public static Subject getSubjectById(int subjectid) {
+	public Subject getSubjectById(int subjectid) {
 		Connection con = null;
 		ResultSet rs;
 		Subject subject = null;
@@ -785,7 +787,7 @@ public class DAO {
 	 * 
 	 * @author Michael Skrzypietz
 	 */
-	public static void updateProfilSettings(User user) {
+	public static boolean updateProfilSettings(User user) {
 		try {
 			Connection con = MySQLDatabase.getInstance().getConnection();
 
@@ -800,16 +802,19 @@ public class DAO {
 
 			ps.close();
 			con.close();
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		return false;
 	}
 
 	/**
 	 * 
 	 * @author Michael Skrzypietz
 	 */
-	public static void updatePassword(User user) {
+	public static boolean updatePassword(User user) {
 		try {
 			Connection con = MySQLDatabase.getInstance().getConnection();
 
@@ -822,16 +827,19 @@ public class DAO {
 
 			ps.close();
 			con.close();
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		return false;
 	}
 
 	/**
 	 * 
 	 * @author Michael Skrzypietz
 	 */
-	public static void updateImgurl(User user) {
+	public static boolean updateImgurl(User user) {
 		try {
 			Connection con = MySQLDatabase.getInstance().getConnection();
 
@@ -844,115 +852,12 @@ public class DAO {
 
 			ps.close();
 			con.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 
-	 * @author Michael Skrzypietz
-	 */
-	public static ArrayList<Subject> getSubjectsByUser(int userId) {
-		try {
-			Connection con = MySQLDatabase.getInstance().getConnection();
-
-			String sqlString = "SELECT id, name, forumid FROM subject s, posting p "
-					+ "WHERE s.id = p.authorid and p.authorid = ?";
-			/*
-			 * replace when authorPostingId gets added to subject String
-			 * sqlString =
-			 * "SELECT id, name, forumid, authorPostingId FROM subject s, posting p "
-			 * + "WHERE s.id = p.authorid and p.authorid = ?";
-			 */
-
-			PreparedStatement ps = con.prepareStatement(sqlString);
-			ps.setInt(1, userId);
-			ResultSet rs = ps.executeQuery();
-
-			ArrayList<Subject> subjectsOfUser = new ArrayList<>();
-			if (rs.next()) {
-				Subject subject = new Subject(rs.getInt("id"));
-				subject.setName(rs.getString("name"));
-				subject.setForumid(rs.getInt("forumid"));
-				// subject.setAuthorPostingId(rs.getInt("authorPostingId")); ->
-				// uncomment if sqlString gets replaced
-				subjectsOfUser.add(subject);
-			}
-
-			rs.close();
-			ps.close();
-			con.close();
-
-			return subjectsOfUser;
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return null;
-	}
-
-	/**
-	 * 
-	 * @author Michael Skrzypietz
-	 */
-	public static String getForumNameById(int forumId) {
-		try {
-			Connection con = MySQLDatabase.getInstance().getConnection();
-
-			String sqlString = "SELECT id, name FROM forum " + "WHERE id = ?";
-
-			PreparedStatement ps = con.prepareStatement(sqlString);
-			ps.setInt(1, forumId);
-			ResultSet rs = ps.executeQuery();
-
-			String forumName = null;
-			if (rs.next()) {
-				forumName = rs.getString("name");
-			}
-
-			rs.close();
-			ps.close();
-			con.close();
-
-			return forumName;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return "";
-	}
-
-	/**
-	 * 
-	 * @author Michael Skrzypietz
-	 */
-	public static int getNumberOfResponsesOfSubject(int subjectId) {
-		try {
-			Connection con = MySQLDatabase.getInstance().getConnection();
-
-			String sqlString = "SELECT id FROM posting " + "WHERE subjectid = ?";
-
-			PreparedStatement ps = con.prepareStatement(sqlString);
-			ps.setInt(1, subjectId);
-			ResultSet rs = ps.executeQuery();
-
-			int postingCounter = -1; // to get the number of responses minus the
-										// authorpost
-			if (rs.next()) {
-				postingCounter++;
-			}
-
-			rs.close();
-			ps.close();
-			con.close();
-
-			return postingCounter;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return -1;
+		return false;
 	}
 
 	public boolean hasUserRated(int postingId, int userId) {
@@ -979,3 +884,4 @@ public class DAO {
 		return false;
 	}
 }
+
