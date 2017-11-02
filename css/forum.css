@@ -148,3 +148,21 @@ body {
     border-bottom: 1px solid #dad8de;
     padding: 2rem 0;
 }
+
+.profil .success-alert {
+	position: absolute;
+	bottom: 2.5rem;
+	right: 1rem;
+	width: 20rem;
+}
+
+.profil .elementToFadeInAndOut {
+    opacity: 1;
+    animation: fade 5s ease;
+}
+
+
+@keyframes fade {
+  0%,100% { opacity: 0 }
+  50% { opacity: 1 }
+}

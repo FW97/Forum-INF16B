@@ -2,12 +2,10 @@ package de.dhbw.StudentForum;
 
 import java.sql.Date;
 import java.sql.*;
+import java.util.List;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.mysql.jdbc.Statement;
 
 import de.dhbw.StudentForum.Posting;
 import de.dhbw.StudentForum.User;
@@ -18,11 +16,22 @@ import de.dhbw.StudentForum.MySQLDatabase;
  * 		Daniel Bilmann,
  * 		Jannik Zeyer,
  * 		Andreas Memmel
+ * 
+ * cleaned up by Morten Terhart
+ * 
+ * responsible is Andreas Memmel
  */
 
 public class DAO {
 
-	// Add new user to DB.
+	/**
+	 * Adds new user to DB. Returns false if error occurred.
+	 * @param user	User Object
+	 * @return		Boolean: true if operation was successful
+	 * @throws Exception
+	 * @author Andreas Memmel
+	 * @see User
+	 */
 	public boolean addNewUser(User user) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -52,7 +61,14 @@ public class DAO {
 		return true;
 	}
 
-	// Add post to DB.
+	/**
+	 * Adds post to DB. Returns the postingId. If an error occurred the return value is -1
+	 * @param posting	Posting Object
+	 * @return			the postingId of the Object added in the DB (-1 if error occurred)
+	 * @throws Exception
+	 * @author Andreas Memmel
+	 * @see Posting
+	 */
 	public int addNewPosting(Posting posting) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -82,13 +98,13 @@ public class DAO {
 
 					for (int i = 0; i < tags.length; i++) {
 						if (i == 0) {
-							sqlString.concat("(" + tags[i] + ", " + postingId + ")");
+							sqlString = sqlString.concat("(" + tags[i] + ", " + postingId + ")");
 						} else {
-							sqlString.concat(",(" + tags[i] + ", " + postingId + ")");
+							sqlString = sqlString.concat(",(" + tags[i] + ", " + postingId + ")");
 						}
 					}
 
-					sqlString.concat(";");
+					sqlString = sqlString.concat(";");
 
 					ps = con.prepareStatement(sqlString);
 					ps.executeUpdate();
@@ -103,8 +119,30 @@ public class DAO {
 		return postingId;
 	}
 
-	// Add attachement to DB.
-	public boolean addAttachement(String filename, int postingId) throws Exception {
+	//Delete post from DB
+	public boolean deletePosting(int postingid) throws Exception {
+		Connection con = null;
+		PreparedStatement ps = null;
+		boolean result = false;
+		try {
+			con = MySQLDatabase.getInstance().getConnection();
+
+			String sqlString = "UPDATE POSTING " + "SET whendeleted = CURRENT_TIMESTAMP WHERE postingid = ? ;";
+			ps = con.prepareStatement(sqlString);
+			ps.setInt(1, postingid);
+			ps.executeUpdate();
+			result = true;
+		}catch(Exception e) {
+			result = false;
+			e.printStackTrace();
+		}
+		ps.close();
+		con.close();
+		return result;
+	}
+	
+	// Add attachment to DB.
+	public boolean addAttachment(String filename, int postingId) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
 
@@ -179,6 +217,7 @@ public class DAO {
 		return true;
 	}
 
+	//Add rating to DB
 	public boolean insertRating(int postingId, int userId, int rating) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -203,6 +242,7 @@ public class DAO {
 		return true;
 	}
 
+	//Add Tag to a Post in DB
 	public boolean addTag(int postingId, String tag) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -226,6 +266,14 @@ public class DAO {
 		return true;
 	}
 
+	/**
+	 * Get User by first and last name. Does return 1 User. Warning: first and last name do not have to be unique
+	 * @param fName	the first name of the User
+	 * @param lName	the last name of the User
+	 * @return		a User Object
+	 * @see			User
+	 * @author		Andreas Memmel
+	 */
 	public User getUserByName(String fName, String lName) {
 		Connection con = null;
 		ResultSet rs;
@@ -261,6 +309,7 @@ public class DAO {
 		return newUser;
 	}
 
+	//Get User from DB by Email. returns 1 User. email is unique.
 	public User getUserByEmail(String email) {
 		Connection con = null;
 		ResultSet rs;
@@ -269,7 +318,7 @@ public class DAO {
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
 
-			String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash FROM USER WHERE email=?;";
+			String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash, imgurl FROM USER WHERE email=?;";
 
 			PreparedStatement ps = con.prepareStatement(sqlString);
 			ps.setString(1, email);
@@ -287,6 +336,7 @@ public class DAO {
 			newUser.setRole(rs.getInt("role"));
 			newUser.setPwSalt(rs.getString("pwsalt"));
 			newUser.setPwHash(rs.getString("pwhash"));
+			newUser.setImgUrl(rs.getString("imgurl"));
 
 			con.close();
 		} catch (Exception e) {
@@ -295,6 +345,7 @@ public class DAO {
 		return newUser;
 	}
 
+	//Get User from DB by ID
 	public User getUserById(int id) {
 		Connection con = null;
 		ResultSet rs;
@@ -329,7 +380,8 @@ public class DAO {
 		return newUser;
 	}
 
-	public Posting gePostingById(int id) {
+	//Get Post form DB by ID
+	public Posting getPostingById(int id) {
 		Connection con = null;
 		ResultSet rs;
 		Posting newPosting = null;
@@ -359,8 +411,8 @@ public class DAO {
 			newPosting.setMessage(rs.getString("text"));
 			newPosting.setUserId(rs.getInt("authorid"));
 			newPosting.setSubjectId(rs.getInt("subjectid"));
-			newPosting.setWhenDeleted(rs.getDate("whendeleted"));
-			newPosting.setWhenPosted(rs.getDate("whenposted"));
+			newPosting.setWhenDeleted(rs.getTimestamp("whendeleted"));
+			newPosting.setWhenPosted(rs.getTimestamp("whenposted"));
 			newPosting.setTags(rs.getString("tags").split(","));
 			newPosting.setPosRat(rs.getInt("posrat"));
 			newPosting.setNegRat(rs.getInt("negrat"));
@@ -372,10 +424,10 @@ public class DAO {
 		return newPosting;
 	}
 
-	public ArrayList<Posting> getPostingsBySubject(int subjectId) {
+	public List<Posting> getPostingsBySubject(int subjectId) {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Posting> postings = new ArrayList<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -394,9 +446,10 @@ public class DAO {
 				Posting posting = new Posting(rs.getInt("ID"));
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
+				// posting.setUser(new User(rs.getInt("authorid")));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				if (null != rs.getString("tags")) {
 					posting.setTags(rs.getString("tags").split(","));
 				}
@@ -412,10 +465,10 @@ public class DAO {
 		return postings;
 	}
 
-	public ArrayList<Posting> getPostingsByForum(int forumid) {
+	public List<Posting> getPostingsByForum(int forumid) {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Posting> postings = new ArrayList<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -436,8 +489,8 @@ public class DAO {
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				if (null != rs.getString("tags")) {
 					posting.setTags(rs.getString("tags").split(","));
 				}
@@ -453,10 +506,10 @@ public class DAO {
 		return postings;
 	}
 	
-	public Set<Posting> getPostingsByUser(int userId) {
+	public List<Posting> getPostingsByUser(int userId) {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -476,8 +529,8 @@ public class DAO {
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				posting.setTags(rs.getString("tags").split(","));
 				posting.setPosRat(rs.getInt("posrat"));
 				posting.setNegRat(rs.getInt("negrat"));
@@ -491,10 +544,10 @@ public class DAO {
 		return postings;
 	}
 
-	public Set<Posting> getPostingsByTag(String tag) {
+	public List<Posting> getPostingsByTag(String tag) {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -515,8 +568,8 @@ public class DAO {
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				posting.setTags(rs.getString("tags").split(","));
 				posting.setPosRat(rs.getInt("posrat"));
 				posting.setNegRat(rs.getInt("negrat"));
@@ -530,22 +583,95 @@ public class DAO {
 		return postings;
 	}
 	
-	public Set<Posting> getLatestPostings() {
-		return null;
+	public List<Posting> getLatestPostings() {
+		Connection con = null;
+		ResultSet rs;
+		List<Posting> postings = new ArrayList<Posting>();
+
+		try {
+			con = MySQLDatabase.getInstance().getConnection();
+
+			String sqlString = "SELECT parent.ID, parent.authorid, parent.subjectid, parent.text, parent.whenposted, parent.whendeleted FROM forum.POSTING AS parent Order by parent.whenPosted DESC LIMIT 4;";
+
+			PreparedStatement ps = con.prepareStatement(sqlString);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Posting posting = new Posting(rs.getInt("ID"));
+				posting.setUserId(rs.getInt("authorid"));
+				posting.setSubjectId(rs.getInt("subjectid"));
+				posting.setMessage(rs.getString("text"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
+				postings.add(posting);
+			}
+
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return postings;	
 	}
 	
-	public Set<Posting> searchPostings(String searchTerm) {
-		return null;
+	public List<Posting> searchPostings(String searchTerm) {
+			Connection con = null;
+			ResultSet rs;
+			List<Posting> postings = new ArrayList<Posting>();
+
+			try {
+				con = MySQLDatabase.getInstance().getConnection();
+
+				String sqlString = "SELECT parent.ID, parent.authorid, parent.subjectid, parent.text, parent.whenposted, parent.whendeleted, "
+						+ "(SELECT GROUP_CONCAT(t.tag) FROM POSTINGTAG t, POSTING p WHERE p.ID = parent.ID AND t.postingId = p.ID) AS tags, "
+						+ "(SELECT SUM(rating) FROM POSTINGRATING r, POSTING p WHERE p.ID = parent.ID AND rating = 1 AND r.postingid = p.id) AS posrat, "
+						+ "(SELECT SUM(rating) FROM POSTINGRATING r, POSTING p WHERE p.ID = parent.ID AND rating = -1 AND r.postingid = p.id) AS negrat "
+						+ "From Posting as parent "
+						+ "WHERE ";
+
+				String[] searchwords = searchTerm.split(" ");
+				for (int i = 0; i < searchwords.length; i++) {
+					if(i == 0) {
+						sqlString = sqlString.concat("parent.text like '%" + searchwords[i] + "%' ");
+					}else {
+						sqlString = sqlString.concat("AND parent.text like '%" + searchwords[i] + "%' ");
+					}
+				}
+				sqlString = sqlString.concat(";");
+
+				PreparedStatement ps = con.prepareStatement(sqlString);
+				rs = ps.executeQuery();
+
+				while (rs.next()) {
+					Posting posting = new Posting(rs.getInt("ID"));
+					posting.setUserId(rs.getInt("authorid"));
+					posting.setSubjectId(rs.getInt("subjectid"));
+					posting.setMessage(rs.getString("text"));
+					posting.setWhenPosted(rs.getTimestamp("whenposted"));
+					posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
+					if(rs.getString("tags") != null) {
+						posting.setTags(rs.getString("tags").split(","));
+					}
+					posting.setPosRat(rs.getInt("posrat"));
+					posting.setNegRat(rs.getInt("negrat"));
+					postings.add(posting);
+				}
+
+				con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return postings;
+		//return null;
 	}
 
 	/**
 	 * 
-	 * authors: Fabian Schulz, Andreas Memmel
+	 * @author Fabian Schulz, Andreas Memmel
 	 */
-	public Set<Posting> searchPostings(String searchTerm, int forumid, String tag, Date minDate, Date maxDate) {
+	public List<Posting> searchPostings(String searchTerm, int forumid, String tag, Date minDate, Date maxDate) {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -576,8 +702,8 @@ public class DAO {
 				posting.setUserId(rs.getInt("authorid"));
 				posting.setSubjectId(rs.getInt("subjectid"));
 				posting.setMessage(rs.getString("text"));
-				posting.setWhenPosted(rs.getDate("whenposted"));
-				posting.setWhenDeleted(rs.getDate("whendeleted"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
 				posting.setTags(rs.getString("tags").split(","));
 				posting.setPosRat(rs.getInt("posrat"));
 				posting.setNegRat(rs.getInt("negrat"));
@@ -591,10 +717,10 @@ public class DAO {
 		return postings;
 	}
 
-	public static ArrayList<Integer> getSubjectIDsByForum(int forumId) {
+	public List<Integer> getSubjectIDsByForum(int forumId) {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Integer> subjects = new ArrayList<Integer>();
+		List<Integer> subjects = new ArrayList<Integer>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -616,7 +742,7 @@ public class DAO {
 		return subjects;
 	}
 
-	public static Subject getSubjectById(int subjectid) {
+	public Subject getSubjectById(int subjectid) {
 		Connection con = null;
 		ResultSet rs;
 		Subject subject = null;
@@ -711,7 +837,7 @@ public class DAO {
 	 * 
 	 * @author Michael Skrzypietz
 	 */
-	public static void updateProfilSettings(User user) {
+	public static boolean updateProfilSettings(User user) {
 		try {
 			Connection con = MySQLDatabase.getInstance().getConnection();
 
@@ -726,16 +852,19 @@ public class DAO {
 
 			ps.close();
 			con.close();
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		return false;
 	}
 
 	/**
 	 * 
 	 * @author Michael Skrzypietz
 	 */
-	public static void updatePassword(User user) {
+	public static boolean updatePassword(User user) {
 		try {
 			Connection con = MySQLDatabase.getInstance().getConnection();
 
@@ -748,16 +877,19 @@ public class DAO {
 
 			ps.close();
 			con.close();
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		return false;
 	}
 
 	/**
 	 * 
 	 * @author Michael Skrzypietz
 	 */
-	public static void updateImgurl(User user) {
+	public static boolean updateImgurl(User user) {
 		try {
 			Connection con = MySQLDatabase.getInstance().getConnection();
 
@@ -770,115 +902,12 @@ public class DAO {
 
 			ps.close();
 			con.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 
-	 * @author Michael Skrzypietz
-	 */
-	public static ArrayList<Subject> getSubjectsByUser(int userId) {
-		try {
-			Connection con = MySQLDatabase.getInstance().getConnection();
-
-			String sqlString = "SELECT id, name, forumid FROM subject s, posting p "
-					+ "WHERE s.id = p.authorid and p.authorid = ?";
-			/*
-			 * replace when authorPostingId gets added to subject String
-			 * sqlString =
-			 * "SELECT id, name, forumid, authorPostingId FROM subject s, posting p "
-			 * + "WHERE s.id = p.authorid and p.authorid = ?";
-			 */
-
-			PreparedStatement ps = con.prepareStatement(sqlString);
-			ps.setInt(1, userId);
-			ResultSet rs = ps.executeQuery();
-
-			ArrayList<Subject> subjectsOfUser = new ArrayList<>();
-			if (rs.next()) {
-				Subject subject = new Subject(rs.getInt("id"));
-				subject.setName(rs.getString("name"));
-				subject.setForumid(rs.getInt("forumid"));
-				// subject.setAuthorPostingId(rs.getInt("authorPostingId")); ->
-				// uncomment if sqlString gets replaced
-				subjectsOfUser.add(subject);
-			}
-
-			rs.close();
-			ps.close();
-			con.close();
-
-			return subjectsOfUser;
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return null;
-	}
-
-	/**
-	 * 
-	 * @author Michael Skrzypietz
-	 */
-	public static String getForumNameById(int forumId) {
-		try {
-			Connection con = MySQLDatabase.getInstance().getConnection();
-
-			String sqlString = "SELECT id, name FROM forum " + "WHERE id = ?";
-
-			PreparedStatement ps = con.prepareStatement(sqlString);
-			ps.setInt(1, forumId);
-			ResultSet rs = ps.executeQuery();
-
-			String forumName = null;
-			if (rs.next()) {
-				forumName = rs.getString("name");
-			}
-
-			rs.close();
-			ps.close();
-			con.close();
-
-			return forumName;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return "";
-	}
-
-	/**
-	 * 
-	 * @author Michael Skrzypietz
-	 */
-	public static int getNumberOfResponsesOfSubject(int subjectId) {
-		try {
-			Connection con = MySQLDatabase.getInstance().getConnection();
-
-			String sqlString = "SELECT id FROM posting " + "WHERE subjectid = ?";
-
-			PreparedStatement ps = con.prepareStatement(sqlString);
-			ps.setInt(1, subjectId);
-			ResultSet rs = ps.executeQuery();
-
-			int postingCounter = -1; // to get the number of responses minus the
-										// authorpost
-			if (rs.next()) {
-				postingCounter++;
-			}
-
-			rs.close();
-			ps.close();
-			con.close();
-
-			return postingCounter;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return -1;
+		return false;
 	}
 
 	public boolean hasUserRated(int postingId, int userId) {
@@ -905,3 +934,4 @@ public class DAO {
 		return false;
 	}
 }
+

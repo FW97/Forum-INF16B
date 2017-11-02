@@ -1,4 +1,4 @@
-﻿-- --------------------------------------------------------
+-- --------------------------------------------------------
 -- Host:                         127.0.0.1
 -- Server Version:               5.6.37-log - MySQL Community Server (GPL)
 -- Server Betriebssystem:        Win64
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `posting` (
   `subjectid` int(11) DEFAULT NULL,
   `authorid` int(11) DEFAULT NULL,
   `whendeleted` timestamp NULL DEFAULT NULL,
-  `whenposted` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `whenposted` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `subjectid` (`subjectid`),
   KEY `authorid` (`authorid`)
@@ -106,8 +106,10 @@ CREATE TABLE IF NOT EXISTS `subject` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `forumid` int(11) DEFAULT NULL,
+  `authorpostingid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `forumid` (`forumid`)
+  KEY `forumid` (`forumid`),
+  KEY `authorpostingid` (`authorpostingid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Exportiere Daten aus Tabelle forum.subject: ~0 rows (ungefähr)

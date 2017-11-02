@@ -1,4 +1,5 @@
 <%@ page import="de.dhbw.StudentForum.DAO, de.dhbw.StudentForum.User, de.dhbw.StudentForum.Hashing" %>
+<%@ page import="java.util.Arrays" %>
 
 <%
 
@@ -47,9 +48,9 @@
 	 */
 	private String createResponse(String status, String message) {
 		if (message != null) {
-			return "{ status: \"" + status + "\", message: \"" + message + "\" }";
+			return "{ \"status\": \"" + status + "\", \"message\": \"" + message + "\" }";
 		} else {
-			return "{ status: \"" + status + "\" }";
+			return "{ \"status\": \"" + status + "\" }";
 		}
 	}
 

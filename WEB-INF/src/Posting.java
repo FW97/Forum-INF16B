@@ -1,6 +1,6 @@
 package de.dhbw.StudentForum;
-
 import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * 
@@ -14,10 +14,10 @@ public class Posting {
 	
 	private final int id;
 	private int userId;
+	private String title;
 	private String message;
 	private Date whenDeleted;
 	private Date whenPosted;
-	private int forumId;
 	private int subjectId;
 	private String[] tags;
 	private int posRat;
@@ -41,6 +41,13 @@ public class Posting {
 		this.userId = userId;
 	}
 	
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
 	public String getMessage(){
 		return message;
 	}
@@ -51,29 +58,23 @@ public class Posting {
 	public Date getWhenDeleted() {
 		return whenDeleted;
 	}
-	public void setWhenDeleted(Date whenDeleted) {
-		this.whenDeleted = whenDeleted;
+	public void setWhenDeleted(Timestamp whenDeleted) {
+		if(whenDeleted != null) {
+			this.whenDeleted = new Date(whenDeleted.getTime());
+		}
 	}
 	
 	public Date getWhenPosted() {
 		return whenPosted;
 	}
-	public void setWhenPosted(Date whenPosted) {
-		this.whenPosted = whenPosted;
+	public void setWhenPosted(Timestamp whenPosted) {
+		this.whenPosted = new Date(whenPosted.getTime());
 	}
 	
-	public int getForumId(){
-		return forumId;
-	}
-	public void setForumId(int forumId){
-		this.forumId = forumId;
-	}
-
-	public int getSubjectId() {
+	public int getSubjectId(){
 		return subjectId;
 	}
-
-	public void setSubjectId(int subjectId) {
+	public void setSubjectId(int subjectId){
 		this.subjectId = subjectId;
 	}
 	
