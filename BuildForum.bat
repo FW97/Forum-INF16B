@@ -37,7 +37,7 @@ IF "%display_usage%" == "true" (
 	echo.
 	echo   This script was written by Morten Terhart for the Forum
 	echo   website of INF16B from the DHBW Mosbach.
-	echo   Copyright (C) 2017 INF16B Mosbach
+	echo   Copyright ^(C^) 2017 INF16B Mosbach
 	exit /B 0
 )
 
