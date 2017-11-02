@@ -76,7 +76,7 @@ IF EXIST "WEB-INF" (
 
 			FOR %%J IN (.\src\*.java) DO (
 				echo [%webapp_name%]: Compiling %%J ...
-				javac -cp "lib/*:classes" -encoding "UTF-8" -d ".\classes" -Xlint:static %%J
+				javac -cp "lib/*;classes" -encoding "UTF-8" -d "classes" -Xlint:static %%J
 				IF ERRORLEVEL 1 (
 					echo   ^> Errors detected
 					set erroneous_files[!error_index!]=%%J
