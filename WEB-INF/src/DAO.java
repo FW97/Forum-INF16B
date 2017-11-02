@@ -101,6 +101,26 @@ public class DAO {
 		return postingId;
 	}
 
+	public boolean deletePosting(int postingid) throws Exception {
+		Connection con = null;
+		PreparedStatement ps = null;
+		boolean result = false;
+		try {
+			con = MySQLDatabase.getInstance().getConnection();
+
+			String sqlString = "UPDATE POSTING " + "SET whendeleted = CURRENT_TIMESTAMP WHERE postingid = ? ;";
+			ps = con.prepareStatement(sqlString);
+			ps.setInt(1, postingid);
+			ps.executeUpdate();
+			result = true;
+		}catch(Exception e) {
+			result = false;
+			e.printStackTrace();
+		}
+		ps.close();
+		con.close();
+		return result;
+	}
 	// Add attachement to DB.
 	public boolean addAttachement(String filename, int postingId) throws Exception {
 		Connection con = null;
