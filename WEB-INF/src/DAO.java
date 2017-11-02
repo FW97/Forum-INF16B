@@ -629,8 +629,6 @@ public class DAO {
 						+ "WHERE ";
 
 				String[] searchwords = searchTerm.split(" ");
-				System.out.println(searchwords[0]);
-				System.out.println(searchwords.length);
 				for (int i = 0; i < searchwords.length; i++) {
 					if(i == 0) {
 						sqlString = sqlString.concat("parent.text like '%" + searchwords[i] + "%' ");
@@ -639,7 +637,6 @@ public class DAO {
 					}
 				}
 				sqlString = sqlString.concat(";");
-				System.out.println(sqlString);
 
 				PreparedStatement ps = con.prepareStatement(sqlString);
 				rs = ps.executeQuery();
