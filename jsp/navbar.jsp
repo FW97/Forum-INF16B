@@ -116,7 +116,7 @@
         </a>
         </li>
         <%
-            if(!(c[0].equals("index")) && c[0].equals("forum"))) {
+            if(!(c[0].equals("index")) && c[0].equals("forum")) {
         %>
                <li><a href="<%out.println(a[a.length-1]);%>">
                <% out.println(c[0]); %>
