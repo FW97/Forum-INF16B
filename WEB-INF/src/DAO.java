@@ -16,11 +16,22 @@ import de.dhbw.StudentForum.MySQLDatabase;
  * 		Daniel Bilmann,
  * 		Jannik Zeyer,
  * 		Andreas Memmel
+ * 
+ * cleaned up by Morten Terhart
+ * 
+ * responsible is Andreas Memmel
  */
 
 public class DAO {
 
-	// Add new user to DB.
+	/**
+	 * Adds new user to DB. Returns false if error occurred.
+	 * @param user	User Object
+	 * @return		Boolean: true if operation was successful
+	 * @throws Exception
+	 * @author Andreas Memmel
+	 * @see User
+	 */
 	public boolean addNewUser(User user) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -50,7 +61,14 @@ public class DAO {
 		return true;
 	}
 
-	// Add post to DB.
+	/**
+	 * Adds post to DB. Returns the postingId. If an error occurred the return value is -1
+	 * @param posting	Posting Object
+	 * @return			the postingId of the Object added in the DB (-1 if error occurred)
+	 * @throws Exception
+	 * @author Andreas Memmel
+	 * @see Posting
+	 */
 	public int addNewPosting(Posting posting) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -101,6 +119,7 @@ public class DAO {
 		return postingId;
 	}
 
+	//Delete post from DB
 	public boolean deletePosting(int postingid) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -121,8 +140,9 @@ public class DAO {
 		con.close();
 		return result;
 	}
-	// Add attachement to DB.
-	public boolean addAttachement(String filename, int postingId) throws Exception {
+	
+	// Add attachment to DB.
+	public boolean addAttachment(String filename, int postingId) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
 
@@ -197,6 +217,7 @@ public class DAO {
 		return true;
 	}
 
+	//Add rating to DB
 	public boolean insertRating(int postingId, int userId, int rating) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -221,6 +242,7 @@ public class DAO {
 		return true;
 	}
 
+	//Add Tag to a Post in DB
 	public boolean addTag(int postingId, String tag) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -244,6 +266,14 @@ public class DAO {
 		return true;
 	}
 
+	/**
+	 * Get User by first and last name. Does return 1 User. Warning: first and last name do not have to be unique
+	 * @param fName	the first name of the User
+	 * @param lName	the last name of the User
+	 * @return		a User Object
+	 * @see			User
+	 * @author		Andreas Memmel
+	 */
 	public User getUserByName(String fName, String lName) {
 		Connection con = null;
 		ResultSet rs;
@@ -279,6 +309,7 @@ public class DAO {
 		return newUser;
 	}
 
+	//Get User from DB by Email. returns 1 User. email is unique.
 	public User getUserByEmail(String email) {
 		Connection con = null;
 		ResultSet rs;
@@ -314,6 +345,7 @@ public class DAO {
 		return newUser;
 	}
 
+	//Get User from DB by ID
 	public User getUserById(int id) {
 		Connection con = null;
 		ResultSet rs;
@@ -348,6 +380,7 @@ public class DAO {
 		return newUser;
 	}
 
+	//Get Post form DB by ID
 	public Posting getPostingById(int id) {
 		Connection con = null;
 		ResultSet rs;
@@ -636,7 +669,7 @@ public class DAO {
 
 	/**
 	 * 
-	 * authors: Fabian Schulz, Andreas Memmel
+	 * @author Fabian Schulz, Andreas Memmel
 	 */
 	public List<Posting> searchPostings(String searchTerm, int forumid, String tag, Date minDate, Date maxDate) {
 		Connection con = null;
