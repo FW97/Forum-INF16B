@@ -8,10 +8,17 @@ Name: Jan Malchert, Bernhard Koll
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
-    // Posting posting = dao.getPosting(Integer.parseInt(request.getParameter("id")));
-    String author = "John Doe"; // posting.getAuthor();
-    Date date = GregorianCalendar.getInstance().getTime(); // posting.getWhenPosted();
-    String text = "Test answer"; // posting.getMessage();
+    DAO dao = new DAO();
+    int postingId = 0;
+    
+    try {
+        postingId = Integer.parseInt(request.getParameter("id"));
+    } catch(Exception e) { }
+    
+    Posting posting = dao.getPosting(postingId);
+    String author = dao.getUserById( posting.getUserId() );
+    Date date = posting.getWhenPosted();
+    String text = posting.getMessage();
 %>
 
 <span class="author"><%=author%></span>
@@ -19,12 +26,12 @@ Name: Jan Malchert, Bernhard Koll
 <span class="date"><%=date%></span>
 <p class="posting">
    <c:out value="${text}"/>
-   <div class="attachment">
-            <!-- temporary as placeholder-->
-                <%--<c:forEach var="attachment" items="${posting.attachments}">
-              <span>${attachment.attachmentFilename}</span>
-              </c:forEach>-
-              --%>
-            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/101389-200.png" width="30" height="30">
-    </div>
+  <div class="attachment">
+			<c:forEach var="attachment" items="${dao.getAttachmentsByPostingId(postingId)}">	
+			  <a href="<c:url value="/attachment/${attachment.getAttachmentFilename()}"/>"/>
+				  <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/101389-200.png" width="30" height="30">
+				  <span>${attachment.getAttachmentFilename()}</span>
+			  </a>
+			</c:forEach>		    
+		</div>
 </p>
