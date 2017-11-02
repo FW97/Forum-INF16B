@@ -105,21 +105,25 @@
 
 <div class="breadcrumbs">
     <div class="left">
-        <% 
+      <ul class="list">
+        <%  
             String[] a = request.getRequestURI().split("/");
             String[] b = a[1].split("\\.");
             String[] c = a[a.length-1].split("\\.");
         %>
-        <a href="../index.jsp">
+        <li><a href="../index.jsp">
             <% out.println(b[0]); %>
         </a>
+        </li>
         <%
-            if(!(c[0].equals("index")) || !(c[0].equals("forum"))) {
+            if(!(c[0].equals("index")) && c[0].equals("forum"))) {
         %>
-               <a href="<%out.println(a[a.length-1]);%>">
+               <li><a href="<%out.println(a[a.length-1]);%>">
                <% out.println(c[0]); %>
                </a>
+               </li>
         <% } %>
+      </ul>
     </div>
 </div>
 </nav>
