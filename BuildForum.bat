@@ -177,4 +177,3 @@ exit /B 0
 	)
 	set /A array_length=%length%
 exit /B 0
-

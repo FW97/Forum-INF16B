@@ -139,7 +139,7 @@ welcher nur lokal benutzt werden muss.
 Die Datenbank wurde mit MySQL Community Sever Version 5.6.37 exportiert, diese kann von der
 [offiziellen MySQL-Seite heruntergeladen werden](https://dev.mysql.com/downloads/mysql/5.6.html#downloads).
 Der MySQL JDBC Connector Version 5.1.44 wird auch benötigt und kann
-[hier](https://dev.mysql.com/downloads/connector/j/5.1.html) heruntergeladen werden.
+[hier](https://dev.mysql.com/downloads/connector/j/5.1.html#downloads) heruntergeladen werden.
 
 
 **Autoren: Niklas Portmann, Carsten Hagemann, Morten Terhart**
