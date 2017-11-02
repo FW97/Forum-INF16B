@@ -26,12 +26,12 @@ Name: Jan Malchert, Bernhard Koll
 <span class="date"><%=date%></span>
 <p class="posting">
    <c:out value="${text}"/>
-   <div class="attachment">
-            <!-- temporary as placeholder-->
-                <%--<c:forEach var="attachment" items="${posting.attachments}">
-              <span>${attachment.attachmentFilename}</span>
-              </c:forEach>-
-              --%>
-            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/101389-200.png" width="30" height="30">
-    </div>
+  <div class="attachment">
+			<c:forEach var="attachment" items="${dao.getAttachmentsByPostingId(postingId)}">	
+			  <a href="<c:url value="/attachment/${attachment.getAttachmentFilename()}"/>"/>
+				  <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/101389-200.png" width="30" height="30">
+				  <span>${attachment.getAttachmentFilename()}</span>
+			  </a>
+			</c:forEach>		    
+		</div>
 </p>
