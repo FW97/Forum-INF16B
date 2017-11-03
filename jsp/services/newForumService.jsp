@@ -10,8 +10,6 @@
 	*/
 	
 	response.setContentType("application/json");
-	final String ErrorForumMessage  = "You have no permission!";
-	final String ErrorForumStatus  = "ERROR";
 
 	String newForumName = request.getParameter("newForumName");
 	if (newForumName==null || newForumName.length()==0){
@@ -35,12 +33,13 @@
 		forum.setCategory(newForumKategorie);
 		forum.setModeratorid(loggedUser.getId());
 
-		//Hierbei wird angenommen, dass wenn die Rolle eines Benutzers auf 1 steht, er Admin ist und die Berechtigung zum Erstellen von Foren hat.
-		if(loggedUser.getRole() == 1)
+		//Hierbei wird angenommen, dass wenn die Rolle eines Benutzers auf 2 steht, er Admin ist und die Berechtigung zum Erstellen von Foren hat.
+		if(loggedUser.getRole() == 2)
 		{
 			databaseObject.addForum(forum);
+			out.println("{\"status\": \"OK\"}");
 		} else {
-			out.println("{ status: \"" + ErrorForumStatus + "\", message: \"" + ErrorForumMessage + "\" }");
+			out.println("{\"status\": \"Error\",\"message\":\"You have no permission!\"}");
 			return;
 		}
 	}
