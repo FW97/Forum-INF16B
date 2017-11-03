@@ -772,7 +772,6 @@ public class DAO {
 		return subject;
 	}
 	
-	//noch nicht getestet
 	public List<Attachment> getAttachmentsByPostingId(int postingid) {
 		Connection con = null;
 		ResultSet rs;
