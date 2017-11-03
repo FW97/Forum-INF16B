@@ -149,7 +149,7 @@ public class DAO {
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
 
-			String sqlString = "INSERT INTO ATTACHEMENT (" + "attachementfilename, postingid) " + "VALUES (?, ?)";
+			String sqlString = "INSERT INTO ATTACHMENT (" + "attachmentfilename, postingid) " + "VALUES (?, ?)";
 
 			ps = con.prepareStatement(sqlString);
 			ps.setString(1, filename);
