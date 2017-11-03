@@ -238,6 +238,10 @@
         System.out.println("postings.jsp: " + message);
     }
 %>
+<c:set var="postSelection" value="<%= postSelection %>" />
+<c:set var="displayHeader" value="<%= displayHeader %>" />
+<c:set var="maxPostings"   value="<%= maxPostings   %>" />
+
 
 <c:if test="${displayHeader && !postSelection.isEmpty()}">
     <h1>Kommentare zu eigenen Postings</h1>
