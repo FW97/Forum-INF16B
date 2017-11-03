@@ -38,7 +38,7 @@ nav .list li:first-child {
 
 nav .list li a {
     text-decoration: none;
-    color: #526ef5;
+    color: #4CAF50;
 }
 
 nav .list li a:hover {
@@ -85,4 +85,21 @@ nav input[type=search] {
 
 nav .button-search {
     margin-left: 12px;
+}
+
+
+
+nav input[type=password], nav input[type=text] {
+    font-size: 1rem;
+    padding: 8px;
+}
+
+
+.loginform a {
+  text-decoration: none
+}
+
+
+#loggedin a:first-child {
+    margin-right: 8px;
 }
