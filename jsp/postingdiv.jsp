@@ -12,7 +12,7 @@ Name: Jan Malchert, Bernhard Koll
     int postingId = 0;
     
     try {
-        postingId = Integer.parseInt(request.getParameter("id"));
+        postingId = Integer.parseInt(request.getParameter("postingid"));
     } catch(Exception e) { }
     
     Posting posting = dao.getPosting(postingId);
