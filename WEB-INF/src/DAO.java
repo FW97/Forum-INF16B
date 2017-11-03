@@ -149,7 +149,7 @@ public class DAO {
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
 
-			String sqlString = "INSERT INTO ATTACHEMENT (" + "attachementfilename, postingid) " + "VALUES (?, ?)";
+			String sqlString = "INSERT INTO ATTACHMENT (" + "attachmentfilename, postingid) " + "VALUES (?, ?)";
 
 			ps = con.prepareStatement(sqlString);
 			ps.setString(1, filename);
@@ -752,7 +752,7 @@ public class DAO {
 
 			String sqlString = "SELECT id, name, forumid "
 					+ "FROM SUBJECT "
-					+ "WHERE id = ?;";
+					+ "WHERE id = ?";
 
 			PreparedStatement ps = con.prepareStatement(sqlString);
 			ps.setInt(1, subjectid);
@@ -764,11 +764,41 @@ public class DAO {
 				subject.setForumid(rs.getInt("forumid"));
 			}
 
+			ps.close();
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return subject;
+	}
+	
+	public List<Attachment> getAttachmentsByPostingId(int postingid) {
+		Connection con = null;
+		ResultSet rs;
+		List<Attachment> attachments = new ArrayList<Attachment>();
+
+		try {
+			con = MySQLDatabase.getInstance().getConnection();
+
+			String sqlString = "SELECT id, attachmentfilename, postingid FROM ATTACHMENT WHERE postingid=?;";
+
+			PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setInt(1, postingid);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Attachment attachment = new Attachment(rs.getInt("id"));
+				attachment.setAttachment(rs.getString("attachmentfilename"));
+				attachment.setPostingid(rs.getInt("postingid"));
+				attachments.add(attachment);
+			}
+
+			ps.close();
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return attachments;
 	}
 	
 	public int[] getRatingByPostingId(int postingId) {

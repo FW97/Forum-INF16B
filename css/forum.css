@@ -1,14 +1,14 @@
-@import 'header.css';
-@import 'footer.css';
-@import 'errors.css';
-@import 'top8.css';
-@import 'forumlist.css';
-@import 'components.css';
-@import 'contact.css';
-@import 'privacy.css';
-@import 'imprint.css';
-@import 'createForum.css';
-@import 'newpost.css';
+@import 'header.css?c=1';
+@import 'footer.css?c=1';
+@import 'errors.css?c=1';
+@import 'top8.css?c=1';
+@import 'forumlist.css?c=1';
+@import 'components.css?c=1';
+@import 'contact.css?c=1';
+@import 'privacy.css?c=1';
+@import 'imprint.css?c=1';
+@import 'createForum.css?c=1';
+@import 'newpost.css?c=1';
 
 /* general */
 

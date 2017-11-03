@@ -2,32 +2,24 @@
 
 <!-- Gruppe: Laura Kaipl, Tobias Siebig -->
     <div id="register">
-		<form>
+		<form action="services/registerService.jsp" method="POST">
 			<h1>Registrierung</h1>
-			
-			<!--
-                <div id="accountinfodivleft">
-                  <img id="profilepicture" src="http://mywindowshub.com/wp-content/uploads/2013/01/user-account.jpg" />
-                  <input class="button" id="profilimage" type="file" value="Bild hinzufügen"/>
-                  </div>
-                <div id="accountinfodivright">
-            -->			
 
 			<p>
 				<label for="email">Email</label>
-				<input type="email" id="email" placeholder="Email" required/>
+				<input type="email" name="email" id="email" placeholder="Email" required/>
 			</p>
 			<p>
 				<label for="firstname">Vorname</label>
-				<input type="text" id="firstname" placeholder="Vorname" required/>
+				<input type="text" name="firstname" id="firstname" placeholder="Vorname" required/>
 			</p>
 			<p>
 				<label for="lastname">Nachname</label>
-				<input type="text" id="lastname" placeholder="Nachname" required/>
+				<input type="text" name="lastname" id="lastname" placeholder="Nachname" required/>
 			</p>
 			<p>
 				<label for="password1">Passwort</label>
-				<input type="password" id="password1" placeholder="Passwort" required/>
+				<input type="password" name="password1" id="password1" placeholder="Passwort" required/>
 			</p>
 			<p>
 				<label for="password2">Passwort wiederholen</label>
@@ -62,5 +54,3 @@
     </div>
       
 <jsp:include page="footer.jsp" />
-        
-

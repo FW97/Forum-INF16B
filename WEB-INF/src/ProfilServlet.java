@@ -77,7 +77,7 @@ public class ProfilServlet extends HttpServlet {
 			filePart.write(request.getServletContext().getRealPath("") + SAVE_DIR + fileName);
 			
 			user = (User) session.getAttribute("user");
-			String imgurl = request.getContextPath() + File.separator + SAVE_DIR + fileName;
+			String imgurl = File.separator + SAVE_DIR + fileName;
 			user.setImgUrl(imgurl);
 			
 			session.setAttribute("settingSuccess", true);
