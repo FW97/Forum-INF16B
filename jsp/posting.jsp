@@ -32,14 +32,14 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
     <span class="author">${author.getFirstname()} ${author.getLastname()}</span> &bull;
 	<span class="date"><c:out value="${posting.getWhenPosted()}" /></span>
         <p class="posting">
-			<c:out value="${posting.message}"/>
+		<c:out value="${posting.getMessage()}"/>
 		<div class="attachment">
-		    <!-- temporary as placeholder-->
-			<%--<c:forEach var="attachment" items="${posting.attachments}">
-			  <c:if test="${attachment.postingid == posting.id}"><a href=""><span>${attachment.attachmentFilename}</span></a></c:if>
-			  </c:forEach>
-			--%>
-		    <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/101389-200.png" width="30" height="30">
+			<c:forEach var="attachment" items="${dao.getAttachmentsByPostingId(posting.getId())}">	
+			  <a href="<c:url value="/attachment/${attachment.getAttachmentFilename()}"/>"/>
+				  <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/101389-200.png" width="30" height="30">
+				  <span>${attachment.getAttachmentFilename()}</span>
+			  </a>
+			</c:forEach>		    
 		</div>
 		<p>
 		    <c:forEach var="tag" items="${posting.getTags()}">
