@@ -28,3 +28,9 @@ hs_err_pid*
 # temporaty files
 *.swp
 .DS_Store
+
+# Ignore profile images uploaded by the JSP webpage
+/img/profilImages/*.jpg
+/img/profilImages/*.jpeg
+/img/profilImages/*.png
+!/img/profilImages/standardPic.png
