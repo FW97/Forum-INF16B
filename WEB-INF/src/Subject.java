@@ -28,7 +28,7 @@ public class Subject {
 	public void setAuthorpostingid(int apoid) {
 		this.authorpostingid = apoid;
 	}
-	public int get Authorpostingid() {
+	public int getAuthorpostingid() {
 		return this.authorpostingid;
 	}
 }
