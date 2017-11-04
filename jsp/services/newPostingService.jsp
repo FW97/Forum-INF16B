@@ -20,7 +20,7 @@
         Posting newPosting = new Posting(0);
         newPosting.setMessage(replystring);
         newPosting.setSubjectId(subjectid);
-        newPosting.setAuthorId(loggedUser);
+        newPosting.setUserId(loggedUser);
 
         int newPostingId = daoObject.addNewPosting(posting);
         out.println("{\"status\": \"OK\", \"postingid\": " + newPostingId + "}");

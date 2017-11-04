@@ -2,6 +2,7 @@ package de.dhbw.StudentForum;
 
 import java.sql.Date;
 import java.sql.*;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,11 +16,22 @@ import de.dhbw.StudentForum.MySQLDatabase;
  * 		Daniel Bilmann,
  * 		Jannik Zeyer,
  * 		Andreas Memmel
+ * 
+ * cleaned up by Morten Terhart
+ * 
+ * responsible is Andreas Memmel
  */
 
 public class DAO {
 
-	// Add new user to DB.
+	/**
+	 * Adds new user to DB. Returns false if error occurred.
+	 * @param user	User Object
+	 * @return		Boolean: true if operation was successful
+	 * @throws Exception
+	 * @author Andreas Memmel
+	 * @see User
+	 */
 	public boolean addNewUser(User user) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -49,7 +61,14 @@ public class DAO {
 		return true;
 	}
 
-	// Add post to DB.
+	/**
+	 * Adds post to DB. Returns the postingId. If an error occurred the return value is -1
+	 * @param posting	Posting Object
+	 * @return			the postingId of the Object added in the DB (-1 if error occurred)
+	 * @throws Exception
+	 * @author Andreas Memmel
+	 * @see Posting
+	 */
 	public int addNewPosting(Posting posting) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -79,13 +98,13 @@ public class DAO {
 
 					for (int i = 0; i < tags.length; i++) {
 						if (i == 0) {
-							sqlString.concat("(" + tags[i] + ", " + postingId + ")");
+							sqlString = sqlString.concat("(" + tags[i] + ", " + postingId + ")");
 						} else {
-							sqlString.concat(",(" + tags[i] + ", " + postingId + ")");
+							sqlString = sqlString.concat(",(" + tags[i] + ", " + postingId + ")");
 						}
 					}
 
-					sqlString.concat(";");
+					sqlString = sqlString.concat(";");
 
 					ps = con.prepareStatement(sqlString);
 					ps.executeUpdate();
@@ -100,15 +119,37 @@ public class DAO {
 		return postingId;
 	}
 
-	// Add attachement to DB.
-	public boolean addAttachement(String filename, int postingId) throws Exception {
+	//Delete post from DB
+	public boolean deletePosting(int postingid) throws Exception {
+		Connection con = null;
+		PreparedStatement ps = null;
+		boolean result = false;
+		try {
+			con = MySQLDatabase.getInstance().getConnection();
+
+			String sqlString = "UPDATE POSTING " + "SET whendeleted = CURRENT_TIMESTAMP WHERE postingid = ? ;";
+			ps = con.prepareStatement(sqlString);
+			ps.setInt(1, postingid);
+			ps.executeUpdate();
+			result = true;
+		}catch(Exception e) {
+			result = false;
+			e.printStackTrace();
+		}
+		ps.close();
+		con.close();
+		return result;
+	}
+	
+	// Add attachment to DB.
+	public boolean addAttachment(String filename, int postingId) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
 
-			String sqlString = "INSERT INTO ATTACHEMENT (" + "attachementfilename, postingid) " + "VALUES (?, ?)";
+			String sqlString = "INSERT INTO ATTACHMENT (" + "attachmentfilename, postingid) " + "VALUES (?, ?)";
 
 			ps = con.prepareStatement(sqlString);
 			ps.setString(1, filename);
@@ -176,6 +217,7 @@ public class DAO {
 		return true;
 	}
 
+	//Add rating to DB
 	public boolean insertRating(int postingId, int userId, int rating) throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -200,6 +242,7 @@ public class DAO {
 		return true;
 	}
 
+	//Add Tag to a Post in DB
 	public boolean addTag(int postingId, String tag) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -223,6 +266,14 @@ public class DAO {
 		return true;
 	}
 
+	/**
+	 * Get User by first and last name. Does return 1 User. Warning: first and last name do not have to be unique
+	 * @param fName	the first name of the User
+	 * @param lName	the last name of the User
+	 * @return		a User Object
+	 * @see			User
+	 * @author		Andreas Memmel
+	 */
 	public User getUserByName(String fName, String lName) {
 		Connection con = null;
 		ResultSet rs;
@@ -258,6 +309,7 @@ public class DAO {
 		return newUser;
 	}
 
+	//Get User from DB by Email. returns 1 User. email is unique.
 	public User getUserByEmail(String email) {
 		Connection con = null;
 		ResultSet rs;
@@ -293,6 +345,7 @@ public class DAO {
 		return newUser;
 	}
 
+	//Get User from DB by ID
 	public User getUserById(int id) {
 		Connection con = null;
 		ResultSet rs;
@@ -327,7 +380,8 @@ public class DAO {
 		return newUser;
 	}
 
-	public Posting gePostingById(int id) {
+	//Get Post form DB by ID
+	public Posting getPostingById(int id) {
 		Connection con = null;
 		ResultSet rs;
 		Posting newPosting = null;
@@ -370,10 +424,10 @@ public class DAO {
 		return newPosting;
 	}
 
-	public ArrayList<Posting> getPostingsBySubject(int subjectId) {
+	public List<Posting> getPostingsBySubject(int subjectId) {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Posting> postings = new ArrayList<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -411,10 +465,10 @@ public class DAO {
 		return postings;
 	}
 
-	public ArrayList<Posting> getPostingsByForum(int forumid) {
+	public List<Posting> getPostingsByForum(int forumid) {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Posting> postings = new ArrayList<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -452,10 +506,10 @@ public class DAO {
 		return postings;
 	}
 	
-	public Set<Posting> getPostingsByUser(int userId) {
+	public List<Posting> getPostingsByUser(int userId) {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -490,10 +544,10 @@ public class DAO {
 		return postings;
 	}
 
-	public Set<Posting> getPostingsByTag(String tag) {
+	public List<Posting> getPostingsByTag(String tag) {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -529,10 +583,10 @@ public class DAO {
 		return postings;
 	}
 	
-	public ArrayList<Posting> getLatestPostings() {
+	public List<Posting> getLatestPostings() {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Posting> postings = new ArrayList<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -559,10 +613,10 @@ public class DAO {
 		return postings;	
 	}
 	
-	public Set<Posting> searchPostings(String searchTerm) {
+	public List<Posting> searchPostings(String searchTerm) {
 			Connection con = null;
 			ResultSet rs;
-			Set<Posting> postings = new HashSet<Posting>();
+			List<Posting> postings = new ArrayList<Posting>();
 
 			try {
 				con = MySQLDatabase.getInstance().getConnection();
@@ -575,8 +629,6 @@ public class DAO {
 						+ "WHERE ";
 
 				String[] searchwords = searchTerm.split(" ");
-				System.out.println(searchwords[0]);
-				System.out.println(searchwords.length);
 				for (int i = 0; i < searchwords.length; i++) {
 					if(i == 0) {
 						sqlString = sqlString.concat("parent.text like '%" + searchwords[i] + "%' ");
@@ -585,7 +637,6 @@ public class DAO {
 					}
 				}
 				sqlString = sqlString.concat(";");
-				System.out.println(sqlString);
 
 				PreparedStatement ps = con.prepareStatement(sqlString);
 				rs = ps.executeQuery();
@@ -615,12 +666,12 @@ public class DAO {
 
 	/**
 	 * 
-	 * authors: Fabian Schulz, Andreas Memmel
+	 * @author Fabian Schulz, Andreas Memmel
 	 */
-	public Set<Posting> searchPostings(String searchTerm, int forumid, String tag, Date minDate, Date maxDate) {
+	public List<Posting> searchPostings(String searchTerm, int forumid, String tag, Date minDate, Date maxDate) {
 		Connection con = null;
 		ResultSet rs;
-		Set<Posting> postings = new HashSet<Posting>();
+		List<Posting> postings = new ArrayList<Posting>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -666,10 +717,10 @@ public class DAO {
 		return postings;
 	}
 
-	public static ArrayList<Integer> getSubjectIDsByForum(int forumId) {
+	public List<Integer> getSubjectIDsByForum(int forumId) {
 		Connection con = null;
 		ResultSet rs;
-		ArrayList<Integer> subjects = new ArrayList<Integer>();
+		List<Integer> subjects = new ArrayList<Integer>();
 
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
@@ -691,7 +742,7 @@ public class DAO {
 		return subjects;
 	}
 
-	public static Subject getSubjectById(int subjectid) {
+	public Subject getSubjectById(int subjectid) {
 		Connection con = null;
 		ResultSet rs;
 		Subject subject = null;
@@ -701,7 +752,7 @@ public class DAO {
 
 			String sqlString = "SELECT id, name, forumid "
 					+ "FROM SUBJECT "
-					+ "WHERE id = ?;";
+					+ "WHERE id = ?";
 
 			PreparedStatement ps = con.prepareStatement(sqlString);
 			ps.setInt(1, subjectid);
@@ -713,11 +764,41 @@ public class DAO {
 				subject.setForumid(rs.getInt("forumid"));
 			}
 
+			ps.close();
 			con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return subject;
+	}
+	
+	public List<Attachment> getAttachmentsByPostingId(int postingid) {
+		Connection con = null;
+		ResultSet rs;
+		List<Attachment> attachments = new ArrayList<Attachment>();
+
+		try {
+			con = MySQLDatabase.getInstance().getConnection();
+
+			String sqlString = "SELECT id, attachmentfilename, postingid FROM ATTACHMENT WHERE postingid=?;";
+
+			PreparedStatement ps = con.prepareStatement(sqlString);
+			ps.setInt(1, postingid);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Attachment attachment = new Attachment(rs.getInt("id"));
+				attachment.setAttachment(rs.getString("attachmentfilename"));
+				attachment.setPostingid(rs.getInt("postingid"));
+				attachments.add(attachment);
+			}
+
+			ps.close();
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return attachments;
 	}
 	
 	public int[] getRatingByPostingId(int postingId) {
@@ -830,7 +911,7 @@ public class DAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
 
@@ -855,7 +936,7 @@ public class DAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
 
@@ -883,3 +964,4 @@ public class DAO {
 		return false;
 	}
 }
+

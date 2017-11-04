@@ -50,16 +50,16 @@ public class MySQLDatabase
     private MySQLDatabase(String dbURL, String dbUser, String dbPass)
     {
         
-        this.dbURL = dbURL;
-        this.dbUser = dbUser;
-        this.dbPass = dbPass;
+        MySQLDatabase.dbURL = dbURL;
+        MySQLDatabase.dbUser = dbUser;
+        MySQLDatabase.dbPass = dbPass;
         
-        //Driver init
+        // Driver init
         try
         {
             // Edit Driverinfo
-        		System.out.println("* Treiber laden"); 
-      	    Class.forName("org.gjt.mm.mysql.Driver").newInstance(); 
+            System.out.println("* Treiber laden");
+      	    Class.forName("com.mysql.jdbc.Driver").newInstance();
       	    
         } catch (Exception e){
             e.printStackTrace();}

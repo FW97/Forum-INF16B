@@ -68,7 +68,7 @@
           <div class="settingContent"> 
             <img class="centered-and-cropped" src="<c:url value="${user.imgUrl}"/>" alt="Profil Image"  height="150" width="150">
             <br>
-            <input type="file" name="file" id="uploadImage" value="Datei ausw&auml;hlen">
+            <input type="file" name="file" id="uploadImage" value="Datei ausw&auml;hlen" />
             <br>
             <div class="settingError">
               <c:if test="${settingErrors.profilImage.length() > 0}">
@@ -85,7 +85,7 @@
             <label>Altes Passwort</label>
           </div>
           <div class="settingContent settingSpacing">
-            <input type="password" name="currentPassword"></input>
+            <input type="password" name="currentPassword" />
           </div>
         </div>
 
@@ -94,7 +94,7 @@
             <label>Neues Passwort</label>
           </div>
           <div class="settingContent settingSpacing">
-            <input type="password" name="newPassword"></input>
+            <input type="password" name="newPassword" />
           </div>
         </div>
 
@@ -103,7 +103,7 @@
             <label>Neues Passwort best&auml;tigen</label>
           </div>
           <div class="settingContent">
-            <input type="password" name="newPassword2"></input>
+            <input type="password" name="newPassword2" />
             <br>
             <div class="settingError">
               <c:if test="${settingErrors.password.length() > 0}">
@@ -132,6 +132,5 @@
         session.setAttribute("settingSuccess", false);
       %>
     </c:if>
-
   </div>
 <jsp:include page="footer.jsp" />

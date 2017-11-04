@@ -3,6 +3,7 @@ Assignment: Studentenforum
 Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 -->
 <%@ page import="java.util.GregorianCalendar, java.util.Date, de.dhbw.StudentForum.*" %>
+<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -15,8 +16,8 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
     }
     catch(Exception e) {}
 
-    Subject subject = daoObject.getSubjectbyId(subjectid);
-    ArrayList<Posting> subjectPostings = daoObject.getPostings(subject.id);*/
+    Subject subject = daoObject.getSubjectById(subjectid);
+    List<Posting> subjectPostings = daoObject.getPostingsBySubject(subject.getId());
 
 %>
 
@@ -24,24 +25,27 @@ Name: Theresa Hillenbrand, Jan Malchert, Bernhard Koll
 
 <c:if test="${subjectid>0}">
 <div class="subject">
-    <h1><%=subject.name%>
+    <h1><%= subject.getName() %>
     </h1>
-    <p><c:forEach var="tag" items="<%=tags%>"><a class="tag" href="posting.jsp"><c:out value="${tag}"/></a></c:forEach>
-    </p>
-    <c:forEach items="<%=subjectPostings%>" var="posting">
-        <% User author = daoObject.getUserById(posting.getUserId()); %>
-        <span class="author"><%=author.getFirstname()%> <%=author.getLastname()%></span> &bull;
-        <span class="date"><%=posting.getWhenPosted()%></span>
+    <c:forEach items="${subjectPostings}" var="posting">
+    <c:set var="author" value="${daoObject.getUserById(posting.getUserId())}" />
+    <span class="author">${author.getFirstname()} ${author.getLastname()}</span> &bull;
+	<span class="date"><c:out value="${posting.getWhenPosted()}" /></span>
         <p class="posting">
-                <c:out value="${posting.message}"/>
-        <div class="attachment">
-            <!-- temporary as placeholder-->
-                <%--<c:forEach var="attachment" items="${posting.attachments}">
-                  <c:if test="${attachment.postingid == posting.id}"><a href=""><span>${attachment.attachmentFilename}</span></a></c:if>
-                  </c:forEach>
-                --%>
-            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/101389-200.png" width="30" height="30">
-        </div>
+		<c:out value="${posting.getMessage()}"/>
+		<div class="attachment">
+			<c:forEach var="attachment" items="${dao.getAttachmentsByPostingId(posting.getId())}">	
+			  <a href="<c:url value="/attachment/${attachment.getAttachmentFilename()}"/>"/>
+				  <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/101389-200.png" width="30" height="30">
+				  <span>${attachment.getAttachmentFilename()}</span>
+			  </a>
+			</c:forEach>		    
+		</div>
+		<p>
+		    <c:forEach var="tag" items="${posting.getTags()}">
+			<a class="tag" href="posting.jsp"><c:out value="${tag}"/></a>
+		    </c:forEach>
+		</p>
         </p>
     </c:forEach>
 
