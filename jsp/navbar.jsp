@@ -84,7 +84,7 @@
             <div id="loginform">
                 <a href="${jspPath}/register.jsp">
                     Noch nicht registriert?</a>
-                <form action="" method="post" onsubmit="loginAjax(); return false;">
+                <form action="" method="post" onsubmit="loginAjax();">
                     <input type="text" name="username" id="username" placeholder="Benutzername"/>
                     <input type="password" name="password" id="password" placeholder="Passwort"/>
                     <input type="submit" value=" Login "/>
@@ -99,7 +99,7 @@
                     Hallo, ${loginSession.getFirstname()}
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                 </a>
-                <a href="${indexPath}" onclick="logoutAjax(); return false;">
+                <a href="${indexPath}" onclick="logoutAjax();">
                     Logout
                 </a>
             </div>
