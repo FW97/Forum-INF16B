@@ -19,7 +19,6 @@ Name: Jan Malchert, Bernhard Koll
 
     try {
         postingId = Integer.parseInt(request.getParameter("postingid"));
-
     } catch(Exception e) { }
     Posting posting = dao.getPostingById(postingId);
     User author = dao.getUserById( posting.getUserId() );
