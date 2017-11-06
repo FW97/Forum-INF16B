@@ -37,18 +37,18 @@ IF "%display_usage%" == "true" (
 	echo.
 	echo   This script was written by Morten Terhart for the Forum
 	echo   website of INF16B from the DHBW Mosbach.
-	echo   Copyright (C) 2017 INF16B Mosbach
+	echo   Copyright ^(C^) 2017 INF16B Mosbach
 	exit /B 0
 )
 
 echo | set /p dummy=[%webapp_name%]: Checking if current directory is the project's root directory ...
 IF EXIST "WEB-INF" (
-	echo  successful!
+	echo  successful^^!
 	echo | set /p dummy=[%webapp_name%]: Checking if WEB-INF\classes is existent ...
 	IF EXIST "WEB-INF\classes" (
-		echo  existent!
+		echo  existent^^!
 	) ELSE (
-		echo  not existent!
+		echo  not existent^^!
 		echo [%webapp_name%]: Creating new directory 'WEB-INF\classes' for bytecode.
 		mkdir WEB-INF\classes
 	)
@@ -67,7 +67,7 @@ IF EXIST "WEB-INF" (
 	IF ERRORLEVEL 0 IF NOT ERRORLEVEL 1 (
 		echo | set /p dummy=[%webapp_name%]: Looking after Java sources in 'WEB-INF\src' ...
 		IF EXIST "src\User.java" (
-			echo  found!
+			echo  found^^!
 			echo.
 
 			set error_index=0
@@ -76,7 +76,7 @@ IF EXIST "WEB-INF" (
 
 			FOR %%J IN (.\src\*.java) DO (
 				echo [%webapp_name%]: Compiling %%J ...
-				javac -cp "lib/*:classes" -encoding "UTF-8" -d ".\classes" -Xlint:static %%J
+				javac -cp "lib/*;classes" -encoding "UTF-8" -d "classes" -Xlint:static %%J
 				IF ERRORLEVEL 1 (
 					echo   ^> Errors detected
 					set erroneous_files[!error_index!]=%%J
@@ -111,7 +111,7 @@ IF EXIST "WEB-INF" (
 					echo   ^> !erroneous_files[%%i]!
 				)
 
-				call :error Check them again and fix the errors!
+				call :error Check them again and fix the errors^^!
 			) ELSE (
 				echo [%webapp_name%]: No compilation errors were detected.
 			)
@@ -119,7 +119,7 @@ IF EXIST "WEB-INF" (
 			echo.
 			echo [%webapp_name%]: The Java bytecode was moved to 'WEB-INF\classes'.
 		) ELSE (
-			echo  not found!
+			echo  not found^^!
 			echo.
 			echo [%webapp_name%]: Could not find any java files in 'WEB-INF\src'.
 			echo [%webapp_name%]: Make sure they are inside 'WEB-INF\src'.
@@ -127,7 +127,7 @@ IF EXIST "WEB-INF" (
 			set exit_status=2
 		)
 	) ELSE (
-		echo [%webapp_name%]: The 'javac' executable could not be found!
+		echo [%webapp_name%]: The 'javac' executable could not be found^^!
 		echo [%webapp_name%]: Make sure you have Java 8 correctly installed and the binaries folder appears in your PATH variable.
 		call :error insufficient Java 8 installation
 		set exit_status=2;
@@ -135,7 +135,7 @@ IF EXIST "WEB-INF" (
 	echo [%webapp_name%]: Changing back to root directory %dirname%.
 	cd ..
 ) ELSE (
-	echo  failed!
+	echo  failed^^!
 	echo [%webapp_name%]: Switch to the project's directory %dirname% first to execute this script:
 	echo    $ cd %dirname%
 	call :error Executing from wrong directory
@@ -177,4 +177,3 @@ exit /B 0
 	)
 	set /A array_length=%length%
 exit /B 0
-

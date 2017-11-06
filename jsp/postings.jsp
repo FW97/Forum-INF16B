@@ -28,6 +28,7 @@
     private static final String MAX_DATE_PARAMETER        = "maxdate";
     private static final String POPULAR_POSTS_PARAMETER   = "popular";
     private static final String DISPLAY_HEADING_PARAMETER = "displayheader";
+    private static final String ADD_JSP_PATH_PARAMETER    = "addjsppath";
 
     // Object instance to get access to the database
     private DAO databaseObject = new DAO();
@@ -45,12 +46,13 @@
     private boolean latest = false;
     private boolean popularPosts = false;
     private boolean displayHeader = false;
+    private boolean addJspPath = false;
     private Date minDate = null;
     private Date maxDate = null;
 
     // Collection of retrieved postings to iterate over
     // to display as list overview
-    List<Posting> postSelection = new ArrayList<>();
+    private List<Posting> postSelection = new ArrayList<>();
 %>
 
 <%
@@ -79,6 +81,7 @@
     String maxDateString       = request.getParameter(MAX_DATE_PARAMETER);
     String popularPostsString  = request.getParameter(POPULAR_POSTS_PARAMETER);
     String displayHeaderString = request.getParameter(DISPLAY_HEADING_PARAMETER);
+    String jspPathString       = request.getParameter(ADD_JSP_PATH_PARAMETER);
 
     // Validating and parsing the parameters to the consigned
     // data types such as integer, boolean or dates
@@ -110,6 +113,9 @@
         }
         if (displayHeaderString != null) {
             displayHeader = Boolean.parseBoolean (displayHeaderString);
+        }
+        if (jspPathString != null) {
+            addJspPath = Boolean.parseBoolean (jspPathString);
         }
     } catch(NumberFormatException exc) {
         System.err.println("postings.jsp: Could not perform integer parsing");
@@ -160,6 +166,11 @@
         postSelection = new ArrayList<Posting>();
         System.err.println("postings.jsp: Error while parsing parameters! Wrong combination " +
             "of parameters or none supplied");
+    }
+
+    String pathPrefix = request.getContextPath();
+    if (addJspPath) {
+        pathPrefix += "/jsp";
     }
 %>
 
@@ -238,16 +249,21 @@
         System.out.println("postings.jsp: " + message);
     }
 %>
+<c:set var="postSelection" value="<%= postSelection %>" />
+<c:set var="displayHeader" value="<%= displayHeader %>" />
+<c:set var="maxPostings"   value="<%= maxPostings   %>" />
+<c:set var="pathPrefix"    value="<%= pathPrefix    %>" />
+
 
 <c:if test="${displayHeader && !postSelection.isEmpty()}">
     <h1>Kommentare zu eigenen Postings</h1>
 </c:if>
 <c:forEach items="${postSelection}" var="currentPost" end="${maxPostings}">
     <c:set var="author" value="${databaseObject.getUserById(currentPost.getUserId())}" />
-    <a href="posting.jsp?postid=${currentPost.getId()}">
+    <a href="${pathPrefix}/posting.jsp?postid=${currentPost.getId()}">
         <div class="post">
             <div class="profilbild">
-                <img src="${(author.getImgUrl()}" height="60" width="60" />
+                <img src="${pathPrefix}/${(author.getImgUrl()}" height="60" width="60" />
             </div>
             <div>
                 <div>INF16B &gt; Mathe</div>

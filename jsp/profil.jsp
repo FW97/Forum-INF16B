@@ -22,7 +22,7 @@
             <input type="text" name="email" value="${user.email}" /> 
             <br>
             <div class="settingError">
-              <c:if test = "${settingErrors.email.length() > 0}">
+              <c:if test="${settingErrors.email.length() > 0}">
                 <c:out value="${settingErrors.email}"></c:out>
               </c:if>
             </div>
@@ -37,7 +37,7 @@
             <input type="text" name="firstName" value="${user.firstname}" />
             <br>
             <div class="settingError">
-              <c:if test = "${settingErrors.firstName.length() > 0}">
+              <c:if test="${settingErrors.firstName.length() > 0}">
                 <c:out value="${settingErrors.firstName}"></c:out>
               </c:if>
             </div>
@@ -52,7 +52,7 @@
             <input type="text" name="lastName" value="${user.lastname}" />
             <br>
             <div class="settingError">
-              <c:if test = "${settingErrors.lastName.length() > 0}">
+              <c:if test="${settingErrors.lastName.length() > 0}">
                 <c:out value="${settingErrors.lastName}"></c:out>
               </c:if>
             </div>
@@ -68,10 +68,10 @@
           <div class="settingContent"> 
             <img class="centered-and-cropped" src="<c:url value="${user.imgUrl}"/>" alt="Profil Image"  height="150" width="150">
             <br>
-            <input type="file" name="file" id="uploadImage" value="Datei ausw&auml;hlen">
+            <input type="file" name="file" id="uploadImage" value="Datei ausw&auml;hlen" />
             <br>
             <div class="settingError">
-              <c:if test = "${settingErrors.profilImage.length() > 0}">
+              <c:if test="${settingErrors.profilImage.length() > 0}">
                 <c:out value="${settingErrors.profilImage}"></c:out>
               </c:if>
             </div>
@@ -106,7 +106,7 @@
             <input type="password" name="newPassword2" />
             <br>
             <div class="settingError">
-              <c:if test = "${settingErrors.password.length() > 0}">
+              <c:if test="${settingErrors.password.length() > 0}">
                 <c:out value="${settingErrors.password}"></c:out>
               </c:if>
             </div>
@@ -132,9 +132,5 @@
         session.setAttribute("settingSuccess", false);
       %>
     </c:if>
-  
-    <!--
-    <h1>Eigene Beiträge</h1>
-    -->
   </div>
 <jsp:include page="footer.jsp" />

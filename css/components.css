@@ -1,16 +1,18 @@
 /* Author: Carsten Hagemann */
-input[type=button] {
-    background-color: #526ef5;
+input[type=button], input[type=submit], a.button-link {
+    background-color: #4CAF50;
     color: #fff;
     font-size: 0.9rem;
     border-radius: 2px;
     padding: 8px 12px;
     border: none;
     -webkit-appearance: none;
+    text-decoration: none;
 }
 
-input[type=button]:hover {
-    background-color: #6a82f6;
+input[type=button]:hover, input[type=submit], a.button-link:hover {
+    background-color: #5ac35e;
+    cursor: pointer;
 }
  
 input[type=button]:hover {

@@ -77,7 +77,7 @@ public class ProfilServlet extends HttpServlet {
 			filePart.write(request.getServletContext().getRealPath("") + SAVE_DIR + fileName);
 			
 			user = (User) session.getAttribute("user");
-			String imgurl = request.getContextPath() + File.separator + SAVE_DIR + fileName;
+			String imgurl = File.separator + SAVE_DIR + fileName;
 			user.setImgUrl(imgurl);
 			
 			session.setAttribute("settingSuccess", true);
@@ -89,12 +89,20 @@ public class ProfilServlet extends HttpServlet {
 		response.sendRedirect("jsp/profil.jsp");
 	}
 
+	/** 
+	*	@param HttpServletRequest to access the firstname, lastname and email parameters of the form
+	*	@return true if firstname, lastname or email does not match its value in the database
+	*/
 	private boolean isInputChange(HttpServletRequest request, User user) {
 		return !user.getFirstname().trim().equals(request.getParameter("firstName").trim()) ||
 			!user.getLastname().trim().equals(request.getParameter("lastName").trim()) ||
 			!user.getEmail().trim().equals(request.getParameter("email").trim());
 	}
 	
+	/** 
+	*	@param HttpServletRequest to access the firstname, lastname and email parameters of the form
+	*	@return true if every input by the user is valid
+	*/
 	private boolean isValidInputChange(HttpServletRequest request, String userEmail) {
 		if (!isValidFirstName(request.getParameter("firstName"))) {
 			this.errors.setFirstName("Vornamen dürfen keine Zahlen enthalten und müssen zwischen 2 und 16 Zeichen lang sein.");
@@ -123,28 +131,45 @@ public class ProfilServlet extends HttpServlet {
 		return true;
 	}
 	
+	/**
+	*	@return true if the given firstname contains only letters and is between 2 and 15 characters long
+	*/
 	private boolean isValidFirstName(String firstName) {
 		return firstName != null && !firstName.matches(".*\\d+.*") &&
 			firstName.length() > 1 && firstName.length() < 16;
 	}
 	
+	/**
+	*	@return true if the given lastname contains only letters and is between 2 and 15 characters long
+	*/
 	private boolean isValidLastName(String lastName) {
 		return lastName != null && !lastName.matches(".*\\d+.*") &&
 			lastName.length() > 1 && lastName.length() < 16;
 	}
 	
+	/**
+	*	@return true if the given email matches the email pattern
+	*/
 	private boolean isValidEmail(String email) {
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
 	}
 	
+	/** 
+	*	@param HttpServletRequest to access the password parameters of the form
+	*	@return true if any password field contains input 
+	*/
 	private boolean isPasswordChange(HttpServletRequest request) {
 		return request.getParameter("currentPassword").length() > 0
-				&& request.getParameter("newPassword").length() > 0
-				&& request.getParameter("newPassword2").length() > 0;
+				|| request.getParameter("newPassword").length() > 0
+				|| request.getParameter("newPassword2").length() > 0;
 	}
 	
+	/**
+	*	@param HttpServletRequest to access the password parameters of the form
+	*	@return true if the old password is correct and if the new password 
+	*/
 	private boolean isValidPasswordChange(HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("user");
 		String newPassword = request.getParameter("newPassword");
@@ -157,11 +182,15 @@ public class ProfilServlet extends HttpServlet {
 		return false;
 	}
 	
+	/**
+	*	@param HttpServletRequest to access the file parameter of the form
+	*	@return true if it is a file of type png, jpg or jpeg
+	*/
 	private boolean isValidImageUpload(HttpServletRequest request) throws IOException, ServletException {
 		if (request.getPart("file") == null) return false;
 		Part filePart = request.getPart("file");
 		String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-		String fileType = fileName.substring(fileName.indexOf(".") + 1, fileName.length());
+		String fileType = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
 
 		boolean result = !fileName.equals("") && (fileType.toUpperCase().equals("PNG") || fileType.toUpperCase().equals("JPEG") || fileType.toUpperCase().equals("JPG"));
 		if (!result && !fileName.equals("")) {
