@@ -37,8 +37,8 @@ DROP TABLE IF EXISTS `forum`;
 CREATE TABLE IF NOT EXISTS `forum` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `moderatorid` int(11) DEFAULT NULL,
-  `name` text,
-  `category` text,
+  `name` varchar(50) DEFAULT NULL,
+  `category` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `moderatorid` (`moderatorid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `posting` (
   `subjectid` int(11) DEFAULT NULL,
   `authorid` int(11) DEFAULT NULL,
   `whendeleted` timestamp NULL DEFAULT NULL,
-  `whenposted` timestamp NULL DEFAULT NULL,
+  `whenposted` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
   KEY `subjectid` (`subjectid`),
   KEY `authorid` (`authorid`)
@@ -122,13 +122,14 @@ DELETE FROM `subject`;
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `firstname` text,
-  `lastname` text,
-  `email` text,
-  `pwsalt` text,
-  `pwhash` text,
+  `firstname` varchar(50) DEFAULT NULL,
+  `lastname` varchar(50) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `pwsalt` varchar(50) DEFAULT NULL,
+  `pwhash` varchar(50) DEFAULT NULL,
   `role` int(11) DEFAULT NULL,
-  `imgurl` text,
+  `imgurl` varchar(50) DEFAULT NULL,
+  `usercreated` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
