@@ -354,7 +354,7 @@ public class DAO {
 		try {
 			con = MySQLDatabase.getInstance().getConnection();
 
-			String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash FROM USER WHERE id=?;";
+			String sqlString = "SELECT ID, firstname, lastname, email, role, pwsalt, pwhash, imgurl FROM USER WHERE id=?;";
 
 			PreparedStatement ps = con.prepareStatement(sqlString);
 			ps.setInt(1, id);
@@ -372,6 +372,7 @@ public class DAO {
 			newUser.setRole(rs.getInt("role"));
 			newUser.setPwSalt(rs.getString("pwsalt"));
 			newUser.setPwHash(rs.getString("pwhash"));
+			newUser.setImgUrl(rs.getString("imgurl"));
 
 			con.close();
 		} catch (Exception e) {
@@ -453,6 +454,43 @@ public class DAO {
 				if (null != rs.getString("tags")) {
 					posting.setTags(rs.getString("tags").split(","));
 				}
+				posting.setPosRat(rs.getInt("posrat"));
+				posting.setNegRat(rs.getInt("negrat"));
+				postings.add(posting);
+			}
+
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return postings;
+	}
+
+	public List<Posting> getPopularPostings() {
+		Connection con = null;
+		ResultSet rs;
+		List<Posting> postings = new ArrayList<Posting>();
+
+		try {
+			con = MySQLDatabase.getInstance().getConnection();
+
+			String sqlString = "SELECT parent.ID, parent.authorid, parent.subjectid, parent.text, parent.whenposted, parent.whendeleted, "
+					+ "(SELECT GROUP_CONCAT(t.tag) FROM POSTINGTAG t WHERE t.postingId = parent.ID) AS tags, "
+					+ "(SELECT SUM(rating) FROM POSTINGRATING r WHERE rating = 1 AND r.postingid = parent.ID) AS posrat, "
+					+ "(SELECT SUM(rating) FROM POSTINGRATING r WHERE rating = -1 AND r.postingid = parent.ID) AS negrat "
+					+ "FROM POSTING AS parent";
+
+			PreparedStatement ps = con.prepareStatement(sqlString);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Posting posting = new Posting(rs.getInt("ID"));
+				posting.setUserId(rs.getInt("authorid"));
+				posting.setSubjectId(rs.getInt("subjectid"));
+				posting.setMessage(rs.getString("text"));
+				posting.setWhenPosted(rs.getTimestamp("whenposted"));
+				posting.setWhenDeleted(rs.getTimestamp("whendeleted"));
+				posting.setTags(rs.getString("tags").split(","));
 				posting.setPosRat(rs.getInt("posrat"));
 				posting.setNegRat(rs.getInt("negrat"));
 				postings.add(posting);

@@ -45,8 +45,8 @@
     <script>
     function loginAjax() {
         var xhr = new XMLHttpRequest();
-        var curr_url = window.location.href;
-        xhr.open("POST", "jsp/services/loginService.jsp", true);
+        var contextPath = "${contextPath}";
+        xhr.open("POST", contextPath + "/jsp/services/loginService.jsp", true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         var username = document.getElementById("username").value;                
         var password = document.getElementById("password").value;
@@ -68,8 +68,8 @@
 
     function logoutAjax() {
         var xhr = new XMLHttpRequest;
-        var curr_url = window.location.href;
-        xhr.open("GET", "jsp/services/logoutService.jsp", true);
+        var contextPath = "${contextPath}";
+        xhr.open("GET", contextPath + "/jsp/services/logoutService.jsp", true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && this.status === 200) {
                 console.log("Logged out!");
