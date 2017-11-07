@@ -171,12 +171,14 @@
     } else {
         // If none of these use cases is matched, create an empty set
         // and display an error message
-        // postSelection = new ArrayList<Posting> ();
-        displayError = true;
-        errorMessage = "Error occured during retrieving postings: Combination of parameters not " +
-                "recognized or too few supplied!";
-        System.err.println ("postings.jsp: Error while parsing parameters! Wrong combination " +
-                "of parameters or none supplied");
+        postSelection = new ArrayList<Posting> ();
+        if (!displayError) {
+            displayError = true;
+            errorMessage = "Error occured during retrieving postings: Combination of parameters not " +
+                    "recognized or too few supplied!";
+            System.err.println ("postings.jsp: Error while parsing parameters! Wrong combination " +
+                    "of parameters or none supplied");
+        }
     }
 
     // If the option `addjsppath` was applied and set to true,
