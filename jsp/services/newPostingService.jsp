@@ -8,7 +8,6 @@
     String replystring = request.getParameter("replystring");
     User loggedUser = (User) session.getAttribute("user");
 
-
     DAO daoObject = new DAO();
 
     if(subjectid <= 0 || replystring == null || replystring.length() == 0)
@@ -20,9 +19,10 @@
         Posting newPosting = new Posting(0);
         newPosting.setMessage(replystring);
         newPosting.setSubjectId(subjectid);
-        newPosting.setUserId(loggedUser);
+        newPosting.setUserId(loggedUser.getId());
 
-        int newPostingId = daoObject.addNewPosting(posting);
+
+        int newPostingId = daoObject.addNewPosting(newPosting);
         out.println("{\"status\": \"OK\", \"postingid\": " + newPostingId + "}");
     }
 %>
