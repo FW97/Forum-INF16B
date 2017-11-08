@@ -18,7 +18,7 @@
 
 <%!
     // Uniform declarations of used parameter identifiers in the URL bar
-    private static final String USER_ID_PARAMETER         = "userid";
+    private static final String USER_ID_PARAMETER         = "authorid";
     private static final String LATEST_PARAMETER          = "latest";
     private static final String SEARCH_TERM_PARAMETER     = "searchterm";
     private static final String MAX_POSTINGS_PARAMETER    = "maxpostings";
@@ -44,7 +44,7 @@
     // GET or POST request)
     int forumId = -1;
     String tag = null;
-    int userId = -1;
+    int authorId = -1;
     int maxPostings = 100;
     boolean latest = false;
     boolean popularPosts = false;
@@ -73,7 +73,7 @@
     // --- Parameter Handling ---
     // Accessing the Parameters via the request
     String tagString           = request.getParameter (TAG_ID_PARAMETER);
-    String userIdString        = request.getParameter (USER_ID_PARAMETER);
+    String authorIdString      = request.getParameter (USER_ID_PARAMETER);
     String forumIdString       = request.getParameter (FORUM_ID_PARAMETER);
     String latestString        = request.getParameter (LATEST_PARAMETER);
     String maxPostingsString   = request.getParameter (MAX_POSTINGS_PARAMETER);
@@ -88,8 +88,8 @@
     // data types such as integer, boolean or dates
     DateFormat format = DateFormat.getDateInstance ();
     try {
-        if (userIdString != null) {
-            userId = Integer.parseInt (userIdString);
+        if (authorIdString != null) {
+            authorId = Integer.parseInt (authorIdString);
         }
         if (forumIdString != null) {
             forumId = Integer.parseInt (forumIdString);
@@ -164,9 +164,9 @@
         // Postings of a specific tag
         selectTagPostings (tag);
         logMessage ("Activated selection of postings with a specific tag");
-    } else if (userIdString != null) {
+    } else if (authorIdString != null) {
         // Postings of a specific user
-        selectUserPostings (userId);
+        selectUserPostings (authorId);
         logMessage ("Activated selection of postings by a specific user");
     } else {
         // If none of these use cases is matched, create an empty set
@@ -244,8 +244,8 @@
      * Initializes the postSelection with all postings submitted by a specific user
      * @param userId the id of the specific user
      */
-    private void selectUserPostings(int userId) {
-        postSelection = databaseObject.getPostingsByUser (userId);
+    private void selectUserPostings(int authorId) {
+        postSelection = databaseObject.getPostingsByUser (authorId);
     }
 
     /**
@@ -303,43 +303,47 @@
 
 <%-- Iterate over all the posts in the postSelection --%>
 <c:forEach items="${postSelection}" var="currentPost" end="${maxPostings}">
-    <%-- Fetch the specific author as user object from the database --%>
-    <c:set var="author" value="${databaseObject.getUserById(currentPost.getUserId())}"/>
 
-    <%-- Set a link to the posting itself over the whole block --%>
-    <a href="${pathPrefix}/posting.jsp?postid=${currentPost.getId()}">
-        <div class="post">
-            <%-- Profile Image and Author Name both with a link to the profile --%>
-            <a href="${pathPrefix}/profil.jsp?userid=${author.getId()}">
-                <div class="profilbild">
-                    <img src="<c:url value="${author.getImgUrl()}" />" height="60" width="60"/>
-                </div>
-                <span class="author"> ${author.getFirstname()} ${author.getLastname()} </span>
-            </a>
+    <%-- Only show postings which were not deleted (i.e. deletion date == null) --%>
+    <c:if test="${currentPost.getWhenDeleted() == null}">
+        <%-- Fetch the specific author as user object from the database --%>
+        <c:set var="author" value="${databaseObject.getUserById(currentPost.getUserId())}"/>
 
-            <%-- Postings Body with breadcrumbs, creation date,
-                 subject title, short message and tags attached to it --%>
-            <div>
-                <a href="${pathPrefix}/forumlist.jsp">
-                    <div>INF16B &gt; Mathe</div>
+        <%-- Set a link to the posting itself over the whole block --%>
+        <a href="${pathPrefix}/posting.jsp?postid=${currentPost.getId()}">
+            <div class="post">
+                    <%-- Profile Image and Author Name both with a link to the profile --%>
+                <a href="${pathPrefix}/profil.jsp?userid=${author.getId()}">
+                    <div class="profilbild">
+                        <img src="<c:url value="${author.getImgUrl()}" />" height="60" width="60"/>
+                    </div>
+                    <span class="author"> ${author.getFirstname()} ${author.getLastname()} </span>
                 </a>
-                <span class="date"> ${currentPost.getWhenPosted().toString()} </span>
 
-                <br>
-                <h1><i> ${currentPost.getTitle()} </i></h1>
-                <br>
-
-                <p>${currentPost.getMessage()}</p>
-
-                <%-- For-Each-Loop to output all attached tags --%>
-                <c:forEach items="${currentPost.getTags()}" var="tag">
-                    <a href="${pathPrefix}/postings.jsp?tag=${tag}">
-                        <span class="tagbox">${tag}</span>
+                    <%-- Postings Body with breadcrumbs, creation date,
+                         subject title, short message and tags attached to it --%>
+                <div>
+                    <a href="${pathPrefix}/forumlist.jsp">
+                        <div>INF16B &gt; Mathe</div>
                     </a>
-                </c:forEach>
+                    <span class="date"> ${currentPost.getWhenPosted().toString()} </span>
 
-                <span class="answer"> 200 Antworten </span>
+                    <br>
+                    <h1><i> ${currentPost.getTitle()} </i></h1>
+                    <br>
+
+                    <p>${currentPost.getMessage()}</p>
+
+                        <%-- For-Each-Loop to output all attached tags --%>
+                    <c:forEach items="${currentPost.getTags()}" var="tag">
+                        <a href="${pathPrefix}/postings.jsp?tag=${tag}">
+                            <span class="tagbox">${tag}</span>
+                        </a>
+                    </c:forEach>
+
+                    <span class="answer"> 200 Antworten </span>
+                </div>
             </div>
-        </div>
-    </a>
+        </a>
+    </c:if>
 </c:forEach>
