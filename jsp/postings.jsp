@@ -304,7 +304,7 @@
 <%-- Iterate over all the posts in the postSelection --%>
 <c:forEach items="${postSelection}" var="currentPost" end="${maxPostings}">
 
-    <%-- Only show postings which were not deleted (i.e. deletion date == null) --%>
+    <%-- Only show postings that have not been deleted (i.e. deletion date == null) --%>
     <c:if test="${currentPost.getWhenDeleted() == null}">
         <%-- Fetch the specific author as user object from the database --%>
         <c:set var="author" value="${databaseObject.getUserById(currentPost.getUserId())}"/>
