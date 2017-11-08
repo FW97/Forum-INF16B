@@ -45,8 +45,8 @@
     <script>
     function loginAjax() {
         var xhr = new XMLHttpRequest();
-        var curr_url = window.location.href;
-        xhr.open("POST", "jsp/services/loginService.jsp", true);
+        var contextPath = "${contextPath}";
+        xhr.open("POST", contextPath + "/jsp/services/loginService.jsp", true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         var username = document.getElementById("username").value;                
         var password = document.getElementById("password").value;
@@ -68,8 +68,8 @@
 
     function logoutAjax() {
         var xhr = new XMLHttpRequest;
-        var curr_url = window.location.href;
-        xhr.open("GET", "jsp/services/logoutService.jsp", true);
+        var contextPath = "${contextPath}";
+        xhr.open("GET", contextPath + "/jsp/services/logoutService.jsp", true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && this.status === 200) {
                 console.log("Logged out!");
@@ -84,7 +84,7 @@
             <div id="loginform">
                 <a href="${jspPath}/register.jsp">
                     Noch nicht registriert?</a>
-                <form action="" method="post" onsubmit="loginAjax(); return false;">
+                <form action="" method="post" onsubmit="loginAjax();">
                     <input type="text" name="username" id="username" placeholder="Benutzername"/>
                     <input type="password" name="password" id="password" placeholder="Passwort"/>
                     <input type="submit" value=" Login "/>
@@ -99,7 +99,7 @@
                     Hallo, ${loginSession.getFirstname()}
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                 </a>
-                <a href="${indexPath}" onclick="logoutAjax(); return false;">
+                <a href="${indexPath}" onclick="logoutAjax();">
                     Logout
                 </a>
             </div>

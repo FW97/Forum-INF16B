@@ -50,3 +50,11 @@
     background-repeat: no-repeat;
     background-position: 5px;
 }
+
+.parse--error {
+    font-family: monospace;
+    font-size: 14px;
+    font-style: normal;
+    font-variant: normal;
+    color: #ff0c0c;
+}

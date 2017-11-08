@@ -31,7 +31,7 @@ IF "%display_usage%" == "true" (
 	echo   at the end a summary of error files or non-error files will
 	echo   be displayed. All you have to do is to call this script
 	echo.
-	echo     C:\...\Forum-INF16B^> %filename%
+	echo     %dirname%^> %filename%
 	echo.
 	echo   without any arguments from the root directory of the project.
 	echo.

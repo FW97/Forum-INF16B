@@ -2,9 +2,10 @@
 <jsp:include page="jsp/header.jsp" />
 
 <%@ page import="de.dhbw.StudentForum.User" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <% User loginSession = (User) session.getAttribute("user"); %>
+<c:set var="loginSession" value="<%= loginSession %>" />
 
 <h1>Angesagte Themen</h1>
 <jsp:include page="jsp/postings.jsp?latest=true&maxpostings=8&addjsppath=true" />
