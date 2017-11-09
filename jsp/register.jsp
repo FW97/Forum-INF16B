@@ -1,6 +1,6 @@
 <jsp:include page="header.jsp" />
 
-<!-- Gruppe: Laura Kaipl, Tobias Siebig -->
+<!-- Gruppe: Laura Kaipl, Tobias Siebig, Lukas Beck -->
     <div id="register">
 		<form action="services/registerService.jsp" method="POST">
 			<h1>Registrierung</h1>
