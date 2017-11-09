@@ -26,6 +26,7 @@
     private static final String TAG_ID_PARAMETER          = "tag";
     private static final String MIN_DATE_PARAMETER        = "mindate";
     private static final String MAX_DATE_PARAMETER        = "maxdate";
+    private static final String MY_POSTING_PARAMETER      = "myposting";
     private static final String POPULAR_POSTS_PARAMETER   = "popular";
     private static final String DISPLAY_HEADING_PARAMETER = "displayheader";
     private static final String ADD_JSP_PATH_PARAMETER    = "addjsppath";
@@ -47,6 +48,7 @@
     int authorId = -1;
     int maxPostings = 100;
     boolean latest = false;
+    boolean myPosting = false;
     boolean popularPosts = false;
     boolean displayHeader = false;
     boolean addJspPath = false;
@@ -80,6 +82,7 @@
     String searchTermString    = request.getParameter (SEARCH_TERM_PARAMETER);
     String minDateString       = request.getParameter (MIN_DATE_PARAMETER);
     String maxDateString       = request.getParameter (MAX_DATE_PARAMETER);
+    String myPostingString     = request.getParameter (MY_POSTING_PARAMETER);
     String popularPostsString  = request.getParameter (POPULAR_POSTS_PARAMETER);
     String displayHeaderString = request.getParameter (DISPLAY_HEADING_PARAMETER);
     String jspPathString       = request.getParameter (ADD_JSP_PATH_PARAMETER);
@@ -105,6 +108,9 @@
         }
         if (maxDateString != null) {
             maxDate = format.parse (maxDateString);
+        }
+        if (myPostingString != null) {
+            myPosting = Boolean.parseBoolean (myPostingString);
         }
         if (popularPostsString != null) {
             popularPosts = Boolean.parseBoolean (popularPostsString);
@@ -140,9 +146,10 @@
     // component inside the INF16B forum. Depending on the assigned parameters
     // they decide which kind of postings to load from the database. Therefore
     // all the parameters are checked against an inequality of `null`.
-    if (searchTermString != null && minDateString != null && maxDateString != null && tagString != null && forumIdString != null) {
+    if (searchTermString != null && minDateString != null && maxDateString != null &&
+            tagString != null && forumIdString != null && myPostingString != null && myPosting) {
         // Extended Search Request
-        extendedSearchRequest (searchTermString, forumId, tag, minDate, maxDate);
+        extendedSearchRequest (searchTermString, forumId, tag, minDate, maxDate, myPosting);
         logMessage ("Activated extended search request");
     } else if (latestString != null && latest && maxPostingsString != null && maxPostings == 8) {
         // Top 8 Postings on the homepage
@@ -210,10 +217,12 @@
      * @param tag the identifier of the tag the posts must contain
      * @param minDate the minimal date specifying the lower border of creation date
      * @param maxDate the maximal date specifying the upper border of creation date
+     * @param myPosting specifies if the found postings are written by the currently logged in user
      */
-    private void extendedSearchRequest(String searchTerm, int forumId, String tag, Date minDate, Date maxDate) {
+    private void extendedSearchRequest(String searchTerm, int forumId, String tag, Date minDate,
+                                       Date maxDate, boolean myPosting) {
         postSelection = databaseObject.searchPostings (searchTerm, forumId, tag,
-                new java.sql.Date (minDate.getTime ()), new java.sql.Date (maxDate.getTime ()));
+                new java.sql.Date (minDate.getTime ()), new java.sql.Date (maxDate.getTime ()), myPosting);
     }
 
     /**
