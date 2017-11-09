@@ -706,7 +706,7 @@ public class DAO {
 	 * 
 	 * @author Fabian Schulz, Andreas Memmel
 	 */
-	public List<Posting> searchPostings(String searchTerm, int forumid, String tag, Date minDate, Date maxDate) {
+	public List<Posting> searchPostings(String searchTerm, int forumid, String tag, Date minDate, Date maxDate, boolean myPosting) {
 		Connection con = null;
 		ResultSet rs;
 		List<Posting> postings = new ArrayList<Posting>();
