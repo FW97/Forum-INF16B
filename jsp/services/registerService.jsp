@@ -2,7 +2,7 @@
 
 <%
 	/*
-	@author Laura Kaipl, Tobias Siebig
+	@author Laura Kaipl, Tobias Siebig, Lukas Beck
 	Service to register new Users to our forum
 	*/
 
